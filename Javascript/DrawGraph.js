@@ -1,9 +1,10 @@
 var cxt = getContext("canvas");
 
 graphData = loadJSON();
+console.log(graphData);
 
 if (graphData.graphType.toLowerCase() == "bar") {
-	barGraph(cxt, graphData)
+	barGraph(cxt, graphData);
 }
 
 function getContext(canvasID) {
@@ -14,8 +15,10 @@ function getContext(canvasID) {
 }
 
 function loadJSON() {
-	$.getJSON('.\\JSON-Graph-Data\\Eye Colour Bar Graph.json', function (data) {
-		console.log(data);
-		return data;
+	var returnData;
+	$.getJSON('.\\JSON-Graph-Data\\Eye Colour Bar Graph.json', function (jsonData) {
+		returnData = jsonData;
 	});
+
+	return returnData;
 }
