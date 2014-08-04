@@ -1,24 +1,12 @@
-var cxt = getContext("canvas");
+var canvas = document.getElementById("canvas");
 
-graphData = loadJSON();
-console.log(graphData);
+// Load the JSON file
+$.getJSON('.\\JSON-Graph-Data\\Eye Colour Bar Graph.json', function (data) {
+	// Log all the infomation into the console
+	console.log(data);
 
-if (graphData.graphType.toLowerCase() == "bar") {
-	barGraph(cxt, graphData);
-}
-
-function getContext(canvasID) {
-	var canvas = document.getElementById(canvasID);
-	var context = canvas.getContext('2d');
-
-	return context;
-}
-
-function loadJSON() {
-	var returnData;
-	$.getJSON('.\\JSON-Graph-Data\\Eye Colour Bar Graph.json', function (jsonData) {
-		returnData = jsonData;
-	});
-
-	return returnData;
-}
+	// Runs the data as a bar graph if told to
+	if (data.graphType.toLowerCase() == "bar") {
+		barGraph(canvas, data);
+	}	
+});
