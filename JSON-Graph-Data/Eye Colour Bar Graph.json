@@ -1,0 +1,11 @@
+{ 
+	"graphType": "bar",
+	"xLabel": "Eye colour",
+	"yLabel": "Count of people",
+	"data": [
+		{ "field": "Blue", "count": "20" },
+		{ "field": "Green", "count": "18" },
+		{ "field": "Brown", "count": "162" },
+		{ "field": "Gray", "count": "3" }
+	]
+}
