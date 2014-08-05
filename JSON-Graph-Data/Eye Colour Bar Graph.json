@@ -3,9 +3,9 @@
 	"xLabel": "Eye colour",
 	"yLabel": "Count of people",
 	"data": [
-		{ "field": "Blue", "count": "20" },
-		{ "field": "Green", "count": "18" },
-		{ "field": "Brown", "count": "162" },
-		{ "field": "Gray", "count": "3" }
+		{ "field": "Blue", "count": 15 },
+		{ "field": "Green", "count": 23 },
+		{ "field": "Brown", "count": 234 },
+		{ "field": "Gray", "count": 361 }
 	]
 }
