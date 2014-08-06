@@ -106,71 +106,6 @@ function getLowestReading(graphData) {
 	return lowest;
 }
 
-function getFirstYScaleReading(range, yReadings) {
-	// Gets what the first reading would be un rounded
-	var unroundedFirstReading = range / yReadings;
-
-	// Divide the unrounded first reading to get a result between 0.1 and 1
-	var x = Math.ceil(log10(unroundedFirstReading));
-	var pow10x = Math.pow(10, x);
-
-	// Divide the unround result by pow10x, round and times it back up to get a rounded first reading
-	var roundedFirstReading = getRoundedValue(unroundedFirstReading, pow10x);
-	roundedFirstReading *= pow10x;
-
-	return roundedFirstReading;
-}
-
-function getRoundedValue(unroundedValue, pow10x) {
-	// Divide the value by pow10x
-	var valDivByPow10X = unroundedValue / pow10x;
-
-	if (valDivByPow10X == 0.1) {
-		return 0.1;
-	}
-	else if (valDivByPow10X <= 0.2) {
-		return 0.2;
-	}
-	else if (valDivByPow10X <= 0.25) {
-		return 0.25;
-	}
-	else if (valDivByPow10X <= 0.3) {
-		return 0.3;
-	}
-	else if (valDivByPow10X <= 0.4) {
-		return 0.4;
-	}
-	else if (valDivByPow10X <= 0.5) {
-		return 0.5;
-	}
-	else if (valDivByPow10X <= 0.6) {
-		return 0.6;
-	}
-	else if (valDivByPow10X <= 0.7) {
-		return 0.7;
-	}
-	else if (valDivByPow10X <= 0.75) {
-		return 0.75;
-	}
-	else if (valDivByPow10X <= 0.8) {
-		return 0.8;
-	}
-	else if (valDivByPow10X <= 0.9) {
-		return 0.9;
-	}
-	else if (valDivByPow10X <= 1) {
-		return 1;
-	}
-	else {
-		return 0.25;
-	}
-}
-
-// The log ten oporator
-function log10(val) {
-	return Math.log(val) / Math.LN10;
-}
-
 function drawGraph(canvas, graphData, scaleInfo) {
 	drawAxis(canvas, graphData, scaleInfo);
 	drawData(canvas, graphData, scaleInfo);
@@ -266,11 +201,12 @@ function drawData(canvas, graphData, scaleInfo, gapToYAxis) {
 
 	var xValue = double = 100 + scaleInfo.pixelsBetweenBars;
 
-	// Plot bar
+	// Plot bars
 	for (var i = 0; i < graphData.data.length; i++, xValue += scaleInfo.pixelsBetweenBars + scaleInfo.widthOfBars) {
 		cxt.beginPath();
-		cxt.strokeStyle = 'black';
+		cxt.fillStyle = getColour(graphData.data[i].colour);
 		cxt.fillRect(xValue, canvas.height - 80, scaleInfo.widthOfBars, -(scaleInfo.pixelsPerUnit * graphData.data[i].count));
+		cxt.strokeRect(xValue, canvas.height - 80, scaleInfo.widthOfBars, -(scaleInfo.pixelsPerUnit * graphData.data[i].count));
 		cxt.closePath();
 	}
 }
