@@ -3,14 +3,20 @@ var canvas = document.getElementById("canvas");
 // Load the JSON file if it exists
 if (fileExists(".\\JSON-Graph-Data\\Eye Colour Bar Graph.json")) {
 	$.getJSON('.\\JSON-Graph-Data\\Eye Colour Bar Graph.json', function (data) {
-		// Display the title of the graph
-		var title = document.getElementById("title");
-		title.innerHTML = data.title;
+		if (validFile(data)) {
+			// Display the title of the graph
+			var title = document.getElementById("title");
+			title.innerHTML = data.title;
 
-		// Runs the data as a bar graph if told to
-		if (data.graphType.toLowerCase() == "bar") {
-			barGraph(canvas, data);
-		}	
+			// Runs the data as a bar graph if told to
+			if (data.graphType.toLowerCase() == "bar") {
+				barGraph(canvas, data);
+			}	
+		} else {
+			var cxt = canvas.getContext("2d");
+			cxt.font = "24pt verdana";
+			cxt.fillText("This graph is corrupt! Please try another.", 10, 50);
+		}
 	});
 } else {
 	var cxt = canvas.getContext("2d");
@@ -116,4 +122,34 @@ function fileExists(url) {
 	}).status;	
 	
 	return (response != "200") ? false : true;
+}
+
+function validFile(data) {
+	// Check if the file is valid genrally
+	if (!data.hasOwnProperty("title") || !data.hasOwnProperty("graphType")) {
+		return false;
+	} else {
+		// If it is go into more depth depending on what type of graph it is
+		if (data.graphType == "bar") {
+			return validBarGraph(data);
+		} else {
+			return false;
+		}
+	}
+}
+
+function validBarGraph(data) {
+	// Check the data has the correct properties
+	if (!data.hasOwnProperty("xLabel") || !data.hasOwnProperty("yLabel") || !data.hasOwnProperty("data")) {
+		return false;
+	} else {
+		// Check the data array has valid data
+		for (var i = 0; i < data.data.length; i++) {
+			if (!data.data[i].hasOwnProperty("field") || !data.data[i].hasOwnProperty("count") || !data.data[i].hasOwnProperty("colour")) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
