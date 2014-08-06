@@ -59,25 +59,38 @@ function workOutPointInfo(canvas, graphData) {
 		"points": []
 	};
 
-	getLowestReading(graphData);
+	// If the lowest reading is not equal to the higest one
+	if (getLowestReading(graphData) != getHighestReading(graphData)) {
+		// Get the number size between reading
+		var firstReading = getFirstYScaleReading(getHighestReading(graphData) - getLowestReading(graphData), 10);
 
-	// Get the number size between reading
-	var firstReading = getFirstYScaleReading(getHighestReading(graphData) - getLowestReading(graphData), 10);
+		// Get the start point in the scale, and the last
+		returnObj.startY = firstReading * Math.floor(getLowestReading(graphData) / firstReading);
+		returnObj.endY = firstReading * Math.round(1 + getHighestReading(graphData) / firstReading);
 
-	// Get the start point in the scale, and the last
-	returnObj.startY = firstReading * Math.floor(getLowestReading(graphData) / firstReading);
-	returnObj.endY = firstReading * Math.round(1 + getHighestReading(graphData) / firstReading);
-
-	// Get the points
-	for (var i = returnObj.startY; i <= returnObj.endY; i += firstReading) {
-		returnObj.points.push(i);
+		// Get the points
+		for (var i = returnObj.startY; i <= returnObj.endY; i += firstReading) {
+			// Check if the point is not already there (incase the scale is so samll)
+			if (returnObj.points[returnObj.points.length - 1] != (Math.round(i * 10000) / 10000)) {
+				// Round it to 4.p.d 
+				returnObj.points.push(Math.round(i * 10000) / 10000);
+			}
+		}
+	} else {
+		// Set data to just above and below if the higest reading is also the lowest
+		returnObj.startY = getLowestReading(graphData) - 1;
+		returnObj.endY = getHighestReading(graphData) + 1;
+		returnObj.points.push(returnObj.startY);
+		returnObj.points.push(getHighestReading(graphData));
+		returnObj.points.push(returnObj.endY);
 	}
 
 	// Work out the gap in pixels between each scale point
 	returnObj.scalePointGap = (canvas.height - 100) / (returnObj.points.length - 1);
 
 	// Work out how many pixels there are per a unit
-	returnObj.pixelsPerUnit = (returnObj.scalePointGap * (returnObj.points.length - 1)) / returnObj.points[returnObj.points.length - 1];
+	returnObj.pixelsPerUnit = (returnObj.scalePointGap * (returnObj.points.length - 1)) / 
+							  (returnObj.points[returnObj.points.length - 1] - returnObj.points[0]);
 
 	return returnObj;
 }
@@ -117,17 +130,30 @@ function drawAxis(canvas, graphData, scaleInfo) {
 	cxt.fillStyle = 'black';
 	cxt.font = '18pt verdana';
 
-	// y axis points
-	drawYLabels(canvas, cxt, scaleInfo, graphData)
-
 	// Sideways y axis label
-
-	// x axis values
-	drawXLabels(canvas, cxt, scaleInfo, graphData);
-
+	// Rotate the canvas and move it
+	cxt.rotate(90 * (Math.PI / 180));
+	cxt.translate(((canvas.height - 180) / 2) + 58, 0);
+	// Flip it so the text is the correct orientation
+	cxt.scale(-1, -1);
+	// Write the text
+	cxt.textAlign = 'center';
+	cxt.textBaseLine = 'top';
+	cxt.fillText(graphData.yLabel, 0, 25, canvas.height - 95);
+	// Un-do everything done the the canvas (making it able to be drawn on again)
+	cxt.scale(-1, -1);
+	cxt.translate(-(((canvas.height - 180) / 2) + 58), 0);
+	cxt.rotate(-90 * (Math.PI / 180));
+	
 	// x axis label 
 	cxt.textAlign = 'center';
 	cxt.fillText(graphData.xLabel, ((canvas.width - 100) / 2) + 100, canvas.height - 10, canvas.width - 100);
+
+	// y axis points
+	drawYLabels(canvas, cxt, scaleInfo, graphData)
+
+	// x axis values
+	drawXLabels(canvas, cxt, scaleInfo, graphData);
 
 	// axies
 	cxt.beginPath();
@@ -205,8 +231,10 @@ function drawData(canvas, graphData, scaleInfo, gapToYAxis) {
 	for (var i = 0; i < graphData.data.length; i++, xValue += scaleInfo.pixelsBetweenBars + scaleInfo.widthOfBars) {
 		cxt.beginPath();
 		cxt.fillStyle = getColour(graphData.data[i].colour);
-		cxt.fillRect(xValue, canvas.height - 80, scaleInfo.widthOfBars, -(scaleInfo.pixelsPerUnit * graphData.data[i].count));
-		cxt.strokeRect(xValue, canvas.height - 80, scaleInfo.widthOfBars, -(scaleInfo.pixelsPerUnit * graphData.data[i].count));
+		cxt.fillRect(xValue, canvas.height - 80, scaleInfo.widthOfBars, 
+				     -(scaleInfo.pixelsPerUnit * (graphData.data[i].count - scaleInfo.points[0])));
+		cxt.strokeRect(xValue, canvas.height - 80, scaleInfo.widthOfBars, 
+					   -(scaleInfo.pixelsPerUnit * (graphData.data[i].count - scaleInfo.points[0])));
 		cxt.closePath();
 	}
 }
