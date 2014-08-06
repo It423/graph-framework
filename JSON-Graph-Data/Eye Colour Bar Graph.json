@@ -1,11 +1,12 @@
 { 
+	"title": "Eye colour count bar graph",
 	"graphType": "bar",
 	"xLabel": "Eye colour",
 	"yLabel": "Count of people",
 	"data": [
 		{ "field": "Blue", "count": 15 },
 		{ "field": "Green", "count": 23 },
-		{ "field": "Brown", "count": 234 },
-		{ "field": "Gray", "count": 361 }
+		{ "field": "Brown", "count": 150 },
+		{ "field": "Gray", "count": 4 }
 	]
 }
