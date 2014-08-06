@@ -1,16 +1,22 @@
 var canvas = document.getElementById("canvas");
 
-// Load the JSON file
-$.getJSON('.\\JSON-Graph-Data\\Eye Colour Bar Graph.json', function (data) {
-	// Display the title of the graph
-	var title = document.getElementById("title");
-	title.innerHTML = data.title;
+// Load the JSON file if it exists
+if (fileExists(".\\JSON-Graph-Data\\Eye Colour Bar Graph.json")) {
+	$.getJSON('.\\JSON-Graph-Data\\Eye Colour Bar Graph.json', function (data) {
+		// Display the title of the graph
+		var title = document.getElementById("title");
+		title.innerHTML = data.title;
 
-	// Runs the data as a bar graph if told to
-	if (data.graphType.toLowerCase() == "bar") {
-		barGraph(canvas, data);
-	}	
-});
+		// Runs the data as a bar graph if told to
+		if (data.graphType.toLowerCase() == "bar") {
+			barGraph(canvas, data);
+		}	
+	});
+} else {
+	var cxt = canvas.getContext("2d");
+	cxt.font = "24pt verdana";
+	cxt.fillText("This graph does not exist! Please try another.", 10, 50);
+}
 
 function getColour(colourNum) {
 	switch (colourNum) {
@@ -100,3 +106,14 @@ function log10(val) {
 	return Math.log(val) / Math.LN10;
 }
 
+function fileExists(url) {
+	filename = url.trim();
+	
+	var response = jQuery.ajax({
+		url: filename,
+		type: 'HEAD',
+		async: false
+	}).status;	
+	
+	return (response != "200") ? false : true;
+}
