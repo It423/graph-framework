@@ -3,9 +3,9 @@
 	"graphType": "pie",
 	"unit": "people",
 	"data": [
-		{ "field": "Blue", "count": 50, "colour": 1 },
+		{ "field": "Blue", "count": 50, "colour": 4 },
 		{ "field": "Green", "count": 100, "colour": 2 },
-		{ "field": "Brown", "count": 150, "colour": 3 },
-		{ "field": "Gray", "count": 25, "colour": 4 }
+		{ "field": "Brown", "count": 150, "colour": 6 },
+		{ "field": "Gray", "count": 25, "colour": 13 }
 	]
 }
