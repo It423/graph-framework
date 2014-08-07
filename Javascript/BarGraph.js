@@ -89,8 +89,7 @@ function workOutPointInfo(canvas, graphData) {
 	returnObj.scalePointGap = (canvas.height - 100) / (returnObj.points.length - 1);
 
 	// Work out how many pixels there are per a unit
-	returnObj.pixelsPerUnit = (returnObj.scalePointGap * (returnObj.points.length - 1)) / 
-							  (returnObj.points[returnObj.points.length - 1] - returnObj.points[0]);
+	returnObj.pixelsPerUnit = (returnObj.scalePointGap * (returnObj.points.length - 1)) / (returnObj.points[returnObj.points.length - 1] - returnObj.points[0]);
 
 	return returnObj;
 }
@@ -132,7 +131,7 @@ function drawAxis(canvas, graphData, scaleInfo) {
 
 	// Sideways y axis label
 	// Rotate the canvas and move it
-	cxt.rotate(90 * (Math.PI / 180));
+	cxt.rotate(convertToRad(90));
 	cxt.translate(((canvas.height - 180) / 2) + 58, 0);
 	// Flip it so the text is the correct orientation
 	cxt.scale(-1, -1);
@@ -143,7 +142,7 @@ function drawAxis(canvas, graphData, scaleInfo) {
 	// Un-do everything done the the canvas (making it able to be drawn on again)
 	cxt.scale(-1, -1);
 	cxt.translate(-(((canvas.height - 180) / 2) + 58), 0);
-	cxt.rotate(-90 * (Math.PI / 180));
+	cxt.rotate(convertToRad(-90));
 	
 	// x axis label 
 	cxt.textAlign = 'center';
@@ -231,10 +230,8 @@ function drawData(canvas, graphData, scaleInfo, gapToYAxis) {
 	for (var i = 0; i < graphData.data.length; i++, xValue += scaleInfo.pixelsBetweenBars + scaleInfo.widthOfBars) {
 		cxt.beginPath();
 		cxt.fillStyle = getColour(graphData.data[i].colour);
-		cxt.fillRect(xValue, canvas.height - 80, scaleInfo.widthOfBars, 
-				     -(scaleInfo.pixelsPerUnit * (graphData.data[i].count - scaleInfo.points[0])));
-		cxt.strokeRect(xValue, canvas.height - 80, scaleInfo.widthOfBars, 
-					   -(scaleInfo.pixelsPerUnit * (graphData.data[i].count - scaleInfo.points[0])));
+		cxt.fillRect(xValue, canvas.height - 80, scaleInfo.widthOfBars, -(scaleInfo.pixelsPerUnit * (graphData.data[i].count - scaleInfo.points[0])));
+		cxt.strokeRect(xValue, canvas.height - 80, scaleInfo.widthOfBars, -(scaleInfo.pixelsPerUnit * (graphData.data[i].count - scaleInfo.points[0])));
 		cxt.closePath();
 	}
 }

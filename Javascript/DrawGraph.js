@@ -1,8 +1,9 @@
 var canvas = document.getElementById("canvas");
 
 // Load the JSON file if it exists
-if (fileExists(".\\JSON-Graph-Data\\Eye Colour Bar Graph.json")) {
-	$.getJSON('.\\JSON-Graph-Data\\Eye Colour Bar Graph.json', function (data) {
+if (fileExists(".\\JSON-Graph-Data\\Eye Colour Pie Chart.json")) {
+	$.getJSON('.\\JSON-Graph-Data\\Eye Colour Pie Chart.json', function (data) {
+		// Make sure it is a valid file and not corrupted
 		if (validFile(data)) {
 			// Display the title of the graph
 			var title = document.getElementById("title");
@@ -11,7 +12,9 @@ if (fileExists(".\\JSON-Graph-Data\\Eye Colour Bar Graph.json")) {
 			// Runs the data as a bar graph if told to
 			if (data.graphType.toLowerCase() == "bar") {
 				barGraph(canvas, data);
-			}	
+			} else if (data.graphType.toLowerCase() == "pie") {
+				pieChart(canvas, data);
+			}
 		} else {
 			var cxt = canvas.getContext("2d");
 			cxt.font = "24pt verdana";
@@ -41,9 +44,7 @@ function getColour(colourNum) {
 		case 12: return 'rgb(225, 240, 120)'; // Light yellow
 		case 13: return 'rgb(200, 200, 200)'; // Gray
 		case 14: return 'rgb(0, 0, 0)'; // Black
-		default: return 'rgb(' + Math.round(Math.random() * 255).toString() + ' ,' 
-							   + Math.round(Math.random() * 255).toString() + ' ,' 
-							   + Math.round(Math.random() * 255).toString() + ')'; // Random
+		default: return 'rgb(' + Math.round(Math.random() * 255).toString() + ' ,' + Math.round(Math.random() * 255).toString() + ' ,' + Math.round(Math.random() * 255).toString() + ')'; // Random
 	}
 }
 
@@ -112,6 +113,10 @@ function log10(val) {
 	return Math.log(val) / Math.LN10;
 }
 
+function convertToRad(deg) {
+	return deg * (Math.PI / 180);
+}
+
 function fileExists(url) {
 	filename = url.trim();
 	
@@ -130,8 +135,10 @@ function validFile(data) {
 		return false;
 	} else {
 		// If it is go into more depth depending on what type of graph it is
-		if (data.graphType == "bar") {
+		if (data.graphType.toLowerCase() == "bar") {
 			return validBarGraph(data);
+		} else if (data.graphType.toLowerCase() == "pie") {
+			return validPiChart(data);
 		} else {
 			return false;
 		}
@@ -150,6 +157,24 @@ function validBarGraph(data) {
 			}
 		}
 
+		// If it has all the required data, return true
+		return true;
+	}
+}
+
+function validPiChart(data) {
+	// Check the data has the data array
+	if (!data.hasOwnProperty("data") || !data.hasOwnProperty("unit")) {
+		return false;
+	} else {
+		// Check the data arry has all the valid data reqiuired
+		for (var i = 0; i < data.data.length; i++) {
+			if (!data.data[i].hasOwnProperty("field") || !data.data[i].hasOwnProperty("count") || !data.data[i].hasOwnProperty("colour")) {
+				return false;
+			}
+		}
+
+		// If it has all the required data, return true
 		return true;
 	}
 }
