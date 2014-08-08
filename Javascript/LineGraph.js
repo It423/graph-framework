@@ -304,26 +304,6 @@ function drawLineCummulativeData(canvas, scaleInfo, graphData) {
 	drawPoints(cxt, circles, graphData);
 }
 
-function drawPoints(cxt, points, graphData) {
-	// Set line width and colour
-	cxt.strokeStyle = "rgb(0, 0, 0)";
-	cxt.lineWidth = 1;
-
-	for (var i = 0; i < graphData.readings.length; i++) {
-		// Set colour
-		cxt.fillStyle = getColour(graphData.readings[i][0].colour);
-
-		// Draw set of points
-		for (var j = 0; j < points[i].length; j++) {
-			cxt.beginPath();
-			cxt.arc(points[i][j][0], points[i][j][1], 5, convertToRad(0), convertToRad(360));
-			cxt.fill();
-			cxt.stroke();
-			cxt.closePath();
-		}
-	}
-}
-
 function getTotalofValue(secondIndex, fromFirstIndex, graphData) {
 	var total = 0;
 
