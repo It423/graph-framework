@@ -77,7 +77,7 @@ function calculateLineScale(canvas, graphData) {
 
 	// Get the scaleing data
 	var yScaleing = getPointInfo(canvas, getLowestLineReading(graphData), highest, 10);
-	var xScaleing = getPointInfo(canvas, getLowestLineReading(graphData, true), getHighestLineReading(graphData, true), 10, true);
+	var xScaleing = getPointInfo(canvas, getLowestLineReading(graphData, true), getHighestLineReading(graphData, true), 22, true);
 
 	// Apply the data
 	scale.pixelsPerYUnit = yScaleing.pixelsPerUnit;
@@ -222,8 +222,15 @@ function drawLineSeparateData(canvas, scaleInfo, graphData) {
 	var cxt = canvas.getContext("2d");
 	cxt.fillStyle = "black";
 
+	// Points to place circles
+	var circles = [];
+
 	// Do the line for every reading
 	for (var i = 0; i < graphData.readings.length; i++) {
+		// Points for this set of data
+		var currentCirlces = [];
+		currentCirlces.push(getChordOfData(graphData.readings[i][1], scaleInfo, canvas));
+
 		// Set the colours and line width
 		cxt.lineWidth = 3;
 		cxt.strokeStyle = getColour(graphData.readings[i][0].colour);
@@ -239,28 +246,19 @@ function drawLineSeparateData(canvas, scaleInfo, graphData) {
 			// Do a line to the the point
 			var chord = getChordOfData(graphData.readings[i][j], scaleInfo, canvas);
 			cxt.lineTo(chord[0], chord[1]);
+			currentCirlces.push(chord);
 
 			// Draw the point
 			cxt.stroke();
 			cxt.closePath();
 		}
 
-		// Set the colour for the edge of the circles
-		cxt.lineWidth = 1;
-		cxt.strokeStyle = 'rgb(0, 0, 0)';
-		// Draw the points for the current reading
-		for (var j = 1; j < graphData.readings[i].length; j++) {
-			// Get the co-ordinate to place the point
-			var chord = getChordOfData(graphData.readings[i][j], scaleInfo, canvas);
-
-			// Draw the point
-			cxt.beginPath();
-			cxt.arc(chord[0], chord[1], 5, convertToRad(0), convertToRad(360));
-			cxt.fill();
-			cxt.stroke();
-			cxt.closePath();
-		}
+		// Add the point infomation to the points list
+		circles.push(currentCirlces);
 	}
+
+	// Draw the points
+	drawPoints(cxt, circles, graphData);
 }
 
 function drawLineCummulativeData(canvas, scaleInfo, graphData) {
@@ -268,7 +266,13 @@ function drawLineCummulativeData(canvas, scaleInfo, graphData) {
 	var cxt = canvas.getContext("2d");
 	cxt.fillStyle = "black";
 
+	// Points to place circles
+	var circles = [];
+
 	for (var i = 0; i < graphData.readings.length; i++) {
+		// Points for this set of data
+		var currentCirlces = [];
+
 		// Set the colours and line width
 		cxt.lineWidth = 1;
 		cxt.strokeStyle = getColour(graphData.readings[i][0].colour);
@@ -281,14 +285,42 @@ function drawLineCummulativeData(canvas, scaleInfo, graphData) {
 			var chord = graphData.readings[i][j];
 			chord[1] = getTotalofValue(j, i, graphData);
 			chord = getChordOfData(chord, scaleInfo, canvas);
-			
+			currentCirlces.push(chord);
+
 			// Draw a line to the next point
 			cxt.lineTo(chord[0], chord[1]);
 		}
 
+		// Draw the data
 		cxt.stroke();
 		cxt.fill();
 		cxt.closePath();
+
+		// Add the point infomation to the points list
+		circles.push(currentCirlces);
+	}
+
+	// Draw points
+	drawPoints(cxt, circles, graphData);
+}
+
+function drawPoints(cxt, points, graphData) {
+	// Set line width and colour
+	cxt.strokeStyle = "rgb(0, 0, 0)";
+	cxt.lineWidth = 1;
+
+	for (var i = 0; i < graphData.readings.length; i++) {
+		// Set colour
+		cxt.fillStyle = getColour(graphData.readings[i][0].colour);
+
+		// Draw set of points
+		for (var j = 0; j < points[i].length; j++) {
+			cxt.beginPath();
+			cxt.arc(points[i][j][0], points[i][j][1], 5, convertToRad(0), convertToRad(360));
+			cxt.fill();
+			cxt.stroke();
+			cxt.closePath();
+		}
 	}
 }
 

@@ -2,7 +2,7 @@ var canvas = document.getElementById("canvas");
 
 // Load the JSON file if it exists
 if (fileExists(".\\JSON-Graph-Data\\People Entering a School Building Over a Day Line Graph.json")) {
-	$.getJSON(".\\JSON-Graph-Data\\People Entering a School Building Over a Day Line Graph.json", function (data) {
+	$.getJSON(".\\JSON-Graph-Data\\People Entering a School Building Over a Day Line graph.json", function (data) {
 		// Make sure it is a valid file and not corrupted
 		if (validFile(data)) {
 			// Display the title of the graph
@@ -166,6 +166,12 @@ function getPointInfo(canvas, lowestReading, heighestReading, points, xAxis) {
 
 	// Work out the gap in pixels between each scale point
 	returnObj.pixelsBetweenScalePoints = scaleLength / (returnObj.scalePoints.length - 1);
+
+	// Re-ajust the scale if it is the y axis (so the last scale label is displayed properly)
+	if (xAxis) {
+		scaleLength -= returnObj.pixelsBetweenScalePoints / 2;
+		returnObj.pixelsBetweenScalePoints = scaleLength / (returnObj.scalePoints.length - 1);
+	}
 
 	// Work out how many pixels there are per a unit
 	returnObj.pixelsPerUnit = scaleLength / (returnObj.scalePoints[returnObj.scalePoints.length - 1] - returnObj.scalePoints[0]);
