@@ -326,7 +326,7 @@ function getColour(colourNum) {
 		case 10: return "rgb(255, 190, 190)"; // Pink
 		case 11: return "rgb(240, 175, 120)"; // Amber
 		case 12: return "rgb(225, 240, 120)"; // Light yellow
-		case 13: return "rgb(200, 200, 200)"; // Gray
+		case 13: return "rgb(200, 200, 200)"; // Grey
 		case 14: return "rgb(0, 0, 0)"; // Black
 		case 15: return "rgb(255, 255, 255)"; // White
 		default: return "rgb(" + Math.round(Math.random() * 255).toString() + " ," + Math.round(Math.random() * 255).toString() + " ," + Math.round(Math.random() * 255).toString() + ")"; // Random
