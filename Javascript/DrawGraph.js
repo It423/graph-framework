@@ -233,13 +233,18 @@ function getRoundedValue(unroundedValue, pow10x) {
 	}
 }
 
-// The log ten oporator
 function log10(val) {
 	return Math.log(val) / Math.LN10;
 }
 
 function convertToRad(deg) {
 	return deg * (Math.PI / 180);
+}
+
+Array.prototype.sortNumerically = function() {
+	return this.sort(function(a, b) {
+		return a - b;
+	})
 }
 
 function drawYAxisLabel(canvas, cxt, text) {

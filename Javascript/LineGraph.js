@@ -1,7 +1,60 @@
 function lineGraph(canvas, graphData) {
+	// Order the readings
+	graphData.readings = orderReadings(graphData);
+
+	// Get the infomation about the scaleing
 	var scaleInfo = calculateLineScale(canvas, graphData);
 
+	// Plot the graph
 	drawLineGraph(canvas, scaleInfo, graphData);
+}
+
+function orderReadings(graphData) {
+	// Get all the y averages
+	var yAverages = [];
+	for (var i = 0; i < graphData.readings.length; i++) {
+		yAverages.push(getYAverage(graphData.readings[i]));
+	}
+
+	// Sort the averages low to high
+	var sortedAverages = [];
+	for (var i = 0; i < yAverages.length; i++) {
+		sortedAverages.push(yAverages[i]);
+	}
+	sortedAverages.sortNumerically();
+
+	// The array of readings to be sorted
+	var sortedReadings = [];
+
+	// Keep adding the next reading with the highest average until they have all been added
+	while (sortedAverages.length > 0) {
+		// Get the original index of the current highest average
+		var originalIndex = yAverages.indexOf(sortedAverages[sortedAverages.length - 1]);
+
+		// Add the set of readings with the highest current average
+		sortedReadings.push(graphData.readings[originalIndex]);
+
+		// Remove the highest current average
+		sortedAverages.splice(sortedAverages.length - 1, 1);
+	}
+
+	return sortedReadings;
+}
+
+function getYAverage(reading) {
+	// The count on how many elements were used
+	var i = 1;
+
+	// The total of the readings
+	var total = 0;
+
+	// Get the total
+	for (; i < reading.length; i++) {
+		total += reading[i][1];
+	}
+
+	// Divide the total by the amount of elements
+	return total / i;
 }
 
 function calculateLineScale(canvas, graphData) {
@@ -14,8 +67,16 @@ function calculateLineScale(canvas, graphData) {
 		"pixelsBetweenXScalePoints": 0
 	};
 
+	// See wether to use the max total (cummulative) or max readings (seperate) 
+	var highest;
+	if (graphData.lineType == "cummulative") {
+		highest = getMaxTotalLineReading(graphData);
+	} else if (graphData.lineType == "seperate") {
+		highest = getHighestLineReading(graphData);
+	}
+
 	// Get the scaleing data
-	var yScaleing = getPointInfo(canvas, getLowestLineReading(graphData), getHighestLineReading(graphData), 10);
+	var yScaleing = getPointInfo(canvas, getLowestLineReading(graphData), highest, 10);
 	var xScaleing = getPointInfo(canvas, getLowestLineReading(graphData, true), getHighestLineReading(graphData, true), 10, true);
 
 	// Apply the data
@@ -74,6 +135,28 @@ function getLowestLineReading(graphData, x) {
 	}
 
 	return lowest;
+}
+
+function getMaxTotalLineReading(graphData) {
+	// Set the highest to the lowest possible javascript number, so anything is higher than it
+	var highest = Number.MIN_VALUE;
+
+	// Check through each recording avalible
+	for (var i = 1; i < graphData.readings[0].length; i++) {
+		var total = graphData.readings[0][i][1];
+
+		// Check through that recording in all the reading sets
+		for (var j = 1; j < graphData.readings.length; j++) {
+			total += graphData.readings[j][i][1];
+		}
+
+		// if the total was bigger than the rest, make it the new total
+		if (total > highest) {
+			highest = total;
+		}
+	}
+
+	return highest;
 }
 
 function drawLineGraph(canvas, scaleInfo, graphData) {
@@ -135,7 +218,7 @@ function drawLineData(canvas, scaleInfo, graphData) {
 }
 
 function drawLineSeparateData(canvas, scaleInfo, graphData) {
-	// Get the context and the colours and fonts
+	// Get the context and the colour
 	var cxt = canvas.getContext("2d");
 	cxt.fillStyle = "black";
 
@@ -181,6 +264,43 @@ function drawLineSeparateData(canvas, scaleInfo, graphData) {
 }
 
 function drawLineCummulativeData(canvas, scaleInfo, graphData) {
+	// Get the context and the colour
+	var cxt = canvas.getContext("2d");
+	cxt.fillStyle = "black";
+
+	for (var i = 0; i < graphData.readings.length; i++) {
+		// Set the colours and line width
+		cxt.lineWidth = 1;
+		cxt.strokeStyle = getColour(graphData.readings[i][0].colour);
+		cxt.fillStyle = getColour(graphData.readings[i][0].colour);
+		cxt.beginPath();
+
+		// Draw the line for the current reading
+		for (var j = 1; j < graphData.readings[i].length; j++) {
+			// Get the next point
+			var chord = graphData.readings[i][j];
+			chord[1] = getTotalofValue(j, i, graphData);
+			chord = getChordOfData(chord, scaleInfo, canvas);
+			
+			// Draw a line to the next point
+			cxt.lineTo(chord[0], chord[1]);
+		}
+
+		cxt.stroke();
+		cxt.fill();
+		cxt.closePath();
+	}
+}
+
+function getTotalofValue(secondIndex, fromFirstIndex, graphData) {
+	var total = 0;
+
+	// Get all the y values from the same catagory (after fromFirstIndex) and add them to the total 
+	for (var i = fromFirstIndex; i < graphData.readings.length; i++) {
+		total += graphData.readings[i][secondIndex][1];
+	}
+
+	return total;
 }
 
 function getChordOfData(data, scaleInfo, canvas) {
@@ -195,16 +315,22 @@ function getChordOfData(data, scaleInfo, canvas) {
 function drawLineKey(canvas, scaleInfo, graphData) {
 	// Get the context and the colours and fonts
 	var cxt = canvas.getContext("2d");
-	cxt.fillStyle = "black";
+	cxt.fillStyle = "rgba(255, 255, 255, 0.7)";
 	cxt.font = "bold 8pt verdana";
+
+	// Draw a semi transparent rectangle under the key, so you can read the data and the key clearly
+	cxt.fillRect(canvas.width - 160, 15, 160, 15 * (graphData.readings.length + 1));
+
+	// Set the colour back to black
+	cxt.fillStyle = "rgb(0, 0, 0)";
 
 	// Display the underlined word "key"
 	cxt.textAlign = "left";
 	cxt.textBaseLine = "top";
-	cxt.fillText("Key:", canvas.width - 160, 10, 100);
-	cxt.fillText("____", canvas.width - 160, 10, 100);
+	cxt.fillText("Key:", canvas.width - 160, 15, 160);
+	cxt.fillText("____", canvas.width - 160, 15, 160);
 
-	var yValue = 25;
+	var yValue = 30;
 
 	// Draw the key
 	for (var i = 0; i < graphData.readings.length; i++, yValue += 15) {
@@ -214,6 +340,6 @@ function drawLineKey(canvas, scaleInfo, graphData) {
 		// Draw the label for that colour
 		cxt.textAlign = "left";
 		cxt.textBaseLine = "top";
-		cxt.fillText("- " + graphData.readings[i][0].name, canvas.width - 150, yValue, 100);
+		cxt.fillText("- " + graphData.readings[i][0].name, canvas.width - 150, yValue, 150);
 	}
 }
