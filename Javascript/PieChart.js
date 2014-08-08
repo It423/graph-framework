@@ -35,8 +35,8 @@ function drawPi(canvas, chartData, sectors) {
 	var startAngle = 270;
 
 	// Get the context and the colours and fonts
-	var cxt = canvas.getContext('2d');
-	cxt.font = '8pt verdana';
+	var cxt = canvas.getContext("2d");
+	cxt.font = "8pt verdana";
 
 	for (var i = 0; i < sectors.length; i++) {
 		// Draw the sector
@@ -75,7 +75,7 @@ function drawSector(cxt, centerPoint, radius, percentage, sliceInfo, startingAng
 }
 
 function drawLabel(cxt, centerPoint, radius, angle, sliceInfo, percentage, unit, canvasWidth) {
-	// Get the starting and ending point of the label's line
+	// Get the starting and ending point of the label"s line
 	var vectorToAdd = [ ((radius / 3) * 2) * Math.cos(convertToRad(angle)), ((radius / 3) * 2) * Math.sin(convertToRad(angle)) ];
 	var startXY = [ centerPoint[0] + vectorToAdd[0], centerPoint[1] + vectorToAdd[1] ];
 	var endXY = [ startXY[0] + vectorToAdd[0], startXY[1] + vectorToAdd[1] ];
@@ -104,7 +104,7 @@ function drawLabel(cxt, centerPoint, radius, angle, sliceInfo, percentage, unit,
 	cxt.stroke();
 
 	// Draw the text
-	cxt.textBaseLine = 'center';
+	cxt.textBaseLine = "center";
 	cxt.fillText(" " + sliceInfo.field + ": " + sliceInfo.count + " " + unit + " [" + ((Math.round(percentage) * 10000) / 10000).toString() + "%] ", endXY[0] + addToEndXY, endXY[1] + 3, maxWidthOfText);
 }
 
