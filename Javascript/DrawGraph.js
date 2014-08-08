@@ -1,8 +1,8 @@
 var canvas = document.getElementById("canvas");
 
 // Load the JSON file if it exists
-if (fileExists(".\\JSON-Graph-Data\\Eye Colour Pie Chart.json")) {
-	$.getJSON('.\\JSON-Graph-Data\\Eye Colour Pie Chart.json', function (data) {
+if (fileExists(".\\JSON-Graph-Data\\People Entering a School Building Over a Day Line Graph.json")) {
+	$.getJSON(".\\JSON-Graph-Data\\People Entering a School Building Over a Day Line Graph.json", function (data) {
 		// Make sure it is a valid file and not corrupted
 		if (validFile(data)) {
 			// Display the title of the graph
@@ -14,6 +14,8 @@ if (fileExists(".\\JSON-Graph-Data\\Eye Colour Pie Chart.json")) {
 				barGraph(canvas, data);
 			} else if (data.graphType.toLowerCase() == "pie") {
 				pieChart(canvas, data);
+			} else if (data.graphType.toLowerCase() == "line") {
+				lineGraph(canvas, data);
 			}
 		} else {
 			var cxt = canvas.getContext("2d");
@@ -27,25 +29,148 @@ if (fileExists(".\\JSON-Graph-Data\\Eye Colour Pie Chart.json")) {
 	cxt.fillText("This graph does not exist! Please try another.", 10, 50);
 }
 
-function getColour(colourNum) {
-	switch (colourNum) {
-		case 0: return 'rgb(0, 0, 255)'; // Blue
-		case 1: return 'rgb(255, 0, 0)'; // Red
-		case 2: return 'rgb(55, 215, 15)'; // Green
-		case 3: return 'rgb(180, 45, 170)'; // Purple
-		case 4: return 'rgb(85, 215, 245)'; // Light blue
-		case 5: return 'rgb(250, 105, 0)'; // Orange
-		case 6: return 'rgb(140, 80, 5)'; // Brown
-		case 7: return 'rgb(140, 5, 120)'; // Dark purple
-		case 8: return 'rgb(225, 75, 75)'; // Light red
-		case 9: return 'rgb(0, 110, 120)'; // Dark blue 
-		case 10: return 'rgb(255, 190, 190)'; // Pink
-		case 11: return 'rgb(240, 175, 120)'; // Amber
-		case 12: return 'rgb(225, 240, 120)'; // Light yellow
-		case 13: return 'rgb(200, 200, 200)'; // Gray
-		case 14: return 'rgb(0, 0, 0)'; // Black
-		default: return 'rgb(' + Math.round(Math.random() * 255).toString() + ' ,' + Math.round(Math.random() * 255).toString() + ' ,' + Math.round(Math.random() * 255).toString() + ')'; // Random
+function fileExists(url) {
+	filename = url.trim();
+	
+	var response = jQuery.ajax({
+		url: filename,
+		type: "HEAD",
+		async: false
+	}).status;	
+	
+	return (response != "200") ? false : true;
+}
+
+function validFile(data) {
+	// Check if the file is valid genrally
+	if (!data.hasOwnProperty("title") || !data.hasOwnProperty("graphType")) {
+		return false;
+	} else {
+		// If it is go into more depth depending on what type of graph it is
+		if (data.graphType.toLowerCase() == "bar") {
+			return validBarGraph(data);
+		} else if (data.graphType.toLowerCase() == "pie") {
+			return validPieChart(data);
+		} else if (data.graphType.toLowerCase() == "line") {
+			return validLineGraph(data);
+		} else {
+			return false;
+		}
 	}
+}
+
+function validBarGraph(data) {
+	// Check the data has the correct properties
+	if (!data.hasOwnProperty("xLabel") || !data.hasOwnProperty("yLabel") || !data.hasOwnProperty("data")) {
+		return false;
+	} else {
+		// Check the data array has valid data
+		for (var i = 0; i < data.data.length; i++) {
+			if (!data.data[i].hasOwnProperty("field") || !data.data[i].hasOwnProperty("count") || !data.data[i].hasOwnProperty("colour")) {
+				return false;
+			}
+		}
+
+		// If it has all the required data, return true
+		return true;
+	}
+}
+
+function validPieChart(data) {
+	// Check the data has the data array
+	if (!data.hasOwnProperty("data") || !data.hasOwnProperty("unit")) {
+		return false;
+	} else {
+		// Check the data arry has all the valid data reqiuired
+		for (var i = 0; i < data.data.length; i++) {
+			if (!data.data[i].hasOwnProperty("field") || !data.data[i].hasOwnProperty("count") || !data.data[i].hasOwnProperty("colour")) {
+				return false;
+			}
+		}
+
+		// If it has all the required data, return true
+		return true;
+	}
+}
+
+function validLineGraph(data) {
+	// Check the data has the needed properties
+	if (!data.hasOwnProperty("xLabel") || !data.hasOwnProperty("yLabel") || !data.hasOwnProperty("readings") || !data.hasOwnProperty("lineType")) {
+		return false;
+	} else {
+		// Check it is a valid type of line graph
+		if (data.lineType != "seperate" && data.lineType != "cummulative") {
+			return false;
+		}
+
+		// Check the readings have valid data
+		if (data.readings.length > 0) {
+			for (var i = 0; i < data.readings.length; i++) {
+				// If the set of readings has more than one result
+				if (data.readings[i].length > 0 && data.readings[i][0].hasOwnProperty("name") && data.readings[i][0].hasOwnProperty("colour")) {
+					for (var j = 1; j < data.readings[i].length; j++) {
+						// If the co-ordinate for the data does not have both elements, return false
+						if (data.readings[i][j].length < 2) {
+							return false;
+						}
+					}
+				} else {
+					return false;
+				}
+			}
+
+			// Everything passed so return true
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
+function getPointInfo(canvas, lowestReading, heighestReading, points, xAxis) {
+	returnObj = {
+		"pixelsBetweenScalePoints": 0,
+		"pixelsPerUnit": 0,
+		"scalePoints": []
+	};
+
+	// If the lowest reading is not equal to the higest one
+	if (lowestReading != heighestReading) {
+		// Get the number size between reading
+		var firstReading = getFirstYScaleReading(heighestReading - lowestReading, points);
+
+		// Get the start point in the scale, and the last
+		var startY = firstReading * Math.floor(lowestReading / firstReading);
+		var endY = firstReading * Math.ceil(1 + heighestReading / firstReading);
+
+		// Get the points
+		for (var i = startY; i <= endY; i += firstReading) {
+			// Check if the point is not already there (incase the scale is so samll)
+			if (returnObj.scalePoints[returnObj.scalePoints.length - 1] != (Math.round(i * 10000) / 10000)) {
+				// Round it to 4.p.d 
+				returnObj.scalePoints.push(Math.round(i * 10000) / 10000);
+			}
+		}
+	} else {
+		// Set data to just above and below if the higest reading is also the lowest
+		returnObj.scalePoints = [ lowestReading - 1, lowestReading, lowestReading + 1 ];
+	}
+
+	// Work out the length the axis will be 
+	var scaleLength = -100;
+	if (xAxis) {
+		scaleLength += canvas.width;
+	} else {
+		scaleLength += canvas.height;
+	}
+
+	// Work out the gap in pixels between each scale point
+	returnObj.pixelsBetweenScalePoints = scaleLength / (returnObj.scalePoints.length - 1);
+
+	// Work out how many pixels there are per a unit
+	returnObj.pixelsPerUnit = scaleLength / (returnObj.scalePoints[returnObj.scalePoints.length - 1] - returnObj.scalePoints[0]);
+
+	return returnObj;
 }
 
 function getFirstYScaleReading(range, yReadings) {
@@ -117,64 +242,82 @@ function convertToRad(deg) {
 	return deg * (Math.PI / 180);
 }
 
-function fileExists(url) {
-	filename = url.trim();
-	
-	var response = jQuery.ajax({
-		url: filename,
-		type: 'HEAD',
-		async: false
-	}).status;	
-	
-	return (response != "200") ? false : true;
+function drawYAxisLabel(canvas, cxt, text) {
+	// Rotate the canvas and move it
+	cxt.rotate(convertToRad(90));
+	cxt.translate(((canvas.height - 180) / 2) + 58, 0);
+	// Flip it so the text is the correct orientation
+	cxt.scale(-1, -1);
+	// Write the text
+	cxt.textAlign = "center";
+	cxt.textBaseLine = "top";
+	cxt.fillText(text, 0, 25, canvas.height - 95);
+	// Un-do everything done the the canvas (making it able to be drawn on again)
+	cxt.scale(-1, -1);
+	cxt.translate(-(((canvas.height - 180) / 2) + 58), 0);
+	cxt.rotate(convertToRad(-90));
 }
 
-function validFile(data) {
-	// Check if the file is valid genrally
-	if (!data.hasOwnProperty("title") || !data.hasOwnProperty("graphType")) {
-		return false;
-	} else {
-		// If it is go into more depth depending on what type of graph it is
-		if (data.graphType.toLowerCase() == "bar") {
-			return validBarGraph(data);
-		} else if (data.graphType.toLowerCase() == "pie") {
-			return validPiChart(data);
-		} else {
-			return false;
-		}
+function drawYLabels(canvas, cxt, scaleInfo) {
+	var yValue = double = 20;
+
+	// Go through every point drawing them and a dash to show were it is on the scale
+	for (var i = scaleInfo.yAxisPoints.length - 1; i >= 0; i--, yValue += scaleInfo.pixelsBetweenYScalePoints) {
+		// Draw a faint line along where the point it (making it easier to read)
+		if (i != 0) {
+			cxt.beginPath();
+			cxt.strokeStyle = "gray";
+			cxt.moveTo(100, yValue);
+			cxt.lineTo(canvas.width, yValue);
+			cxt.stroke();
+			cxt.closePath();
+		}	
+
+		// Draw the dash
+		cxt.beginPath();
+		cxt.strokeStyle = "black";
+		cxt.moveTo(100, yValue);
+		cxt.lineTo(90, yValue);
+		cxt.stroke();
+		cxt.closePath();
+
+		// Draw the label
+		cxt.textAlign = "right";
+		cxt.textBaseLine = "middle";
+		cxt.fillText(scaleInfo.yAxisPoints[i].toString(), 87, yValue + 8, 37);
 	}
 }
 
-function validBarGraph(data) {
-	// Check the data has the correct properties
-	if (!data.hasOwnProperty("xLabel") || !data.hasOwnProperty("yLabel") || !data.hasOwnProperty("data")) {
-		return false;
-	} else {
-		// Check the data array has valid data
-		for (var i = 0; i < data.data.length; i++) {
-			if (!data.data[i].hasOwnProperty("field") || !data.data[i].hasOwnProperty("count") || !data.data[i].hasOwnProperty("colour")) {
-				return false;
-			}
-		}
-
-		// If it has all the required data, return true
-		return true;
-	}
+function drawAxis(canvas, cxt) {
+	cxt.beginPath();
+	cxt.strokeStyle = "black";
+	cxt.moveTo(100, 20);
+	cxt.lineTo(100, canvas.height - 80);
+	cxt.stroke();
+	cxt.moveTo(100, canvas.height - 80);
+	cxt.lineTo(canvas.width, canvas.height - 80);
+	cxt.stroke();
+	cxt.closePath();
 }
 
-function validPiChart(data) {
-	// Check the data has the data array
-	if (!data.hasOwnProperty("data") || !data.hasOwnProperty("unit")) {
-		return false;
-	} else {
-		// Check the data arry has all the valid data reqiuired
-		for (var i = 0; i < data.data.length; i++) {
-			if (!data.data[i].hasOwnProperty("field") || !data.data[i].hasOwnProperty("count") || !data.data[i].hasOwnProperty("colour")) {
-				return false;
-			}
-		}
-
-		// If it has all the required data, return true
-		return true;
+function getColour(colourNum) {
+	switch (colourNum) {
+		case 0: return "rgb(0, 0, 255)"; // Blue
+		case 1: return "rgb(255, 0, 0)"; // Red
+		case 2: return "rgb(55, 215, 15)"; // Green
+		case 3: return "rgb(180, 45, 170)"; // Purple
+		case 4: return "rgb(85, 215, 245)"; // Light blue
+		case 5: return "rgb(250, 105, 0)"; // Orange
+		case 6: return "rgb(140, 80, 5)"; // Brown
+		case 7: return "rgb(140, 5, 120)"; // Dark purple
+		case 8: return "rgb(225, 75, 75)"; // Light red
+		case 9: return "rgb(0, 110, 120)"; // Dark blue 
+		case 10: return "rgb(255, 190, 190)"; // Pink
+		case 11: return "rgb(240, 175, 120)"; // Amber
+		case 12: return "rgb(225, 240, 120)"; // Light yellow
+		case 13: return "rgb(200, 200, 200)"; // Gray
+		case 14: return "rgb(0, 0, 0)"; // Black
+		case 15: return "rgb(255, 255, 255)"; // White
+		default: return "rgb(" + Math.round(Math.random() * 255).toString() + " ," + Math.round(Math.random() * 255).toString() + " ," + Math.round(Math.random() * 255).toString() + ")"; // Random
 	}
 }
