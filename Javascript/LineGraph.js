@@ -71,7 +71,7 @@ function calculateLineScale(canvas, graphData) {
 	var highest;
 	if (graphData.lineType == "cummulative") {
 		highest = getMaxTotalLineReading(graphData);
-	} else if (graphData.lineType == "seperate") {
+	} else {
 		highest = getHighestLineReading(graphData);
 	}
 
@@ -331,7 +331,7 @@ function drawLineKey(canvas, scaleInfo, graphData) {
 	cxt.font = "bold 8pt verdana";
 
 	// Draw a semi transparent rectangle under the key, so you can read the data and the key clearly
-	cxt.fillRect(canvas.width - 160, 15, 160, 15 * (graphData.readings.length + 1));
+	cxt.fillRect(canvas.width - 160, 15, 160, 15 * (graphData.readings.length));
 
 	// Set the colour back to black
 	cxt.fillStyle = "rgb(0, 0, 0)";

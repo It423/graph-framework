@@ -1,8 +1,8 @@
 var canvas = document.getElementById("canvas");
 
 // Load the JSON file if it exists
-if (fileExists(".\\JSON-Graph-Data\\People Entering a School Building Over a Day Line Graph.json")) {
-	$.getJSON(".\\JSON-Graph-Data\\People Entering a School Building Over a Day Line graph.json", function (data) {
+if (fileExists(".\\JSON-Graph-Data\\Weight to Height Scatter Graph.json")) {
+	$.getJSON(".\\JSON-Graph-Data\\Weight to Height Scatter Graph.json", function (data) {
 		// Make sure it is a valid file and not corrupted
 		if (validFile(data)) {
 			// Display the title of the graph
@@ -16,6 +16,8 @@ if (fileExists(".\\JSON-Graph-Data\\People Entering a School Building Over a Day
 				pieChart(canvas, data);
 			} else if (data.graphType.toLowerCase() == "line") {
 				lineGraph(canvas, data);
+			} else if (data.graphType.toLowerCase() == "scatter") {
+				scatterGraph(canvas, data);
 			}
 		} else {
 			var cxt = canvas.getContext("2d");
@@ -53,6 +55,8 @@ function validFile(data) {
 			return validPieChart(data);
 		} else if (data.graphType.toLowerCase() == "line") {
 			return validLineGraph(data);
+		} else if (data.graphType.toLowerCase() == "scatter") {
+			return validScatterGraph(data);
 		} else {
 			return false;
 		}
@@ -99,10 +103,39 @@ function validLineGraph(data) {
 		return false;
 	} else {
 		// Check it is a valid type of line graph
-		if (data.lineType != "seperate" && data.lineType != "cummulative") {
+		if (data.lineType.toLowerCase() != "seperate" && data.lineType.toLowerCase() != "cummulative") {
 			return false;
 		}
 
+		// Check the readings have valid data
+		if (data.readings.length > 0) {
+			for (var i = 0; i < data.readings.length; i++) {
+				// If the set of readings has more than one result
+				if (data.readings[i].length > 0 && data.readings[i][0].hasOwnProperty("name") && data.readings[i][0].hasOwnProperty("colour")) {
+					for (var j = 1; j < data.readings[i].length; j++) {
+						// If the co-ordinate for the data does not have both elements, return false
+						if (data.readings[i][j].length < 2) {
+							return false;
+						}
+					}
+				} else {
+					return false;
+				}
+			}
+
+			// Everything passed so return true
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
+function validScatterGraph(data) {
+	// Check the data has the needed properties
+	if (!data.hasOwnProperty("xLabel") || !data.hasOwnProperty("yLabel") || !data.hasOwnProperty("readings")) {
+		return false;
+	} else {
 		// Check the readings have valid data
 		if (data.readings.length > 0) {
 			for (var i = 0; i < data.readings.length; i++) {
