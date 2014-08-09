@@ -3,10 +3,12 @@
 	"graphType": "bar",
 	"xLabel": "Eye colour",
 	"yLabel": "Count of people",
+	"readingColour": [ 9, 4 ],
+	"readingName": [ "2008 recording", "2010 recording" ],
 	"data": [
-		{ "field": "Blue", "count": 15, "colour": 9 },
-		{ "field": "Green", "count": 23, "colour": 9 },
-		{ "field": "Brown", "count": 150, "colour": 9 },
-		{ "field": "Grey", "count": 4, "colour": 9 }
+		{ "field": "Blue", "readings": [ 15, 118 ] },
+		{ "field": "Green", "readings": [ 23, 57 ] },
+		{ "field": "Brown", "readings": [ 150, 98 ] },
+		{ "field": "Grey", "readings": [ 4, 2 ] }
 	]
 }

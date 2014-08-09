@@ -1,8 +1,8 @@
 var canvas = document.getElementById("canvas");
 
 // Load the JSON file if it exists
-if (fileExists(".\\JSON-Graph-Data\\Weight to Height Scatter Graph.json")) {
-	$.getJSON(".\\JSON-Graph-Data\\Weight to Height Scatter Graph.json", function (data) {
+if (fileExists(".\\JSON-Graph-Data\\Eye Colour Bar Graph.json")) {
+	$.getJSON(".\\JSON-Graph-Data\\Eye Colour Bar Graph.json", function (data) {
 		// Make sure it is a valid file and not corrupted
 		if (validFile(data)) {
 			// Display the title of the graph
@@ -65,12 +65,17 @@ function validFile(data) {
 
 function validBarGraph(data) {
 	// Check the data has the correct properties
-	if (!data.hasOwnProperty("xLabel") || !data.hasOwnProperty("yLabel") || !data.hasOwnProperty("data")) {
+	if (!data.hasOwnProperty("xLabel") || !data.hasOwnProperty("yLabel") || !data.hasOwnProperty("readingColour") || !data.hasOwnProperty("readingName") || !data.hasOwnProperty("data")) {
 		return false;
 	} else {
+		// Check there are an equal amount of colours to readings
+		if (data.readingColour.length != data.readingName.length) {
+			return false;
+		}
+
 		// Check the data array has valid data
 		for (var i = 0; i < data.data.length; i++) {
-			if (!data.data[i].hasOwnProperty("field") || !data.data[i].hasOwnProperty("count") || !data.data[i].hasOwnProperty("colour")) {
+			if (!data.data[i].hasOwnProperty("field") || !data.data[i].hasOwnProperty("readings") || data.data[i].readings.length < data.readingColour.length) {
 				return false;
 			}
 		}

@@ -50,8 +50,10 @@ function getHighestBarReading(graphData) {
 	var highest = 0;
 
 	for (var i = 0; i < graphData.data.length; i++) {
-		if (graphData.data[i].count > highest) {
-			highest = graphData.data[i].count;
+		for (var j = 0; j < graphData.data[i].readings.length; j++) {
+			if (graphData.data[i].readings[j] > highest) {
+				highest = graphData.data[i].readings[j];
+			}
 		}
 	}
 
@@ -62,8 +64,10 @@ function getLowestBarReading(graphData) {
 	var lowest = getHighestBarReading(graphData);
 
 	for (var i = 0; i < graphData.data.length; i++) {
-		if (graphData.data[i].count < lowest) {
-			lowest = graphData.data[i].count;
+		for (var j = 0; j < graphData.data[i].readings.length; j++) {
+			if (graphData.data[i].readings[j] < lowest) {
+				lowest = graphData.data[i].readings[j];
+			}
 		}
 	}
 
@@ -73,6 +77,7 @@ function getLowestBarReading(graphData) {
 function drawBarGraph(canvas, graphData, scaleInfo) {
 	drawBarAxis(canvas, graphData, scaleInfo);
 	drawBarData(canvas, graphData, scaleInfo);
+	drawBarKey(canvas, graphData);
 }
 
 function drawBarAxis(canvas, graphData, scaleInfo) {
@@ -129,11 +134,50 @@ function drawBarData(canvas, graphData, scaleInfo, gapToYAxis) {
 	var xValue = double = 100 + scaleInfo.pixelsBetweenBars;
 
 	// Plot bars
-	for (var i = 0; i < graphData.data.length; i++, xValue += scaleInfo.pixelsBetweenBars + scaleInfo.widthOfBars) {
-		cxt.beginPath();
-		cxt.fillStyle = getColour(graphData.data[i].colour);
-		cxt.fillRect(xValue, canvas.height - 80, scaleInfo.widthOfBars, -(scaleInfo.pixelsPerYUnit * (graphData.data[i].count - scaleInfo.yAxisPoints[0])));
-		cxt.strokeRect(xValue, canvas.height - 80, scaleInfo.widthOfBars, -(scaleInfo.pixelsPerYUnit * (graphData.data[i].count - scaleInfo.yAxisPoints[0])));
-		cxt.closePath();
+	for (var i = 0; i < graphData.data.length; i++, xValue += scaleInfo.pixelsBetweenBars) {
+		// Go through each reading in the current field
+		for (var j = 0; j < graphData.data[i].readings.length; j++, xValue += scaleInfo.widthOfBars / graphData.readingColour.length) {
+			cxt.beginPath();
+
+			// Get the colour
+			cxt.fillStyle = getColour(graphData.readingColour[j]);
+
+			// Draw and outline the bar
+			cxt.fillRect(xValue, canvas.height - 80, scaleInfo.widthOfBars / graphData.readingColour.length, -(scaleInfo.pixelsPerYUnit * (graphData.data[i].readings[j] - scaleInfo.yAxisPoints[0])));
+			cxt.strokeRect(xValue, canvas.height - 80, scaleInfo.widthOfBars / graphData.readingColour.length, -(scaleInfo.pixelsPerYUnit * (graphData.data[i].readings[j] - scaleInfo.yAxisPoints[0])));
+			cxt.closePath();
+		}
+	}
+}
+
+function drawBarKey(canvas, graphData) {
+	// Get the context and the colours and fonts
+	var cxt = canvas.getContext("2d");
+	cxt.fillStyle = "rgba(255, 255, 255, 0.7)";
+	cxt.font = "bold 8pt verdana";
+
+	// Draw a semi transparent rectangle under the key, so you can read the data and the key clearly
+	cxt.fillRect(canvas.width - 160, 15, 160, 15 * (graphData.readingColour.length));
+
+	// Set the colour back to black
+	cxt.fillStyle = "rgb(0, 0, 0)";
+
+	// Display the underlined word "key"
+	cxt.textAlign = "left";
+	cxt.textBaseLine = "top";
+	cxt.fillText("Key:", canvas.width - 160, 15, 160);
+	cxt.fillText("____", canvas.width - 160, 15, 160);
+
+	var yValue = 30;
+
+	// Draw the key
+	for (var i = 0; i < graphData.readingName.length; i++, yValue += 15) {
+		// Set the correct colour
+		cxt.fillStyle = getColour(graphData.readingColour[i]);
+
+		// Draw the label for that colour
+		cxt.textAlign = "left";
+		cxt.textBaseLine = "top";
+		cxt.fillText("- " + graphData.readingName[i], canvas.width - 150, yValue, 150);
 	}
 }
