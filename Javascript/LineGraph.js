@@ -162,7 +162,7 @@ function getMaxTotalLineReading(graphData) {
 function drawLineGraph(canvas, scaleInfo, graphData) {
 	drawLineAxis(canvas, scaleInfo, graphData);
 	drawLineData(canvas, scaleInfo, graphData);
-	drawLineKey(canvas, scaleInfo, graphData);
+	drawLineKey(canvas, graphData);
 }
 
 function drawLineAxis(canvas, scaleInfo, graphData) {
@@ -324,7 +324,7 @@ function getChordOfData(data, scaleInfo, canvas) {
 	return chord;
 }
 
-function drawLineKey(canvas, scaleInfo, graphData) {
+function drawLineKey(canvas, graphData) {
 	// Get the context and the colours and fonts
 	var cxt = canvas.getContext("2d");
 	cxt.fillStyle = "rgba(255, 255, 255, 0.7)";

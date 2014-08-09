@@ -13,7 +13,7 @@ function drawScatterGraph(canvas, scaleInfo, graphData) {
 	drawScatterData(canvas, scaleInfo, graphData);
 
 	// Use line code as the same structure
-	drawLineKey(canvas, scaleInfo, graphData);
+	drawLineKey(canvas, graphData);
 }
 
 function drawScatterData(canvas, scaleInfo, graphData) {
