@@ -1,0 +1,48 @@
+{ 
+	"title": "A scatter graph showing the correlation between weight and height",
+	"graphType": "scatter",
+	"xLabel": "Weight (Kg)",
+	"yLabel": "Height (cm)",
+	"readings": [
+		[
+			{ "name": "Year 7 students", "colour": 1 },
+			[ 55, 125 ],
+			[ 49, 140 ],
+			[ 51, 110 ],
+			[ 61, 152 ],
+			[ 67, 125 ],
+			[ 50, 136 ],
+			[ 70, 177 ]
+		],
+		[
+			{ "name": "Year 8 students", "colour": 2 },
+			[ 51, 142 ],
+			[ 47, 148 ],
+			[ 62, 159 ],
+			[ 53, 162 ],
+			[ 59, 164 ],
+			[ 47, 148 ],
+			[ 47, 176 ]
+		],
+		[
+			{ "name": "Year 9 students", "colour": 3 },
+			[ 49, 156 ],
+			[ 69, 187 ],
+			[ 62, 154 ],
+			[ 52, 176 ],
+			[ 63, 135 ],
+			[ 69, 144 ],
+			[ 64, 159 ]
+		],
+		[
+			{ "name": "Year 10 students", "colour": 4 },
+			[ 70, 169 ],
+			[ 76, 189 ],
+			[ 63, 172 ],
+			[ 57, 162 ],
+			[ 73, 159 ],
+			[ 71, 176 ],
+			[ 70, 187 ]
+		]
+	]
+}
