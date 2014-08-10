@@ -167,6 +167,22 @@ function validScatterGraph(data) {
 	}
 }
 
+function getPointCount(highestVal) {
+	// Get a number that if the highestVal was devided by, it would return an answer between 0 and 50
+	var x = Math.ceil(log10(highestVal));
+	var pow10x = Math.pow(0.5, x);
+
+	// Get the result
+	var result = Math.floor(highestVal / pow10x) * pow10x;
+
+	// Keep deviding the result by 2 until it is less than 15
+	while (result > 15) {
+		result = Math.floor(result / 2);
+	}
+
+	return result;
+}
+
 function getPointInfo(canvas, lowestReading, heighestReading, points, xAxis, lineGraph) {
 	returnObj = {
 		"pixelsBetweenScalePoints": 0,
