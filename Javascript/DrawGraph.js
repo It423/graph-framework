@@ -165,7 +165,7 @@ function validScatterGraph(data) {
 	}
 }
 
-function getPointInfo(canvas, lowestReading, heighestReading, points, xAxis) {
+function getPointInfo(canvas, lowestReading, heighestReading, points, xAxis, lineGraph) {
 	returnObj = {
 		"pixelsBetweenScalePoints": 0,
 		"pixelsPerUnit": 0,
@@ -175,11 +175,16 @@ function getPointInfo(canvas, lowestReading, heighestReading, points, xAxis) {
 	// If the lowest reading is not equal to the higest one
 	if (lowestReading != heighestReading) {
 		// Get the number size between reading
-		var firstReading = getFirstYScaleReading(heighestReading - lowestReading, points);
+		var firstReading = getFirstScaleReading(heighestReading - lowestReading, points);
 
 		// Get the start point in the scale, and the last
 		var startY = firstReading * Math.floor(lowestReading / firstReading);
 		var endY = firstReading * Math.ceil(1 + heighestReading / firstReading);
+
+		// Change the end y if its a line graph (so it ends on the max readings) 
+		if (lineGraph) {
+			endY = heighestReading;
+		}
 
 		// Get the points
 		for (var i = startY; i <= endY; i += firstReading) {
@@ -205,7 +210,7 @@ function getPointInfo(canvas, lowestReading, heighestReading, points, xAxis) {
 	// Work out the gap in pixels between each scale point
 	returnObj.pixelsBetweenScalePoints = scaleLength / (returnObj.scalePoints.length - 1);
 
-	// Re-ajust the scale if it is the y axis (so the last scale label is displayed properly)
+	// Re-ajust the scale if it is the x axis (so the last scale label is displayed properly)
 	if (xAxis) {
 		scaleLength -= returnObj.pixelsBetweenScalePoints / 2;
 		returnObj.pixelsBetweenScalePoints = scaleLength / (returnObj.scalePoints.length - 1);
@@ -217,7 +222,7 @@ function getPointInfo(canvas, lowestReading, heighestReading, points, xAxis) {
 	return returnObj;
 }
 
-function getFirstYScaleReading(range, yReadings) {
+function getFirstScaleReading(range, yReadings) {
 	// Gets what the first reading would be un rounded
 	var unroundedFirstReading = range / yReadings;
 
