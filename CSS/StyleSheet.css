@@ -1,0 +1,21 @@
+#graph-display {
+	text-align: center;
+	width: 100%;
+}
+
+#title {
+	font-family: Georgia, serif;
+	font-size: 30pt;
+	text-align: center;
+	margin-top: 45px;
+	margin-bottom: 50px;
+}
+
+#canvas-container {
+	width: 100%;
+	text-align: center;
+}
+
+#canvas {
+	display: inline;
+}
