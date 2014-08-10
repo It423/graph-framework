@@ -6,11 +6,13 @@
 	</head>
 	<body>
 		<div id="graph-display">
-			<h1 id="title"></h1>
+			<h1 id="title">No graph currently selected!</h1>
 			<div id="canvas-container">
 				<canvas id="canvas" width="750" height="500"><p>Your browser does not support the canvas!</p></canvas>
 			</div>
 		</div>
+
+		<button id="draw-selected-graph" onclick="drawGraph('Weight to Height Scatter Graph')">Draw Graph!</button>
 
 		<script type="text/javascript" src="Javascript\jquery-2.1.1.min.js"></script>
 		<script type="text/javascript" src="Javascript\Draw-Graphs\BarGraph.js"></script>
