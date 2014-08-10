@@ -22,13 +22,15 @@ if (fileExists(".\\JSON-Graph-Data\\Weight to Height Scatter Graph.json")) {
 		} else {
 			var cxt = canvas.getContext("2d");
 			cxt.font = "24pt verdana";
-			cxt.fillText("This graph is corrupt! Please try another.", 10, 50);
+			cxt.textAlign = "center";
+			cxt.fillText("This graph is corrupt! Please try another.", canvas.width / 2, 50);
 		}
 	});
 } else {
 	var cxt = canvas.getContext("2d");
 	cxt.font = "24pt verdana";
-	cxt.fillText("This graph does not exist! Please try another.", 10, 50);
+	cxt.textAlign = "center";
+	cxt.fillText("This graph does not exist! Please try another.", canvas.width / 2, 50);
 }
 
 function fileExists(url) {

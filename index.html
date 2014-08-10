@@ -2,10 +2,15 @@
 <html>
 	<head>
 		<title>Graphs</title>
+		<link rel="stylesheet" type="text/css" href="CSS\StyleSheet.css">
 	</head>
 	<body>
-		<h1 id="title"></h1>
-		<canvas id="canvas" width="750" height="500"></canvas>
+		<div id="graph-display">
+			<h1 id="title"></h1>
+			<div id="canvas-container">
+				<canvas id="canvas" width="750" height="500"><p>Your browser does not support the canvas!</p></canvas>
+			</div>
+		</div>
 
 		<script type="text/javascript" src="Javascript\jquery-2.1.1.min.js"></script>
 		<script type="text/javascript" src="Javascript\BarGraph.js"></script>
