@@ -1,8 +1,8 @@
 var canvas = document.getElementById("canvas");
 
 // Load the JSON file if it exists
-if (fileExists(".\\JSON-Graph-Data\\Eye Colour Bar Graph.json")) {
-	$.getJSON(".\\JSON-Graph-Data\\Eye Colour Bar Graph.json", function (data) {
+if (fileExists(".\\JSON-Graph-Data\\Weight to Height Scatter Graph.json")) {
+	$.getJSON(".\\JSON-Graph-Data\\Weight to Height Scatter Graph.json", function (data) {
 		// Make sure it is a valid file and not corrupted
 		if (validFile(data)) {
 			// Display the title of the graph
