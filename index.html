@@ -11,11 +11,11 @@
 			</div>
 		</div>
 
-		<button id="draw-selected-graph" onclick="drawGraph('Weight to Height Scatter Graph')">Draw Graph!</button>
+		<label>Enter Graph name: </label><input type="text" value="Eye Colour Bar Graph" id="selected-graph"></input>
+		<button id="draw-selected-graph" onclick="drawGraph(selected-graph.value)">Draw Graph!</button>
 
 		<link rel="stylesheet" type="text/css" href="CSS\Graph Styling.css">
 		<script type="text/javascript" src="Javascript\jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="Javascript\Find-Graphs\Get List of Graphs.js"></script>
 		<script type="text/javascript" src="Javascript\Draw-Graphs\BarGraph.js"></script>
 		<script type="text/javascript" src="Javascript\Draw-Graphs\PieChart.js"></script>
 		<script type="text/javascript" src="Javascript\Draw-Graphs\LineGraph.js"></script>
