@@ -6,7 +6,7 @@ function loadPieChartForm() {
 	setTextInElement("title", "<label>Title: </label><input type='text' name='titleInput'></input>");
 
 	// Set the graph type
-	setTextInElement("graph-type", "Graph Type: Pie");
+	setTextInElement("graph-type", "<label>Graph type: </label><input type='text' name='graphType' value='Pie' readonly></input>");
 
 	// Add the unit feild
 	setTextInElement("unit", "<label>Unit: </label><input type='text' name='unitInput'></input>");
@@ -19,6 +19,10 @@ function loadPieChartForm() {
 	var button = document.getElementById("add-new-data-reading");
 	button.innerHTML = "Add new Pie slice";
 	button.onclick = function() { addPieField() };
+	button.style.visibility = "visible";
+
+	// Make the validate button visable
+	button = document.getElementById("validate-form");
 	button.style.visibility = "visible";
 }
 
@@ -40,16 +44,18 @@ function clearPage() {
 	setTextInElement("data", "");
 	var button = document.getElementById("add-new-data-reading");	
 	button.style.visibility = "hidden";
+	button = document.getElementById("validate-form");
+	button.style.visibility = "hidden";
 }
 
-function setTextInElement(id, text, keepOldData) {
+function setTextInElement(id, text, data) {
 	var element = document.getElementById(id);
 
-	if (keepOldData) {
-		text = element.innerHTML + text;
+	if (data) {
+		$(element).append(text);
+	} else {
+		element.innerHTML = text;
 	}
-
-	element.innerHTML = text;
 }
 
 function isNumber(evt) {
