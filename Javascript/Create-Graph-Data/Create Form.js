@@ -1,3 +1,4 @@
+
 function loadPieChartForm() {
 	// Clear the page
 	clearPage();
@@ -12,7 +13,7 @@ function loadPieChartForm() {
 	setTextInElement("unit", "<label>Unit: </label><input type='text' name='unitInput'></input>");
 
 	// Add the data fields
-	setTextInElement("data", "<h3>Readings:</h3>", true);
+	setTextInElement("data", "<h3>Readings:</h3><br/>", true);
 	addPieField();
 
 	// Set the button to add data
@@ -27,13 +28,13 @@ function loadPieChartForm() {
 }
 
 function addPieField() {
+	var idNum = ($("form").serializeArray().length - 3) / 3;
+
 	// The input data
 	var pieField = [
-		"<h5>",
-			"<label>Field name: </label><input type='text' name='reading-name'></input>",
-			"<label>Value: </label><input type='text' name='reading-value' onkeypress='return isNumber(event)'></input>",
-			"<label>Colour: </label><input type='text' name='reading-colour' onkeypress='return isNumber(event)'></input>",
-		"</h5>"].join("\n");
+			"<h5 id='reading-name-" +idNum.toString() + "'><label>Field name: </label><input type='text' name='reading-name'></input></h5>",
+			"<h5 id='reading-value-" +idNum.toString() + "'><label>Value: </label><input type='text' name='reading-value' onkeypress='return isNumber(event)'></input></h5>",
+			"<h5 id='reading-colour-" +idNum.toString() + "'><label>Colour: </label><input type='text' name='reading-colour' onkeypress='return isNumber(event)'></input></h5>"].join("\n");
 
 	setTextInElement("data", pieField, true);
 }
