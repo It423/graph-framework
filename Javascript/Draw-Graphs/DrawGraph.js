@@ -1,36 +1,44 @@
-var canvas = document.getElementById("canvas");
+function drawGraph(fileName) {
+	// Get the canvas
+	var canvas = document.getElementById("canvas");
 
-// Load the JSON file if it exists
-if (fileExists(".\\JSON-Graph-Data\\Weight to Height Scatter Graph.json")) {
-	$.getJSON(".\\JSON-Graph-Data\\Weight to Height Scatter Graph.json", function (data) {
-		// Make sure it is a valid file and not corrupted
-		if (validFile(data)) {
-			// Display the title of the graph
-			var title = document.getElementById("title");
-			title.innerHTML = data.title;
-
-			// Runs the data as a bar graph if told to
-			if (data.graphType.toLowerCase() == "bar") {
-				barGraph(canvas, data);
-			} else if (data.graphType.toLowerCase() == "pie") {
-				pieChart(canvas, data);
-			} else if (data.graphType.toLowerCase() == "line") {
-				lineGraph(canvas, data);
-			} else if (data.graphType.toLowerCase() == "scatter") {
-				scatterGraph(canvas, data);
-			}
-		} else {
-			var cxt = canvas.getContext("2d");
-			cxt.font = "24pt verdana";
-			cxt.textAlign = "center";
-			cxt.fillText("This graph is corrupt! Please try another.", canvas.width / 2, 50);
-		}
-	});
-} else {
+	// Clear the canvas
 	var cxt = canvas.getContext("2d");
-	cxt.font = "24pt verdana";
-	cxt.textAlign = "center";
-	cxt.fillText("This graph does not exist! Please try another.", canvas.width / 2, 50);
+	cxt.fillStyle = "rgb(255, 255, 255)";
+	cxt.fillRect(0, 0, canvas.width, canvas.height);
+
+	// Load the JSON file if it exists
+	if (fileExists("..\\JSON-Graph-Data\\" + fileName + ".json")) {
+		$.getJSON("..\\JSON-Graph-Data\\" + fileName + ".json", function (data) {
+			// Make sure it is a valid file and not corrupted
+			if (validFile(data)) {
+				// Display the title of the graph
+				var title = document.getElementById("title");
+				title.innerHTML = data.title;
+
+				// Runs the data as a bar graph if told to
+				if (data.graphType.toLowerCase() == "bar") {
+					barGraph(canvas, data);
+				} else if (data.graphType.toLowerCase() == "pie") {
+					pieChart(canvas, data);
+				} else if (data.graphType.toLowerCase() == "line") {
+					lineGraph(canvas, data);
+				} else if (data.graphType.toLowerCase() == "scatter") {
+					scatterGraph(canvas, data);
+				}
+			} else {
+				var cxt = canvas.getContext("2d");
+				cxt.font = "24pt verdana";
+				cxt.textAlign = "center";
+				cxt.fillText("This graph is corrupt! Please try another.", canvas.width / 2, 50);
+			}
+		});
+	} else {
+		var cxt = canvas.getContext("2d");
+		cxt.font = "24pt verdana";
+		cxt.textAlign = "center";
+		cxt.fillText("This graph does not exist! Please try another.", canvas.width / 2, 50);
+	}
 }
 
 function fileExists(url) {
