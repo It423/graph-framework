@@ -27,6 +27,7 @@ function loadPieChartForm() {
 }
 
 function addPieField() {
+	// The input data
 	var pieField = [
 		"<h5>",
 			"<label>Field name: </label><input type='text' name='reading-name'></input>",
@@ -38,6 +39,7 @@ function addPieField() {
 }
 
 function clearPage() {
+	// Clear elements
 	setTextInElement("title", "");
 	setTextInElement("graph-type", "");
 	setTextInElement("unit", "");
@@ -49,11 +51,14 @@ function clearPage() {
 }
 
 function setTextInElement(id, text, data) {
+	// Get the element
 	var element = document.getElementById(id);
 
 	if (data) {
+		// Add the text
 		$(element).append(text);
 	} else {
+		// Set the text
 		element.innerHTML = text;
 	}
 }
