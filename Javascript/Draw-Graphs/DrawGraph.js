@@ -2,6 +2,10 @@ function drawGraph(fileName) {
 	// Get the canvas
 	var canvas = document.getElementById("canvas");
 
+	// Set the width and height of the graph
+	canvas.height = 550;
+	canvas.width = 800;
+
 	// Clear the canvas
 	var cxt = canvas.getContext("2d");
 	cxt.fillStyle = "rgb(255, 255, 255)";
