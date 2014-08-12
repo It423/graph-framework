@@ -1,16 +1,31 @@
-#buttons {
-	display: inline;
+body { 
+	font-family: Georgia, serif;
 }
 
 #error {
-	height: auto;
+	display: inline-block;
+	margin-bottom: 10px;
+}
+
+#form-container {
+	width: 100%;
+}
+
+#form {
+	display: table;
+	margin: 0 auto;
+}
+
+#center-wrapper {
+	text-align: center;
 }
 
 #title {
-	margin-top: 5px;
+	margin-top: 0px;
 }
 
-.reading {
+.reading-pie {
 	display: inline;
 	padding-left: 50px;
+	font-size: 12pt;
 }

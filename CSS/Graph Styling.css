@@ -1,10 +1,13 @@
+body { 
+	font-family: Georgia, serif;
+}
+
 #graph-display {
 	text-align: center;
 	width: 100%;
 }
 
 #title {
-	font-family: Georgia, serif;
 	font-size: 30pt;
 	text-align: center;
 	margin-top: 15px;
@@ -21,7 +24,6 @@
 }
 
 #selector {
-	font-family: Georgia, serif;
 	font-size: 18pt;
 	text-align: center;
 	width: 75%;

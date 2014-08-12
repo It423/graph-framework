@@ -7,18 +7,23 @@
 		<div id="buttons">
 			<button id="create-pie-chart" onclick="loadPieChartForm()">Create a Pie Chart!</button>
 		</div>
-		<br/>
-		<span id="error"></span>
+		<hr/>
 
 		<form id="form">
+			<span id="error"></span>
 			<h3 id="title"></h3>
 			<h3 id="graph-type"></h3>
 			<h3 id="unit"></h3>
+			<br/>
 			<div id="data"></div>
-			<button type="button" id="add-new-data-reading" style="visibility: hidden"></button>
-			<button type="button" id="validate-form" style="visibility: hidden" onclick="validateForm()">Done!</button>
+			<div id="center-wrapper"> 
+				<button type="button" id="add-new-data-reading" style="visibility: hidden"></button>
+				<br/>
+				<br/>
+				<button type="button" id="validate-form" style="visibility: hidden" onclick="validateForm()">Done!</button>
+			</div>
 		</form>
-		
+
 		<link rel="stylesheet" type="text/css" href="CSS\Form Styling.css">
 		<script type="text/javascript" src="Javascript\jquery-2.1.1.min.js"></script>
 		<script type="text/javascript" src="Javascript\Create-Graph-Data\Validate Form.js"></script>

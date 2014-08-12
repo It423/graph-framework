@@ -4,13 +4,13 @@ function loadPieChartForm() {
 	clearPage();
 
 	// Add the title field
-	setTextInElement("title", "<label>Title: </label><input type='text' name='titleInput'></input>");
+	setTextInElement("title", "<label>Title: </label><input type='text' name='titleInput' style='width: 50%'></input>");
 
 	// Set the graph type
 	setTextInElement("graph-type", "<label>Graph type: </label><input type='text' name='graphType' value='Pie' readonly></input>");
 
 	// Add the unit feild
-	setTextInElement("unit", "<label>Unit: </label><input type='text' name='unitInput'></input>");
+	setTextInElement("unit", "<label>Unit: </label><input type='text' name='unitInput' style='width: 50%'></input>");
 
 	// Add the data fields
 	setTextInElement("data", "<h3>Readings:</h3>", true);
@@ -32,9 +32,10 @@ function addPieField() {
 
 	// The input data
 	var pieField = [
-			"<h5 class='reading' id='reading-name-" +idNum.toString() + "'><label>Field name: </label><input type='text' name='reading-name'></input></h5>",
-			"<h5 class='reading' id='reading-value-" +idNum.toString() + "'><label>Value: </label><input type='text' name='reading-value' onkeypress='return isNumber(event)'></input></h5>",
-			"<h5 class='reading' id='reading-colour-" +idNum.toString() + "'><label>Colour: </label><input type='text' name='reading-colour' onkeypress='return isNumber(event)'></input></h5>",
+			"<h5 class='reading-pie' id='reading-name-" +idNum.toString() + "'><label>Field name: </label><input type='text' name='reading-name'></input></h5>",
+			"<h5 class='reading-pie' id='reading-value-" +idNum.toString() + "'><label>Value: </label><input type='text' name='reading-value' onkeypress='return isNumber(event)'></input></h5>",
+			"<h5 class='reading-pie' id='reading-colour-" +idNum.toString() + "'><label>Colour: </label><input type='text' name='reading-colour' onkeypress='return isNumber(event)'></input></h5>",
+			"<br/>",
 			"<br/>"].join("\n");
 
 	setTextInElement("data", pieField, true);
