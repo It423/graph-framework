@@ -2,6 +2,9 @@ function validateForm() {
 	// Turn the data from the form into a JSON object
 	var formData = $("form").serializeArray();
 
+	// Set the error message to blank
+	document.getElementById("error").innerHTML = "";
+
 	// Set the colour to back
 	document.getElementById("title").style.color = "rgb(0, 0, 0)";
 
@@ -9,6 +12,7 @@ function validateForm() {
  	if (formData[0].value == "") {
 		document.getElementById("error").innerHTML = "Please enter a title!";
 		document.getElementById("title").style.color = "rgb(255, 0, 0)";
+		window.scrollTo(0, 0);
 		return false;
 	} else {
 		// Get the graph type and validate it
@@ -26,6 +30,7 @@ function validPieForm(data) {
 	if (data[2].value == "") {
 		document.getElementById("error").innerHTML = "Please enter a unit!";
 		document.getElementById("unit").style.color = "rgb(255, 0, 0)";
+		window.scrollTo(0, 0);
 		return false;
 	}
 
@@ -47,11 +52,15 @@ function validPieForm(data) {
 			}
 		}
 
-		// If it didn't fail save the data
-		if (!failed) {
-			savePieChart(data);
+		// Exit if it failed
+		if (failed) {
+			window.scrollTo(0, 0);
+			return false;
 		}
 	}
+
+	// If it didn't fail save the data
+	savePieChart(data);	
 }
 
 function getPieElementID(endingNum, elementID) {
