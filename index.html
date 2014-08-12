@@ -11,8 +11,10 @@
 			</div>
 		</div>
 
-		<label>Enter Graph name: </label><input type="text" value="Eye Colour Bar Graph" id="selected-graph"></input>
-		<button id="draw-selected-graph" onclick="drawGraph(document.getElementById('selected-graph').value)">Draw Graph!</button>
+		<div id="selector">
+			<label>Enter Graph name: </label><input type="text" value="Eye Colour Bar Graph" id="select-graph"></input>
+			<button id="draw-selected-graph" onclick="drawGraph(document.getElementById('select-graph').value)">Draw Graph!</button>
+		</div>
 
 		<link rel="stylesheet" type="text/css" href="CSS\Graph Styling.css">
 		<script type="text/javascript" src="Javascript\jquery-2.1.1.min.js"></script>
