@@ -1,0 +1,16 @@
+#buttons {
+	display: inline;
+}
+
+#error {
+	height: auto;
+}
+
+#title {
+	margin-top: 5px;
+}
+
+.reading {
+	display: inline;
+	padding-left: 50px;
+}
