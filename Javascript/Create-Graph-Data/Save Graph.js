@@ -1,23 +1,44 @@
 function savePieChart(data) {
 	// The array of each line in the .json file
-	var fileText = [];
+	var fileJSON = { 
+		"title": "",
+		"graphType": "pie",
+		"unit": "",
+		"data": []
+	}
 
 	// Push all the elements into the text
-	fileText.push('{');
-	fileText.push('    "title": "' + data[0].value + '",');
-	fileText.push('    "graphType": "pie",');
-	fileText.push('    "unit": "' + data[2].value + '",');
-	fileText.push('    "data": [');
+	fileJSON.title = data[0].value;
+	fileJSON.unit = data[2].value;
 
 	// Push the graph data into the array
 	for (var i = 3; i < data.length; i += 3) {
-		fileText.push('        { "field": "' + data[i].value + '", "count": ' + data[i + 1].value + ', "colour": ' + data[i + 2].value + ' },');
+		var jsonReading = {
+			"field": "",
+			"count": 0,
+			"colour": 0
+		}
+
+		jsonReading.field = data[i].value;
+		jsonReading.count = parseInt(data[i + 1].value);
+		jsonReading.colour = parseInt(data[i + 2].value);
+
+		fileJSON.data.push(jsonReading);
 	}
 
-	// Remove the last comma (making it a valid file)
-	fileText[fileText.length - 1] = fileText[fileText.length - 1].slice(0, fileText[fileText.length - 1].length - 1);
+	saveFile(fileJSON);
+}
 
-	// Push the ending of the file
-	fileText.push('    ]');
-	fileText.push('}');
+function saveFile(jsonData) {
+	$.ajax({
+		type: "POST",
+		data: { "myData": JSON.stringify(jsonData) },
+		url: "Javascript\\Create-Graph-Data\\Save.php",
+		success: function(data) {
+			alert("File Saved!");
+		},
+		error: function(e) {
+			console.log(e.message);
+		}
+	});
 }
