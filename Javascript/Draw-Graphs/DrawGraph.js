@@ -11,13 +11,16 @@ function drawGraph(fileName) {
 	cxt.fillStyle = "rgb(255, 255, 255)";
 	cxt.fillRect(0, 0, canvas.width, canvas.height);
 
+	// Reset title
+	var title = document.getElementById("title");
+	title.innerHTML = "";
+
 	// Load the JSON file if it exists
 	if (fileExists("..\\JSON-Graph-Data\\" + fileName + ".json")) {
 		$.getJSON("..\\JSON-Graph-Data\\" + fileName + ".json", function (data) {
 			// Make sure it is a valid file and not corrupted
 			if (validFile(data)) {
 				// Display the title of the graph
-				var title = document.getElementById("title");
 				title.innerHTML = data.title;
 
 				// Runs the data as a bar graph if told to
@@ -31,17 +34,15 @@ function drawGraph(fileName) {
 					scatterGraph(canvas, data);
 				}
 			} else {
-				var cxt = canvas.getContext("2d");
-				cxt.font = "24pt verdana";
-				cxt.textAlign = "center";
-				cxt.fillText("This graph is corrupt! Please try another.", canvas.width / 2, 50);
+				title.innerHTML = "The graph is corrupted! Please try another.";
+				canvas.height = 0;
+				canvas.width = 0;
 			}
 		});
 	} else {
-		var cxt = canvas.getContext("2d");
-		cxt.font = "24pt verdana";
-		cxt.textAlign = "center";
-		cxt.fillText("This graph does not exist! Please try another.", canvas.width / 2, 50);
+		title.innerHTML = "The graph does not exist! Please try another.";
+		canvas.height = 0;
+		canvas.width = 0;
 	}
 }
 
