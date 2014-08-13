@@ -21,7 +21,7 @@ function savePieChart(data) {
 
 		jsonReading.field = data[i].value;
 		jsonReading.count = parseInt(data[i + 1].value);
-		jsonReading.colour = parseInt(data[i + 2].value);
+		jsonReading.colour = colourToInt(data[i + 2].value);
 
 		fileJSON.data.push(jsonReading);
 	}
