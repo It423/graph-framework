@@ -2,6 +2,8 @@ function validateForm() {
 	// Turn the data from the form into a JSON object
 	var formData = $("form").serializeArray();
 
+	console.log(formData);
+
 	// Set the error message to blank
 	document.getElementById("error").innerHTML = "";
 
@@ -92,42 +94,42 @@ function colourToInt(col) {
 		return parseInt(col);
 	} else {
 		// Make the string lowercase
-		col.toLowerCase();
+		var lCol = col.toLowerCase();
 
 		// Check what number to return
-		if (col == "blue") {
+		if (lCol == "blue") {
 			return 0;
-		} else if (col == "red") {
+		} else if (lCol == "red") {
 			return 1;
-		} else if (col == "green") {
+		} else if (lCol == "green") {
 			return 2;
-		} else if (col == "purple") {
+		} else if (lCol == "purple") {
 			return 3;
-		} else if (col == "light blue") {
+		} else if (lCol == "light blue") {
 			return 4;
-		} else if (col == "orange") {
+		} else if (lCol == "orange") {
 			return 5;
-		} else if (col == "brown") {
+		} else if (lCol == "brown") {
 			return 6;
-		} else if (col == "dark purple") {
+		} else if (lCol == "dark purple") {
 			return 7;
-		} else if (col == "light red") {
+		} else if (lCol == "light red") {
 			return 8;
-		} else if (col == "dark blue") {
+		} else if (lCol == "dark blue") {
 			return 9;
-		} else if (col == "pink") {
+		} else if (lCol == "pink") {
 			return 10;
-		} else if (col == "amber") {
+		} else if (lCol == "amber") {
 			return 11;
-		} else if (col == "light yellow") {
+		} else if (lCol == "light yellow") {
 			return 12;
-		} else if (col == "grey") {
+		} else if (lCol == "grey") {
 			return 13;
-		} else if (col == "black") {
+		} else if (lCol == "black") {
 			return 14;
-		} else if (col == "white") {
+		} else if (lCol == "white") {
 			return 15;
-		} else if (col == "random") {
+		} else if (lCol == "random") {
 			return 16;
 		} else {
 			return null;
