@@ -1,4 +1,3 @@
-
 function loadPieChartForm() {
 	// Clear the page
 	clearPage();
@@ -77,11 +76,11 @@ function clearPage() {
 	button.style.visibility = "hidden";
 }
 
-function setTextInElement(id, text, data) {
+function setTextInElement(id, text, add) {
 	// Get the element
 	var element = document.getElementById(id);
 
-	if (data) {
+	if (add) {
 		// Add the text
 		$(element).append(text);
 	} else {
