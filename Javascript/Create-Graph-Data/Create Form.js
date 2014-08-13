@@ -39,7 +39,9 @@ function addPieField() {
 	var pieField = [
 			"<h5 class='reading-pie' id='reading-name-" + idNum.toString() + "'><label>Segment name: </label><input type='text' name='reading-name'></input></h5>",
 			"<h5 class='reading-pie' id='reading-value-" + idNum.toString() + "'><label>Value: </label><input type='text' name='reading-value' onkeypress='return isNumber(event)'></input></h5>",
-			"<h5 class='reading-pie' id='reading-colour-" + idNum.toString() + "'><label>Colour: </label><input type='text' name='reading-colour'></input></h5>",
+			"<h5 class='reading-pie' id='reading-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour'>",
+			getColourOptions(),
+			"</select></h5>",
 			"<br id='br-1-" + idNum.toString() + "'/>",
 			"<br id='br-2-" + idNum.toString() + "'/>\n"].join("\n");
 
@@ -86,6 +88,31 @@ function setTextInElement(id, text, data) {
 		// Set the text
 		element.innerHTML = text;
 	}
+}
+
+function getColourOptions() {
+	var options = [
+	"<option value=''></option>",
+	"<option value='Blue'>Blue</option>",
+	"<option value='Red'>Red</option>",
+	"<option value='Green'>Green</option>",
+	"<option value='Purple'>Purple</option>",
+	"<option value='Light Blue'>Light Blue</option>",
+	"<option value='Orange'>Orange</option>",
+	"<option value='Brown'>Brown</option>",
+	"<option value='Dark Purple'>Dark Purple</option>",
+	"<option value='Light Red'>Light Red</option>",
+	"<option value='Dark Blue'>Dark Blue</option>",
+	"<option value='Pink'>Pink</option>",
+	"<option value='Amber'>Amber</option>",
+	"<option value='Light Yellow'>Light Yellow</option>",
+	"<option value='Grey'>Grey</option>",
+	"<option value='Black'>Black</option>",
+	"<option value='White'>White</option>",
+	"<option value='Random'>Random</option>",
+	].join("\n");
+
+	return options;
 }
 
 function isNumber(evt) {
