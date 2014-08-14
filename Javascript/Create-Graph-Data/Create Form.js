@@ -58,7 +58,7 @@ function addBarDataSet() {
 	setTextInElement("readings-info", string, true);
 
 	for (var i = 0; i < howManyOfClass("field-set"); i++) {
-		setTextInElement("field-set-" + i.toString(), "<h5 class='recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input type='text' name='recording-input-" + i.toString() + "-" + idNum.toString() + "' onkeypress='return isNumber(event)'></h5>", true);
+		setTextInElement("field-set-" + i.toString() + "-recordings", "<h5 class='recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input type='text' name='recording-input-" + i.toString() + "-" + idNum.toString() + "' onkeypress='return isNumber(event)'></h5>", true);
 	}
 }
 
@@ -86,9 +86,11 @@ function addBarField() {
 
 	// Get the string of recordings
 	var recordingsArray = [];
+	recordingsArray.push("<div id='field-set-" + idNum.toString() + "-recordings'>");
 	for (var i = 0; i < howManyOfClass("readings") / 2; i++) {
 		recordingsArray.push("<h5 class='recording' id='recording-" + idNum.toString() + "-" + i.toString() + "'><label>Reading " + (i + 1).toString() + ": </label><input type='text' name='recording-input-" + idNum.toString() + "-" + i.toString() + "' onkeypress='return isNumber(event)'></h5>")
 	}
+	recordingsArray.push("</div>");
 
 	// Turn the recordings array into a string
 	var recordings = recordingsArray.join("\n");
@@ -96,11 +98,15 @@ function addBarField() {
 
 	var string = [
 			"<div class='field-set' id='field-set-" + idNum.toString() + "'>",
+	//		"<img class='callapseElement' id='callapse-field-set-" + idNum.toString() + "' src='IMAGE/URL/HERE!' style='width: 20px; height: 20px'></img>",
 			"<h5 class='field' id='field-name-" + idNum.toString() + "'><label>Field name " + (idNum + 1).toString() + ": </label><input type='text' name='field-name-" + idNum.toString() + "'></h5>",
 			recordings,
 			"</div>"].join("\n");
 
 	setTextInElement("data", string, true);
+
+	// Set the button's on click function
+	//document.getElementById("callapse-field-set-" + idNum.toString()).onclick = function() { collapseDiv("field-set-" + idNum.toString() + "-recordings") };
 }
 
 function removeBarField() {
@@ -267,4 +273,16 @@ function howManyOfClass(className) {
     }
 
     return count;
+}
+
+function collapseDiv(divID) {
+	// Get the element
+	var elm = document.getElementById(divID);
+
+	// Reverse the visibility
+	if (elm.style.display == "none") {
+		elm.style.display = "inline";
+	} else {
+		elm.style.display = "none";
+	}
 }
