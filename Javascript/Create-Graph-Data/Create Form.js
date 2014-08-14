@@ -10,10 +10,11 @@ function loadBarGraphForm() {
 	setTextInElement("y-label", "<label>Y axis label: </label><input type='text' name='yAxisInput' style='width: 50%'>");
 
 	// Add the reading info
-	setTextInElement("readings-info", "<h3>Readings:</h3>");
+	setTextInElement("readings-info", "<h3 id='readings-label'>Readings:</h3>");
 	addBarDataSet();
 
 	// Add the field info
+	setTextInElement("data", "<h3 id='fields-label'>Fields:</h3>");
 	addBarField();
 
 	// Set the button to add and remove data
@@ -40,37 +41,37 @@ function loadBarGraphForm() {
 
 function addBarDataSet() {
 	// Get the id number
-	var idNum = howManyOfClass("readings") / 2;
+	var idNum = howManyOfClass("reading-set");
 
 	// Get the string of html to put in the reading-info div
 	var string = [
-			"<h5 class='readings' id='reading-info-name-" + idNum.toString() + "'><label>Name: </label><input type='text' name='reading-name-" + idNum.toString() + "'></h5>",
-			"<h5 class='readings' id='reading-info-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour-" + idNum.toString() + "'>",
-			getColourOptions(),
-			"</select></h5>",
-			"<br id='reading-br-1-" + idNum.toString() + "' />",
-			"<br id='reading-br-2-" + idNum.toString() + "' />"].join("\n");
+			"<div class='reading-set' id='reading-set-" + idNum.toString() + "'>",
+				"<h5 class='readings' id='reading-info-name-" + idNum.toString() + "'><label>Name: </label><input type='text' name='reading-name-" + idNum.toString() + "'></h5>",
+				"<h5 class='readings' id='reading-info-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour-" + idNum.toString() + "'>",
+					getColourOptions(),
+					"</select>",
+				"</h5>",
+				"<br/>",
+				"<br/>",
+			"</div>"].join("\n");
 
 	setTextInElement("readings-info", string, true);
 
 	for (var i = 0; i < howManyOfClass("field-set"); i++) {
-		setTextInElement("field-set-" + i.toString(), "<h5 class='recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input type='text' name='recording-input-" + i.toString() + "-" + idNum.toString() + "'></h5>", true);
+		setTextInElement("field-set-" + i.toString(), "<h5 class='recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input type='text' name='recording-input-" + i.toString() + "-" + idNum.toString() + "' onkeypress='return isNumber(event)'></h5>", true);
 	}
 }
 
 function removeBarDataSet() {
 	// If there is only one reading set, don't remove it
-	if (document.getElementById("readings-info").innerHTML.split("</h5>").length <= 3) {
+	if (howManyOfClass("reading-set") <= 1) {
 		return false;
 	} else {
 		// Get the id number
-		var idNum = (howManyOfClass("readings") / 2) - 1;
+		var idNum = howManyOfClass("reading-set") - 1;
 
 		// Remove the elements for name and colour input
-		document.getElementById("reading-info-name-" + idNum.toString()).remove();
-		document.getElementById("reading-info-colour-" + idNum.toString()).remove();
-		document.getElementById("reading-br-1-" + idNum.toString()).remove();
-		document.getElementById("reading-br-2-" + idNum.toString()).remove();
+		document.getElementById("reading-set-" + idNum.toString()).remove();
 
 		// Remove the recording
 		for (var i = 0; i < howManyOfClass("field-set"); i++) {
@@ -86,7 +87,7 @@ function addBarField() {
 	// Get the string of recordings
 	var recordingsArray = [];
 	for (var i = 0; i < howManyOfClass("readings") / 2; i++) {
-		recordingsArray.push("<h5 class='recording' id='recording-" + idNum.toString() + "-" + i.toString() + "'><label>Reading " + (i + 1).toString() + ": </label><input type='text' name='recording-input-" + idNum.toString() + "-" + i.toString() + "'></h5>")
+		recordingsArray.push("<h5 class='recording' id='recording-" + idNum.toString() + "-" + i.toString() + "'><label>Reading " + (i + 1).toString() + ": </label><input type='text' name='recording-input-" + idNum.toString() + "-" + i.toString() + "' onkeypress='return isNumber(event)'></h5>")
 	}
 
 	// Turn the recordings array into a string
@@ -95,7 +96,7 @@ function addBarField() {
 
 	var string = [
 			"<div class='field-set' id='field-set-" + idNum.toString() + "'>",
-			"<h5 class='field'><label>Field name " + (idNum + 1).toString() + ": </label><input type='text' name='field-name-" + idNum.toString() + "'></h5>",
+			"<h5 class='field' id='field-name-" + idNum.toString() + "'><label>Field name " + (idNum + 1).toString() + ": </label><input type='text' name='field-name-" + idNum.toString() + "'></h5>",
 			recordings,
 			"</div>"].join("\n");
 
@@ -104,7 +105,7 @@ function addBarField() {
 
 function removeBarField() {
 	// If there is only one field set don't do anything
-	if (document.getElementById("data").innerHTML.split("</div>").length <= 2) {
+	if (howManyOfClass("field-set") <= 1) {
 		return false;
 	} else{
 		// Get the id number
@@ -127,7 +128,7 @@ function loadPieChartForm() {
 	document.getElementById("unit").style.display = "inline";
 
 	// Add the data fields
-	setTextInElement("data", "<h3>Readings:</h3>\n", true);
+	setTextInElement("data", "<h3 id='readings-label'>Readings:</h3>\n", true);
 	addPieField();
 
 	// Set the button to add and remove data
@@ -143,35 +144,34 @@ function loadPieChartForm() {
 }
 
 function addPieField() {
-	var idNum = ($("form").serializeArray().length - 3) / 3;
+	var idNum = howManyOfClass("slice");
 
 	// The input data
 	var pieField = [
-			"<h5 class='reading-pie' id='reading-name-" + idNum.toString() + "'><label>Segment name: </label><input type='text' name='reading-name'></h5>",
-			"<h5 class='reading-pie' id='reading-value-" + idNum.toString() + "'><label>Value: </label><input type='text' name='reading-value' onkeypress='return isNumber(event)'></h5>",
-			"<h5 class='reading-pie' id='reading-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour'>",
-			getColourOptions(),
-			"</select></h5>",
-			"<br id='br-1-" + idNum.toString() + "'/>",
-			"<br id='br-2-" + idNum.toString() + "'/>\n"].join("\n");
+			"<div class='slice' id='slice-" + idNum.toString() + "'>",
+				"<h5 class='reading-pie' id='reading-name-" + idNum.toString() + "'><label>Segment name: </label><input type='text' name='reading-name'></h5>",
+				"<h5 class='reading-pie' id='reading-value-" + idNum.toString() + "'><label>Value: </label><input type='text' name='reading-value' onkeypress='return isNumber(event)'></h5>",
+				"<h5 class='reading-pie' id='reading-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour'>",
+					getColourOptions(),
+				"	</select>",
+				"</h5>",
+				"<br/>",
+				"<br/>",
+			"</div>"].join("\n");
 
 	setTextInElement("data", pieField, true);
 }
 
 function removePieField() {
 	// If there is not enough elements to remove, don't do anything
-	if (document.getElementById("data").innerHTML.split("</h5>").length <= 4) {
+	if (howManyOfClass("slice") <= 1) {
 		return false;
 	} else {
 		// Get the id number to remove the elements
-		var idNum = (($("form").serializeArray().length - 3) / 3) - 1;
+		var idNum = howManyOfClass("slice") - 1;
 
 		// Remove the elements and the break
-		document.getElementById("reading-name-" + idNum.toString()).remove();
-		document.getElementById("reading-value-" + idNum.toString()).remove();
-		document.getElementById("reading-colour-" + idNum.toString()).remove();
-		document.getElementById("br-1-" + idNum.toString()).remove();
-		document.getElementById("br-2-" + idNum.toString()).remove();
+		document.getElementById("slice-" + idNum.toString()).remove();
 	}
 }
 

@@ -7,14 +7,8 @@ function validateForm() {
 	// Set the error message to blank
 	document.getElementById("error").innerHTML = "";
 
-	// Set the colour to back
-	document.getElementById("title").style.color = "rgb(0, 0, 0)";
-
-	// Check the title has been filled in and if not turn it red and tell you what you did wrong
- 	if (formData[0].value == "") {
-		document.getElementById("error").innerHTML = "Please enter a title!";
-		document.getElementById("title").style.color = "rgb(255, 0, 0)";
-		window.scrollTo(0, 0);
+	// Check the title is filled in
+	if (!validTitle(formData)) {
 		return false;
 	} else {
 		// Get the graph type and validate it
@@ -22,11 +16,168 @@ function validateForm() {
 
 		if (graphType == "pie") {
 			validPieForm(formData);
+		} else if (graphType == "bar") {
+			validBarForm(formData);
 		}
 	}
 }
 
+function validTitle(data) {
+	// Set the colour to back
+	document.getElementById("title").style.color = "rgb(0, 0, 0)";
+
+	// Check the title has been filled in and if not turn it red and tell you what you did wrong
+ 	if (data[0].value == "") {
+		document.getElementById("error").innerHTML = "Please enter a title!";
+		document.getElementById("title").style.color = "rgb(255, 0, 0)";
+		window.scrollTo(0, 0);
+		return false;
+	}
+
+	return true;
+}
+
+function validAxisLabels(data) {
+	// Check the x axis label is filled in
+	document.getElementById("x-label").style.color = "rgb(0, 0, 0)";
+	if (data[2].value == "") {
+		document.getElementById("error").innerHTML = "Please enter a label for the x-axis!";
+		document.getElementById("x-label").style.color = "rgb(255, 0, 0)";
+		window.scrollTo(0, 0);
+		return false;
+	}
+
+	// Check the y axis label is filled in
+	document.getElementById("y-label").style.color = "rgb(0, 0, 0)";
+	if (data[3].value == "") {
+		document.getElementById("error").innerHTML = "Please enter a label for the y-axis!";
+		document.getElementById("y-label").style.color = "rgb(255, 0, 0)";
+		window.scrollTo(0, 0);
+		return false;
+	}
+
+	return true;
+}
+
+function validBarForm(data) {
+	// Check that the x and y labels has been filled in
+	if (!validAxisLabels(data)) {
+		return false;
+	}
+
+	// Get how many readings and fields there are
+	var readingCount = howManyOfClass("readings") / 2;
+	var fieldCount = howManyOfClass("field-set");
+
+	// Check the readings are valid
+	if (!validBarReadings(data, readingCount, fieldCount)) {
+		return false;
+	}
+
+	// Check the fields are valid
+	if (!validBarFields(data, readingCount, fieldCount)) {
+		return false;
+	}
+}
+
+function validBarReadings(data, readingCount, fieldCount) {
+	// Set the readings label to black 
+	document.getElementById("readings-label").style.color = "rgb(0, 0, 0)";
+
+	// Check the readings have been filled in 
+	for (var i = 4; i < 3 + readingCount * 2; i += 2) {
+		// If it failed 
+		var failed = false;
+
+		// Set the colour of the elements to black (incase they were red before)
+		document.getElementById("reading-info-name-" + ((i - 4) / 2).toString()).style.color = "rgb(0, 0, 0)";
+		document.getElementById("reading-info-colour-" + ((i - 4) / 2).toString()).style.color = "rgb(0, 0, 0)";
+
+		// Check the name is filled in
+		if (data[i].value == "") {
+			document.getElementById("error").innerHTML = "Please fill in data set " + (((i - 4) / 2) + 1).toString() + "!";
+			document.getElementById("reading-info-name-" + ((i - 4) / 2).toString()).style.color = "rgb(255, 0, 0)";
+			failed = true;
+		}
+
+		// Check the colour is filled in
+		if (data[i + 1].value == "") {
+			document.getElementById("error").innerHTML = "Please fill in data set " + (((i - 4) / 2) + 1).toString() + "!";
+			document.getElementById("reading-info-colour-" + ((i - 4) / 2).toString()).style.color = "rgb(255, 0, 0)";
+			failed = true;
+		}
+
+		// Exit if it failed on this reading set
+		if (failed) {
+			document.getElementById("readings-label").style.color = "rgb(255, 0, 0)";
+			window.scrollTo(0, 0);
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function validBarFields(data, readingCount, fieldCount) {
+	// Set the fields label to black incase it was already red
+	document.getElementById("fields-label").style.color = "rgb(0, 0, 0)";
+
+	// Itterate over every field set
+	for (var i = 4 + (readingCount * 2); i <= 4 + (fieldCount * (readingCount + 1)); i += 1 + readingCount) {
+		// If it failed this loop
+		var failed = false;
+
+		// The field number
+		var fieldNum = (i - 4 - (readingCount * 2)) / (1 + readingCount);
+
+		// Check the field name has been filled in
+		document.getElementById("field-name-" + fieldNum.toString()).style.color = "rgb(0, 0, 0)";
+		if (data[i].value == "") {
+			document.getElementById("error").innerHTML = "Please fill in field set " + (fieldNum + 1).toString() + "!";
+			document.getElementById("field-name-" + fieldNum.toString()).style.color = "rgb(255, 0, 0)";
+			failed = true;
+		}
+
+		for (var j = 1; j <= readingCount; j++) {
+			// The id of the current element
+			var readingNum = j - 1;
+
+			// Check the field has been filled in
+			document.getElementById("recording-" + fieldNum.toString() + "-" + readingNum.toString()).style.color = "rgb(0, 0	, 0)";
+			if (data[i + j].value == "") {
+				document.getElementById("error").innerHTML = "Please fill in field set " + (fieldNum + 1).toString() + "!";
+				document.getElementById("recording-" + fieldNum.toString() + "-" + readingNum.toString()).style.color = "rgb(255, 0, 0)";
+				failed = true;
+			}
+		}
+
+		// Exit if it failed on this field set
+		if (failed) {
+			document.getElementById("fields-label").style.color = "rgb(255, 0, 0)";
+			window.scrollTo(0, 0);
+			return false;
+		}
+	}
+
+	return true;
+}
+
 function validPieForm(data) {
+	// Check the unit has been filled in
+	if (!validPieUnit(data)) {
+		return false;
+	}
+
+	// Check the data is valid
+	if (!validPieData(data)) {
+		return false;
+	}
+
+	// If it didn't fail save the data
+	savePieChart(data);	
+}
+
+function validPieUnit(data) {
 	// Check that the unit has been filled in
 	document.getElementById("unit").style.color = "rgb(0, 0, 0)";
 	if (data[2].value == "") {
@@ -35,6 +186,13 @@ function validPieForm(data) {
 		window.scrollTo(0, 0);
 		return false;
 	}
+
+	return true;
+}
+
+function validPieData(data) {
+	// Set the reading label to black incase it was already red
+	document.getElementById("readings-label").style.color = "rgb(0, 0, 0)";
 
 	// Check that every section of data has been filled in
 	for (var i = 3; i < data.length; i += 3) {
@@ -51,32 +209,18 @@ function validPieForm(data) {
 				document.getElementById("error").innerHTML = "Please fill in data set " + (i / 3).toString() + "!";
 				document.getElementById(getPieElementID(i / 3 - 1, j)).style.color = "rgb(255, 0, 0)";
 				failed = true;
-				continue;
-			}
-
-			if (j == 2 && colourToInt(data[i + j].value) == null) {
-				var errorHTML = document.getElementById("error");
-
-				if (errorHTML.innerHTML == "") {
-					errorHTML.innerHTML = "Please enter a valid colour into the colour box in data set " + (i / 3).toString() + "!";
-				} else {
-					errorHTMl.innerHTML += " Also, the colour is invalid in this data set!";
-				}
-
-				document.getElementById(getPieElementID(i / 3 - 1, j)).style.color = "rgb(255, 0, 0)";
-				failed = true;
 			}
 		}
 
 		// Exit if it failed
 		if (failed) {
+			document.getElementById("readings-label").style.color = "rgb(255, 0, 0)";
 			window.scrollTo(0, 0);
 			return false;
 		}
 	}
 
-	// If it didn't fail save the data
-	savePieChart(data);	
+	return true;
 }
 
 function getPieElementID(endingNum, elementID) {
@@ -85,54 +229,5 @@ function getPieElementID(endingNum, elementID) {
 		case 1: return "reading-value-" + endingNum.toString();
 		case 2: return "reading-colour-" + endingNum.toString();
 		default: return false;
-	}
-}
-
-function colourToInt(col) {
-	// If it is already a number return the number
-	if (!isNaN(col)) {
-		return parseInt(col);
-	} else {
-		// Make the string lowercase
-		var lCol = col.toLowerCase();
-
-		// Check what number to return
-		if (lCol == "blue") {
-			return 0;
-		} else if (lCol == "red") {
-			return 1;
-		} else if (lCol == "green") {
-			return 2;
-		} else if (lCol == "purple") {
-			return 3;
-		} else if (lCol == "light blue") {
-			return 4;
-		} else if (lCol == "orange") {
-			return 5;
-		} else if (lCol == "brown") {
-			return 6;
-		} else if (lCol == "dark purple") {
-			return 7;
-		} else if (lCol == "light red") {
-			return 8;
-		} else if (lCol == "dark blue") {
-			return 9;
-		} else if (lCol == "pink") {
-			return 10;
-		} else if (lCol == "amber") {
-			return 11;
-		} else if (lCol == "light yellow") {
-			return 12;
-		} else if (lCol == "grey") {
-			return 13;
-		} else if (lCol == "black") {
-			return 14;
-		} else if (lCol == "white") {
-			return 15;
-		} else if (lCol == "random") {
-			return 16;
-		} else {
-			return null;
-		}
 	}
 }
