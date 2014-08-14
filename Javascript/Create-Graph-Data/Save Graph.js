@@ -42,3 +42,52 @@ function saveFile(jsonData) {
 		}
 	});
 }
+
+function colourToInt(col) {
+	// If it is already a number return the number
+	if (!isNaN(col)) {
+		return parseInt(col);
+	} else {
+		// Make the string lowercase
+		var lCol = col.toLowerCase();
+
+		// Check what number to return
+		if (lCol == "blue") {
+			return 0;
+		} else if (lCol == "red") {
+			return 1;
+		} else if (lCol == "green") {
+			return 2;
+		} else if (lCol == "purple") {
+			return 3;
+		} else if (lCol == "light blue") {
+			return 4;
+		} else if (lCol == "orange") {
+			return 5;
+		} else if (lCol == "brown") {
+			return 6;
+		} else if (lCol == "dark purple") {
+			return 7;
+		} else if (lCol == "light red") {
+			return 8;
+		} else if (lCol == "dark blue") {
+			return 9;
+		} else if (lCol == "pink") {
+			return 10;
+		} else if (lCol == "amber") {
+			return 11;
+		} else if (lCol == "light yellow") {
+			return 12;
+		} else if (lCol == "grey") {
+			return 13;
+		} else if (lCol == "black") {
+			return 14;
+		} else if (lCol == "white") {
+			return 15;
+		} else if (lCol == "random") {
+			return 16;
+		} else {
+			return null;
+		}
+	}
+}
