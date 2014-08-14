@@ -44,7 +44,7 @@ function addBarDataSet() {
 
 	// Get the string of html to put in the reading-info div
 	var string = [
-			"<h5 class='readings' id='reading-info-name-" + idNum.toString() + "'><label>Name: </label><input id='reading-name-" + idNum.toString() + "' type='text'></h5>",
+			"<h5 class='readings' id='reading-info-name-" + idNum.toString() + "'><label>Name: </label><input type='text' name='reading-name-" + idNum.toString() + "'></h5>",
 			"<h5 class='readings' id='reading-info-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour-" + idNum.toString() + "'>",
 			getColourOptions(),
 			"</select></h5>",
@@ -54,7 +54,7 @@ function addBarDataSet() {
 	setTextInElement("readings-info", string, true);
 
 	for (var i = 0; i < howManyOfClass("field-set"); i++) {
-		setTextInElement("field-set-" + i.toString(), "<h5 class='recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input id='recording-input-" + i.toString() + "-" + idNum.toString() + "' type='text'></h5>", true);
+		setTextInElement("field-set-" + i.toString(), "<h5 class='recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input type='text' name='recording-input-" + i.toString() + "-" + idNum.toString() + "'></h5>", true);
 	}
 }
 
@@ -86,7 +86,7 @@ function addBarField() {
 	// Get the string of recordings
 	var recordingsArray = [];
 	for (var i = 0; i < howManyOfClass("readings") / 2; i++) {
-		recordingsArray.push("<h5 class='recording' id='recording-" + idNum.toString() + "-" + i.toString() + "'><label>Recording " + (i + 1).toString() + ": </label><input id='recording-input-" + idNum.toString() + "-" + i.toString() + "' type='text'></h5>")
+		recordingsArray.push("<h5 class='recording' id='recording-" + idNum.toString() + "-" + i.toString() + "'><label>Reading " + (i + 1).toString() + ": </label><input type='text' name='recording-input-" + idNum.toString() + "-" + i.toString() + "'></h5>")
 	}
 
 	// Turn the recordings array into a string
@@ -95,7 +95,7 @@ function addBarField() {
 
 	var string = [
 			"<div class='field-set' id='field-set-" + idNum.toString() + "'>",
-			"<h5 class='field'><label>Field name " + (idNum + 1).toString() + ": </label><input id='field-name-" + idNum.toString() + "' type='text'></h5>",
+			"<h5 class='field'><label>Field name " + (idNum + 1).toString() + ": </label><input type='text' name='field-name-" + idNum.toString() + "'></h5>",
 			recordings,
 			"</div>"].join("\n");
 
