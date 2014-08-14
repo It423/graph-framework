@@ -1,33 +1,144 @@
+function loadBarGraphForm() {
+	// Clear the page
+	clearPage();
+
+	// Add the title and set the graph type
+	setTitle("Bar");
+
+	// Add the axis label fields
+	setTextInElement("x-label", "<label>X axis label: </label><input type='text' name='xAxisInput' style='width: 50%'>");
+	setTextInElement("y-label", "<label>Y axis label: </label><input type='text' name='yAxisInput' style='width: 50%'>");
+
+	// Add the reading info
+	setTextInElement("readings-info", "<h3>Readings:</h3>");
+	addBarDataSet();
+
+	// Add the field info
+	addBarField();
+
+	// Set the button to add and remove data
+	var button = document.getElementById("add-new-data-piece");
+	button.innerHTML = "Add new Bar field";
+	button.onclick = function() { addBarField() };
+	button.style.visibility = "visible";
+
+	button = document.getElementById("remove-data-piece");
+	button.innerHTML = "Remove Bar field";
+	button.onclick = function() { removeBarField() };
+	button.style.visibility = "visible";
+
+	button = document.getElementById("add-new-reading");
+	button.innerHTML = "Add a new reading";
+	button.onclick = function() { addBarDataSet() };
+	button.style.display = "inline";
+
+	button = document.getElementById("remove-reading");
+	button.innerHTML = "Remove a reading";
+	button.onclick = function() { removeBarDataSet() };
+	button.style.display = "inline";
+}
+
+function addBarDataSet() {
+	// Get the id number
+	var idNum = howManyOfClass("readings") / 2;
+
+	// Get the string of html to put in the reading-info div
+	var string = [
+			"<h5 class='readings' id='reading-info-name-" + idNum.toString() + "'><label>Name: </label><input id='reading-name-" + idNum.toString() + "' type='text'></h5>",
+			"<h5 class='readings' id='reading-info-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour-" + idNum.toString() + "'>",
+			getColourOptions(),
+			"</select></h5>",
+			"<br id='reading-br-1-" + idNum.toString() + "' />",
+			"<br id='reading-br-2-" + idNum.toString() + "' />"].join("\n");
+
+	setTextInElement("readings-info", string, true);
+
+	for (var i = 0; i < howManyOfClass("field-set"); i++) {
+		setTextInElement("field-set-" + i.toString(), "<h5 class='recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input id='recording-input-" + i.toString() + "-" + idNum.toString() + "' type='text'></h5>", true);
+	}
+}
+
+function removeBarDataSet() {
+	// If there is only one reading set, don't remove it
+	if (document.getElementById("readings-info").innerHTML.split("</h5>").length <= 3) {
+		return false;
+	} else {
+		// Get the id number
+		var idNum = (howManyOfClass("readings") / 2) - 1;
+
+		// Remove the elements for name and colour input
+		document.getElementById("reading-info-name-" + idNum.toString()).remove();
+		document.getElementById("reading-info-colour-" + idNum.toString()).remove();
+		document.getElementById("reading-br-1-" + idNum.toString()).remove();
+		document.getElementById("reading-br-2-" + idNum.toString()).remove();
+
+		// Remove the recording
+		for (var i = 0; i < howManyOfClass("field-set"); i++) {
+			document.getElementById("recording-" + i.toString() + "-" + idNum.toString()).remove();
+		}
+	}
+}
+
+function addBarField() {
+	// Get the id number
+	var idNum = howManyOfClass("field-set");
+
+	// Get the string of recordings
+	var recordingsArray = [];
+	for (var i = 0; i < howManyOfClass("readings") / 2; i++) {
+		recordingsArray.push("<h5 class='recording' id='recording-" + idNum.toString() + "-" + i.toString() + "'><label>Recording " + (i + 1).toString() + ": </label><input id='recording-input-" + idNum.toString() + "-" + i.toString() + "' type='text'></h5>")
+	}
+
+	// Turn the recordings array into a string
+	var recordings = recordingsArray.join("\n");
+
+
+	var string = [
+			"<div class='field-set' id='field-set-" + idNum.toString() + "'>",
+			"<h5 class='field'><label>Field name " + (idNum + 1).toString() + ": </label><input id='field-name-" + idNum.toString() + "' type='text'></h5>",
+			recordings,
+			"</div>"].join("\n");
+
+	setTextInElement("data", string, true);
+}
+
+function removeBarField() {
+	// If there is only one field set don't do anything
+	if (document.getElementById("data").innerHTML.split("</div>").length <= 2) {
+		return false;
+	} else{
+		// Get the id number
+		var idNum = howManyOfClass("field-set") - 1;
+
+		// Remove the element
+		document.getElementById("field-set-" + idNum.toString()).remove();
+	}
+}
+
 function loadPieChartForm() {
 	// Clear the page
 	clearPage();
 
-	// Add the title field
-	setTextInElement("title", "<label>Title: </label><input type='text' name='titleInput' style='width: 50%'></input>");
+	// Add the title and set the graph type
+	setTitle("Pie")
 
-	// Set the graph type
-	setTextInElement("graph-type", "<label>Graph type: </label><input type='text' name='graphType' value='Pie' readonly></input>");
-
-	// Add the unit feild
-	setTextInElement("unit", "<label>Unit: </label><input type='text' name='unitInput' style='width: 50%'></input>");
+	// Add the unit field
+	setTextInElement("unit", "<label>Unit: </label><input type='text' name='unitInput' style='width: 50%'>");
+	document.getElementById("unit").style.display = "inline";
 
 	// Add the data fields
 	setTextInElement("data", "<h3>Readings:</h3>\n", true);
 	addPieField();
 
-	// Set the button to add data
-	var button = document.getElementById("add-new-data-reading");
+	// Set the button to add and remove data
+	var button = document.getElementById("add-new-data-piece");
 	button.innerHTML = "Add new Pie slice";
 	button.onclick = function() { addPieField() };
 	button.style.visibility = "visible";
 
-	button = document.getElementById("remove-data-reading");
+	button = document.getElementById("remove-data-piece");
 	button.innerHTML = "Remove Pie slice";
 	button.onclick = function() { removePieField() };
-	button.style.visibility = "visible";
-
-	// Make the validate button visable
-	button = document.getElementById("validate-form");
 	button.style.visibility = "visible";
 }
 
@@ -36,8 +147,8 @@ function addPieField() {
 
 	// The input data
 	var pieField = [
-			"<h5 class='reading-pie' id='reading-name-" + idNum.toString() + "'><label>Segment name: </label><input type='text' name='reading-name'></input></h5>",
-			"<h5 class='reading-pie' id='reading-value-" + idNum.toString() + "'><label>Value: </label><input type='text' name='reading-value' onkeypress='return isNumber(event)'></input></h5>",
+			"<h5 class='reading-pie' id='reading-name-" + idNum.toString() + "'><label>Segment name: </label><input type='text' name='reading-name'></h5>",
+			"<h5 class='reading-pie' id='reading-value-" + idNum.toString() + "'><label>Value: </label><input type='text' name='reading-value' onkeypress='return isNumber(event)'></h5>",
 			"<h5 class='reading-pie' id='reading-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour'>",
 			getColourOptions(),
 			"</select></h5>",
@@ -66,14 +177,32 @@ function removePieField() {
 
 function clearPage() {
 	// Clear elements
+	setTextInElement("error", "");
 	setTextInElement("title", "");
 	setTextInElement("graph-type", "");
+	setTextInElement("x-label", "");
+	setTextInElement("y-label", "");
+	setTextInElement("readings-info", "");
 	setTextInElement("unit", "");
 	setTextInElement("data", "");
-	var button = document.getElementById("add-new-data-reading");	
-	button.style.visibility = "hidden";
+	document.getElementById("unit").style.display = "none";
+	document.getElementById("add-new-data-piece").style.visibility = "hidden";
+	document.getElementById("remove-data-piece").style.visibility = "hidden";
+	document.getElementById("add-new-reading").style.display = "none";
+	document.getElementById("remove-reading").style.display = "none";
+	document.getElementById("validate-form").style.visibility = "hidden";
+}
+
+function setTitle(graphType) {
+	// Add the title field
+	setTextInElement("title", "<label>Title: </label><input type='text' name='titleInput' style='width: 50%'>");
+
+	// Set the graph type
+	setTextInElement("graph-type", "<label>Graph type: </label><input type='text' name='graphType' value='" + graphType + "' style='width: 75px' readonly>");
+
+	// Make the validate button visable
 	button = document.getElementById("validate-form");
-	button.style.visibility = "hidden";
+	button.style.visibility = "visible";
 }
 
 function setTextInElement(id, text, add) {
@@ -125,4 +254,17 @@ function isNumber(evt) {
 	}
 
 	return true;
+}
+
+function howManyOfClass(className) {
+	var count = 0;
+
+    var elems = document.getElementsByTagName('*');
+    for (var i = 0; i < elems.length; i++) {
+        if ((' ' + elems[i].className + ' ').indexOf(' ' + className + ' ') > -1) {
+            count++;
+        }
+    }
+
+    return count;
 }

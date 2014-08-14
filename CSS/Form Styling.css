@@ -16,12 +16,32 @@ body {
 	margin: 0 auto;
 }
 
-#center-wrapper {
+.center-wrapper {
 	text-align: center;
 }
 
 #title {
 	margin-top: 0px;
+}
+
+#unit {
+	margin-bottom: 0px;
+}
+
+.readings {
+	display: inline;
+	padding-left: 50px;
+	font-size: 12pt;
+}
+
+.field {
+	font-size: 12pt;
+}
+
+.recording {
+	margin-bottom: 10px;
+	padding-left: 50px;
+	font-size: 12pt;
 }
 
 .reading-pie {

@@ -5,6 +5,7 @@
 	</head>
 	<body>
 		<div id="buttons">
+			<button id="create-bar-graph" onclick="loadBarGraphForm()">Create a Bar Graph!</button>
 			<button id="create-pie-chart" onclick="loadPieChartForm()">Create a Pie Chart!</button>
 		</div>
 		<hr/>
@@ -13,12 +14,19 @@
 			<span id="error"></span>
 			<h3 id="title"></h3>
 			<h3 id="graph-type"></h3>
-			<h3 id="unit"></h3>
+			<h3 id="x-label"></h3>
+			<h3 id="y-label"></h3>
+			<div id="readings-info"></div>
+			<div class="center-wrapper">
+				<button type="button" id="add-new-reading" style="display: none"></button>
+				<button type="button" id="remove-reading" style="display: none"></button>	
+			</div>
+			<h3 id="unit" style="display: none"></h3>
 			<br/>
 			<div id="data"></div>
-			<div id="center-wrapper"> 
-				<button type="button" id="add-new-data-reading" style="visibility: hidden"></button>
-				<button type="button" id="remove-data-reading" style="visibility: hidden"></button>
+			<div class="center-wrapper"> 
+				<button type="button" id="add-new-data-piece" style="visibility: hidden"></button>
+				<button type="button" id="remove-data-piece" style="visibility: hidden"></button>
 				<br/>
 				<br/>
 				<button type="button" id="validate-form" style="visibility: hidden" onclick="validateForm()">Done!</button>
