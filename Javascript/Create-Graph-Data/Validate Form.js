@@ -66,8 +66,8 @@ function validBarForm(data) {
 	}
 
 	// Get how many readings and fields there are
-	var readingCount = howManyOfClass("readings") / 2;
-	var fieldCount = howManyOfClass("field-set");
+	var readingCount = howManyOfClass("bar-readings") / 2;
+	var fieldCount = howManyOfClass("bar-field-set");
 
 	// Check the readings are valid
 	if (!validBarReadings(data, readingCount, fieldCount)) {
@@ -148,6 +148,15 @@ function validBarFields(data, readingCount, fieldCount) {
 				document.getElementById("error").innerHTML = "Please fill in field set " + (fieldNum + 1).toString() + "!";
 				document.getElementById("recording-" + fieldNum.toString() + "-" + readingNum.toString()).style.color = "rgb(255, 0, 0)";
 				failed = true;
+
+				// If the element is hidden, click the button to show it again
+				if (document.getElementById("field-set-" + fieldNum.toString() + "-recordings").style.display == "none") {
+					// Get the button/image
+					var elm = document.getElementById("collapse-field-set-" + fieldNum.toString());
+
+					// Trigger the click
+					elm.onclick.apply(elm);
+				}
 			}
 		}
 

@@ -41,13 +41,13 @@ function loadBarGraphForm() {
 
 function addBarDataSet() {
 	// Get the id number
-	var idNum = howManyOfClass("reading-set");
+	var idNum = howManyOfClass("bar-reading-set");
 
 	// Get the string of html to put in the reading-info div
 	var string = [
-			"<div class='reading-set' id='reading-set-" + idNum.toString() + "'>",
-				"<h5 class='readings' id='reading-info-name-" + idNum.toString() + "'><label>Name: </label><input type='text' name='reading-name-" + idNum.toString() + "'></h5>",
-				"<h5 class='readings' id='reading-info-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour-" + idNum.toString() + "'>",
+			"<div class='bar-reading-set' id='reading-set-" + idNum.toString() + "'>",
+				"<h5 class='bar-readings' id='reading-info-name-" + idNum.toString() + "'><label>Name: </label><input type='text' name='reading-name-" + idNum.toString() + "'></h5>",
+				"<h5 class='bar-readings' id='reading-info-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour-" + idNum.toString() + "'>",
 					getColourOptions(),
 					"</select>",
 				"</h5>",
@@ -57,24 +57,24 @@ function addBarDataSet() {
 
 	setTextInElement("readings-info", string, true);
 
-	for (var i = 0; i < howManyOfClass("field-set"); i++) {
-		setTextInElement("field-set-" + i.toString() + "-recordings", "<h5 class='recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input type='text' name='recording-input-" + i.toString() + "-" + idNum.toString() + "' onkeypress='return isNumber(event)'></h5>", true);
+	for (var i = 0; i < howManyOfClass("bar-field-set"); i++) {
+		setTextInElement("bar-field-set-" + i.toString() + "-recordings", "<h5 class='bar-recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input type='text' name='recording-input-" + i.toString() + "-" + idNum.toString() + "' onkeypress='return isNumber(event)'></h5>", true);
 	}
 }
 
 function removeBarDataSet() {
 	// If there is only one reading set, don't remove it
-	if (howManyOfClass("reading-set") <= 1) {
+	if (howManyOfClass("bar-reading-set") <= 1) {
 		return false;
 	} else {
 		// Get the id number
-		var idNum = howManyOfClass("reading-set") - 1;
+		var idNum = howManyOfClass("bar-reading-set") - 1;
 
 		// Remove the elements for name and colour input
 		document.getElementById("reading-set-" + idNum.toString()).remove();
 
 		// Remove the recording
-		for (var i = 0; i < howManyOfClass("field-set"); i++) {
+		for (var i = 0; i < howManyOfClass("bar-field-set"); i++) {
 			document.getElementById("recording-" + i.toString() + "-" + idNum.toString()).remove();
 		}
 	}
@@ -82,13 +82,13 @@ function removeBarDataSet() {
 
 function addBarField() {
 	// Get the id number
-	var idNum = howManyOfClass("field-set");
+	var idNum = howManyOfClass("bar-field-set");
 
 	// Get the string of recordings
 	var recordingsArray = [];
 	recordingsArray.push("<div id='field-set-" + idNum.toString() + "-recordings'>");
-	for (var i = 0; i < howManyOfClass("readings") / 2; i++) {
-		recordingsArray.push("<h5 class='recording' id='recording-" + idNum.toString() + "-" + i.toString() + "'><label>Reading " + (i + 1).toString() + ": </label><input type='text' name='recording-input-" + idNum.toString() + "-" + i.toString() + "' onkeypress='return isNumber(event)'></h5>")
+	for (var i = 0; i < howManyOfClass("bar-readings") / 2; i++) {
+		recordingsArray.push("<h5 class='bar-recording' id='recording-" + idNum.toString() + "-" + i.toString() + "'><label>Reading " + (i + 1).toString() + ": </label><input type='text' name='recording-input-" + idNum.toString() + "-" + i.toString() + "' onkeypress='return isNumber(event)'></h5>")
 	}
 	recordingsArray.push("</div>");
 
@@ -97,25 +97,25 @@ function addBarField() {
 
 
 	var string = [
-			"<div class='field-set' id='field-set-" + idNum.toString() + "'>",
-	//		"<img class='callapseElement' id='callapse-field-set-" + idNum.toString() + "' src='IMAGE/URL/HERE!' style='width: 20px; height: 20px'></img>",
-			"<h5 class='field' id='field-name-" + idNum.toString() + "'><label>Field name " + (idNum + 1).toString() + ": </label><input type='text' name='field-name-" + idNum.toString() + "'></h5>",
-			recordings,
+			"<div class='bar-field-set' id='field-set-" + idNum.toString() + "'>",
+				"<img id='collapse-field-set-" + idNum.toString() + "' src='Images\\Collapsed-Elements.png'></img>",
+				"<h5 class='bar-field' id='field-name-" + idNum.toString() + "' style='display: inline'><label>Field name " + (idNum + 1).toString() + ": </label><input type='text' name='field-name-" + idNum.toString() + "'></h5>",
+				recordings,
 			"</div>"].join("\n");
 
 	setTextInElement("data", string, true);
 
 	// Set the button's on click function
-	//document.getElementById("callapse-field-set-" + idNum.toString()).onclick = function() { collapseDiv("field-set-" + idNum.toString() + "-recordings") };
+	document.getElementById("collapse-field-set-" + idNum.toString()).onclick = function() { collapseDiv("field-set-" + idNum.toString() + "-recordings", "collapse-field-set-" + idNum.toString()) };
 }
 
 function removeBarField() {
 	// If there is only one field set don't do anything
-	if (howManyOfClass("field-set") <= 1) {
+	if (howManyOfClass("bar-field-set") <= 1) {
 		return false;
 	} else{
 		// Get the id number
-		var idNum = howManyOfClass("field-set") - 1;
+		var idNum = howManyOfClass("bar-field-set") - 1;
 
 		// Remove the element
 		document.getElementById("field-set-" + idNum.toString()).remove();
@@ -275,14 +275,16 @@ function howManyOfClass(className) {
     return count;
 }
 
-function collapseDiv(divID) {
+function collapseDiv(divID, imgID) {
 	// Get the element
 	var elm = document.getElementById(divID);
 
-	// Reverse the visibility
+	// Reverse the visibility and set the image accordingly
 	if (elm.style.display == "none") {
 		elm.style.display = "inline";
+		document.getElementById(imgID).src = "Images\\Collapsed-Elements.png";
 	} else {
 		elm.style.display = "none";
+		document.getElementById(imgID).src = "Images\\Hidden-Elements.png";
 	}
 }
