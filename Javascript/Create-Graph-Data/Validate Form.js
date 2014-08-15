@@ -1,4 +1,7 @@
 function validateForm() {
+	// Reset all the font colours on the page
+	resetColours();
+
 	// Turn the data from the form into a JSON object
 	var formData = $("form").serializeArray();
 
@@ -21,9 +24,6 @@ function validateForm() {
 }
 
 function validTitle(data) {
-	// Set the colour to back
-	document.getElementById("title").style.color = "rgb(0, 0, 0)";
-
 	// Check the title has been filled in and if not turn it red and tell you what you did wrong
  	if (data[0].value.replace(/ /g, "") == "") {
 		document.getElementById("error").innerHTML = "Please enter a title!";
@@ -35,10 +35,9 @@ function validTitle(data) {
 	return true;
 }
 
-function validAxisLabels(data) {
+function validAxisLabels(data, indexOfX) {
 	// Check the x axis label is filled in
-	document.getElementById("x-label").style.color = "rgb(0, 0, 0)";
-	if (data[2].value.replace(/ /g, "") == "") {
+	if (data[indexOfX].value.replace(/ /g, "") == "") {
 		document.getElementById("error").innerHTML = "Please enter a label for the x-axis!";
 		document.getElementById("x-label").style.color = "rgb(255, 0, 0)";
 		window.scrollTo(0, 0);
@@ -46,8 +45,7 @@ function validAxisLabels(data) {
 	}
 
 	// Check the y axis label is filled in
-	document.getElementById("y-label").style.color = "rgb(0, 0, 0)";
-	if (data[3].value.replace(/ /g, "") == "") {
+	if (data[indexOfX + 1].value.replace(/ /g, "") == "") {
 		document.getElementById("error").innerHTML = "Please enter a label for the y-axis!";
 		document.getElementById("y-label").style.color = "rgb(255, 0, 0)";
 		window.scrollTo(0, 0);
@@ -59,7 +57,7 @@ function validAxisLabels(data) {
 
 function validBarForm(data) {
 	// Check that the x and y labels has been filled in
-	if (!validAxisLabels(data)) {
+	if (!validAxisLabels(data, 2)) {
 		return false;
 	}
 
@@ -88,10 +86,6 @@ function validBarReadings(data, readingCount, fieldCount) {
 	for (var i = 4; i < 3 + readingCount * 2; i += 2) {
 		// If it failed 
 		var failed = false;
-
-		// Set the colour of the elements to black (incase they were red before)
-		document.getElementById("reading-info-name-" + ((i - 4) / 2).toString()).style.color = "rgb(0, 0, 0)";
-		document.getElementById("reading-info-colour-" + ((i - 4) / 2).toString()).style.color = "rgb(0, 0, 0)";
 
 		// Check the name is filled in
 		if (data[i].value.replace(/ /g, "") == "") {
@@ -131,7 +125,6 @@ function validBarFields(data, readingCount, fieldCount) {
 		var fieldNum = (i - 4 - (readingCount * 2)) / (1 + readingCount);
 
 		// Check the field name has been filled in
-		document.getElementById("field-name-" + fieldNum.toString()).style.color = "rgb(0, 0, 0)";
 		if (data[i].value.replace(/ /g, "") == "") {
 			document.getElementById("error").innerHTML = "Please fill in field set " + (fieldNum + 1).toString() + "!";
 			document.getElementById("field-name-" + fieldNum.toString()).style.color = "rgb(255, 0, 0)";
@@ -143,7 +136,6 @@ function validBarFields(data, readingCount, fieldCount) {
 			var readingNum = j - 1;
 
 			// Check the field has been filled in
-			document.getElementById("recording-" + fieldNum.toString() + "-" + readingNum.toString()).style.color = "rgb(0, 0	, 0)";
 			if (data[i + j].value.replace(/ /g, "") == "" || isNaN(data[i + j].value)) {
 				document.getElementById("error").innerHTML = "Please fill in field set " + (fieldNum + 1).toString() + "! Please ensure that the readings are numbers!";
 				document.getElementById("recording-" + fieldNum.toString() + "-" + readingNum.toString()).style.color = "rgb(255, 0, 0)";
@@ -188,7 +180,6 @@ function validPieForm(data) {
 
 function validPieUnit(data) {
 	// Check that the unit has been filled in
-	document.getElementById("unit").style.color = "rgb(0, 0, 0)";
 	if (data[2].value.replace(/ /g, "") == "") {
 		document.getElementById("error").innerHTML = "Please enter a unit!";
 		document.getElementById("unit").style.color = "rgb(255, 0, 0)";
@@ -200,9 +191,6 @@ function validPieUnit(data) {
 }
 
 function validPieData(data) {
-	// Set the reading label to black incase it was already red
-	document.getElementById("readings-label").style.color = "rgb(0, 0, 0)";
-
 	// Check that every section of data has been filled in
 	for (var i = 3; i < data.length; i += 3) {
 		// Check wether the current data set failed
@@ -210,9 +198,6 @@ function validPieData(data) {
 
 		// Check over the current data set
 		for (var j = 0; j < 3; j++) {
-			// Set colour to black
-			document.getElementById(getPieElementID(i / 3 - 1, j)).style.color = "rgb(0, 0, 0)";
-
 			// Check its filled in and make it red if it isn't
 			if (data[i + j].value.replace(/ /g, "") == "") {
 				document.getElementById("error").innerHTML = "Please fill in data set " + (i / 3).toString() + "! Please ensure that the value is a number!";

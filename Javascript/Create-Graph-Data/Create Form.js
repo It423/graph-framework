@@ -181,7 +181,15 @@ function removePieField() {
 	}
 }
 
+function loadLineGraphForm() {
+	// Clear the page 
+	clearPage();
+}
+
 function clearPage() {
+	// Reset all the colours
+	resetColours();
+
 	// Clear elements
 	setTextInElement("error", "");
 	setTextInElement("title", "");
@@ -252,14 +260,32 @@ function getColourOptions() {
 function howManyOfClass(className) {
 	var count = 0;
 
-    var elems = document.getElementsByTagName('*');
-    for (var i = 0; i < elems.length; i++) {
-        if ((' ' + elems[i].className + ' ').indexOf(' ' + className + ' ') > -1) {
+	// Get all the elements on the page
+    var elms = document.getElementsByTagName('*');
+
+    // Check which of them have the correct class name
+    for (var i = 0; i < elms.length; i++) {
+        if ((' ' + elms[i].className + ' ').indexOf(' ' + className + ' ') > -1) {
             count++;
         }
     }
 
     return count;
+}
+
+function resetColours() {
+	// Get a list of elements on the page
+    var elms = document.getElementsByTagName('*');
+
+    // Set all the colours to black if they are elements that could turn red
+    for (var i = 0; i < elms.length; i++) {
+    	var tag = elms[i].tagName;
+
+    	// If the tag of the element is h3 or h5 (elements where we change the font colour)
+    	if (tag == "H5" || tag == "H3") {
+    		elms[i].style.color = "rgb(0, 0, 0)";
+	    }
+    }
 }
 
 function collapseDiv(divID, imgID) {
