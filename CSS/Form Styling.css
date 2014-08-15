@@ -6,6 +6,8 @@ body {
 #error {
 	display: inline-block;
 	margin-bottom: 10px;
+	color: rgb(255, 0, 0);
+	text-align: center;
 }
 
 #form-container {
