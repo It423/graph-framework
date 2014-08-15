@@ -10,6 +10,18 @@ function lineGraph(canvas, graphData) {
 }
 
 function orderReadings(graphData) {
+	// Sort readings by highest average in each
+	var sortedReadings = sortByHighestAverage(graphData);
+
+	// Sort the recordings within the reading
+	for (var i = 0; i < sortedReadings.length; i++) {
+		sortedReadings[i] = sortReadingByXValue(sortedReadings[i]);
+	}
+
+	return sortedReadings;
+}
+
+function sortByHighestAverage(graphData) {
 	// Get all the y averages
 	var yAverages = [];
 	for (var i = 0; i < graphData.readings.length; i++) {
@@ -17,17 +29,14 @@ function orderReadings(graphData) {
 	}
 
 	// Sort the averages low to high
-	var sortedAverages = [];
-	for (var i = 0; i < yAverages.length; i++) {
-		sortedAverages.push(yAverages[i]);
-	}
+	var sortedAverages = yAverages.slice(0);
 	sortedAverages.sortNumerically();
 
 	// The array of readings to be sorted
 	var sortedReadings = [];
 
 	// Keep adding the next reading with the highest average until they have all been added
-	while (sortedAverages.length > 0) {
+	while (sortedAverages.length) {
 		// Get the original index of the current highest average
 		var originalIndex = yAverages.indexOf(sortedAverages[sortedAverages.length - 1]);
 
@@ -55,6 +64,38 @@ function getYAverage(reading) {
 
 	// Divide the total by the amount of elements
 	return total / i;
+}
+
+function sortReadingByXValue(reading) {
+	// The arrays to contain data about sorting readings
+	var sortedReading = [];
+	var readingXs = [];
+
+	// Add the colour and name to the sorted readings
+	sortedReading.push(reading[0]);
+
+	// Get the x values and put them into the readingXs
+	for (var i = 1; i < reading.length; i++) {
+		readingXs.push(reading[i][0]);
+	}
+
+	// Sort the x readings
+	var sortedXReadings = readingXs.slice(0);
+	sortedXReadings.sortNumerically();
+
+	// While there are values that havn't been selected
+	while (sortedXReadings.length) {
+		// Get the original index of the lowest value
+		var originalIndex = readingXs.indexOf(sortedXReadings[0]);
+
+		// Add the lowest to the sorted reading
+		sortedReading.push(reading[originalIndex + 1]);
+
+		// Remove the lowest x value 
+		sortedXReadings.splice(0, 1);
+	}
+
+	return sortedReading;
 }
 
 function calculateLineScale(canvas, graphData) {
