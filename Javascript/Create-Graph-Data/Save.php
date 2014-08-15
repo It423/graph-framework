@@ -51,8 +51,10 @@ function getFileName() {
 function getEnding($graphType) {
 	if ($graphType == "pie") {
 		return "pie chart";
+	} else if ($graphType == "bar") {
+		return "bar graph";
 	} else {
-		return "poop, it didnt work ya fag";
+		return "";
 	}
 }
 ?>

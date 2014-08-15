@@ -29,6 +29,56 @@ function savePieChart(data) {
 	saveFile(fileJSON);
 }
 
+function saveBarGraph(data) {
+	// Set up the json for the file
+	var fileJSON = {
+		"title": "",
+		"graphType": "bar",
+		"xLabel": "",
+		"yLabel": "",
+		"readingName": [],
+		"readingColour": [],
+		"data": []
+	};
+
+	// Push the axis labels and title
+	fileJSON.title = data[0].value;
+	fileJSON.xLabel = data[2].value;
+	fileJSON.yLabel = data[3].value;
+
+	// Get how many reading sets there are
+	var readingCount = howManyOfClass("bar-reading-set");
+	var fieldCount = howManyOfClass("bar-field-set");
+
+	// Push the reading names and colours
+	for (var i = 4; i < 3 + (readingCount * 2); i += 2) {
+		fileJSON.readingName.push(data[i].value);
+		fileJSON.readingColour.push(colourToInt(data[i + 1].value));
+	}
+
+	// Push the data
+	for (var i = 4 + readingCount * 2; i < data.length; i += 1 + readingCount) {
+		// The current data to be added to the data
+		var currentData = {
+			"field": "",
+			"readings": []
+		};
+
+		// Add the field name
+		currentData.field = data[i].value;
+
+		// Add the readings
+		for (var j = i + 1; j < i + 1 + readingCount; j++) {
+			currentData.readings.push(parseInt(data[j].value));
+		}
+
+		// Add the current data to the data
+		fileJSON.data.push(currentData);
+	}
+
+	saveFile(fileJSON);
+}
+
 function saveFile(jsonData) {
 	$.ajax({
 		type: "POST",
