@@ -2,8 +2,6 @@ function validateForm() {
 	// Turn the data from the form into a JSON object
 	var formData = $("form").serializeArray();
 
-	console.log(formData);
-
 	// Set the error message to blank
 	document.getElementById("error").innerHTML = "";
 
@@ -27,7 +25,7 @@ function validTitle(data) {
 	document.getElementById("title").style.color = "rgb(0, 0, 0)";
 
 	// Check the title has been filled in and if not turn it red and tell you what you did wrong
- 	if (data[0].value == "") {
+ 	if (data[0].value.replace(/ /g, "") == "") {
 		document.getElementById("error").innerHTML = "Please enter a title!";
 		document.getElementById("title").style.color = "rgb(255, 0, 0)";
 		window.scrollTo(0, 0);
@@ -40,7 +38,7 @@ function validTitle(data) {
 function validAxisLabels(data) {
 	// Check the x axis label is filled in
 	document.getElementById("x-label").style.color = "rgb(0, 0, 0)";
-	if (data[2].value == "") {
+	if (data[2].value.replace(/ /g, "") == "") {
 		document.getElementById("error").innerHTML = "Please enter a label for the x-axis!";
 		document.getElementById("x-label").style.color = "rgb(255, 0, 0)";
 		window.scrollTo(0, 0);
@@ -49,7 +47,7 @@ function validAxisLabels(data) {
 
 	// Check the y axis label is filled in
 	document.getElementById("y-label").style.color = "rgb(0, 0, 0)";
-	if (data[3].value == "") {
+	if (data[3].value.replace(/ /g, "") == "") {
 		document.getElementById("error").innerHTML = "Please enter a label for the y-axis!";
 		document.getElementById("y-label").style.color = "rgb(255, 0, 0)";
 		window.scrollTo(0, 0);
@@ -66,7 +64,7 @@ function validBarForm(data) {
 	}
 
 	// Get how many readings and fields there are
-	var readingCount = howManyOfClass("bar-readings") / 2;
+	var readingCount = howManyOfClass("bar-reading-set");
 	var fieldCount = howManyOfClass("bar-field-set");
 
 	// Check the readings are valid
@@ -78,6 +76,8 @@ function validBarForm(data) {
 	if (!validBarFields(data, readingCount, fieldCount)) {
 		return false;
 	}
+
+	saveBarGraph(data);
 }
 
 function validBarReadings(data, readingCount, fieldCount) {
@@ -94,15 +94,15 @@ function validBarReadings(data, readingCount, fieldCount) {
 		document.getElementById("reading-info-colour-" + ((i - 4) / 2).toString()).style.color = "rgb(0, 0, 0)";
 
 		// Check the name is filled in
-		if (data[i].value == "") {
-			document.getElementById("error").innerHTML = "Please fill in data set " + (((i - 4) / 2) + 1).toString() + "!";
+		if (data[i].value.replace(/ /g, "") == "") {
+			document.getElementById("error").innerHTML = "Please fill in reading set " + (((i - 4) / 2) + 1).toString() + "!";
 			document.getElementById("reading-info-name-" + ((i - 4) / 2).toString()).style.color = "rgb(255, 0, 0)";
 			failed = true;
 		}
 
 		// Check the colour is filled in
-		if (data[i + 1].value == "") {
-			document.getElementById("error").innerHTML = "Please fill in data set " + (((i - 4) / 2) + 1).toString() + "!";
+		if (data[i + 1].value.replace(/ /g, "") == "") {
+			document.getElementById("error").innerHTML = "Please fill in reading set " + (((i - 4) / 2) + 1).toString() + "!";
 			document.getElementById("reading-info-colour-" + ((i - 4) / 2).toString()).style.color = "rgb(255, 0, 0)";
 			failed = true;
 		}
@@ -132,7 +132,7 @@ function validBarFields(data, readingCount, fieldCount) {
 
 		// Check the field name has been filled in
 		document.getElementById("field-name-" + fieldNum.toString()).style.color = "rgb(0, 0, 0)";
-		if (data[i].value == "") {
+		if (data[i].value.replace(/ /g, "") == "") {
 			document.getElementById("error").innerHTML = "Please fill in field set " + (fieldNum + 1).toString() + "!";
 			document.getElementById("field-name-" + fieldNum.toString()).style.color = "rgb(255, 0, 0)";
 			failed = true;
@@ -144,8 +144,8 @@ function validBarFields(data, readingCount, fieldCount) {
 
 			// Check the field has been filled in
 			document.getElementById("recording-" + fieldNum.toString() + "-" + readingNum.toString()).style.color = "rgb(0, 0	, 0)";
-			if (data[i + j].value == "") {
-				document.getElementById("error").innerHTML = "Please fill in field set " + (fieldNum + 1).toString() + "!";
+			if (data[i + j].value.replace(/ /g, "") == "" || isNaN(data[i + j].value)) {
+				document.getElementById("error").innerHTML = "Please fill in field set " + (fieldNum + 1).toString() + "! Please ensure that the readings are numbers!";
 				document.getElementById("recording-" + fieldNum.toString() + "-" + readingNum.toString()).style.color = "rgb(255, 0, 0)";
 				failed = true;
 
@@ -189,7 +189,7 @@ function validPieForm(data) {
 function validPieUnit(data) {
 	// Check that the unit has been filled in
 	document.getElementById("unit").style.color = "rgb(0, 0, 0)";
-	if (data[2].value == "") {
+	if (data[2].value.replace(/ /g, "") == "") {
 		document.getElementById("error").innerHTML = "Please enter a unit!";
 		document.getElementById("unit").style.color = "rgb(255, 0, 0)";
 		window.scrollTo(0, 0);
@@ -214,8 +214,15 @@ function validPieData(data) {
 			document.getElementById(getPieElementID(i / 3 - 1, j)).style.color = "rgb(0, 0, 0)";
 
 			// Check its filled in and make it red if it isn't
-			if (data[i + j].value == "") {
-				document.getElementById("error").innerHTML = "Please fill in data set " + (i / 3).toString() + "!";
+			if (data[i + j].value.replace(/ /g, "") == "") {
+				document.getElementById("error").innerHTML = "Please fill in data set " + (i / 3).toString() + "! Please ensure that the value is a number!";
+				document.getElementById(getPieElementID(i / 3 - 1, j)).style.color = "rgb(255, 0, 0)";
+				failed = true;
+			}
+
+			// Make sure (if the value is being checked) that is it a number
+			if (j == 1 && isNaN(data[i + j].value)) {
+				document.getElementById("error").innerHTML = "Please fill in data set " + (i / 3).toString() + "! Please ensure that the value is a number!";
 				document.getElementById(getPieElementID(i / 3 - 1, j)).style.color = "rgb(255, 0, 0)";
 				failed = true;
 			}

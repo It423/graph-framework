@@ -58,7 +58,7 @@ function addBarDataSet() {
 	setTextInElement("readings-info", string, true);
 
 	for (var i = 0; i < howManyOfClass("bar-field-set"); i++) {
-		setTextInElement("bar-field-set-" + i.toString() + "-recordings", "<h5 class='bar-recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input type='text' name='recording-input-" + i.toString() + "-" + idNum.toString() + "' onkeypress='return isNumber(event)'></h5>", true);
+		setTextInElement("field-set-" + i.toString() + "-recordings", "<h5 class='bar-recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input type='text' name='recording-input-" + i.toString() + "-" + idNum.toString() + "' onkeypress='return isNumber(event)'></h5>", true);
 	}
 }
 
@@ -88,7 +88,7 @@ function addBarField() {
 	var recordingsArray = [];
 	recordingsArray.push("<div id='field-set-" + idNum.toString() + "-recordings'>");
 	for (var i = 0; i < howManyOfClass("bar-readings") / 2; i++) {
-		recordingsArray.push("<h5 class='bar-recording' id='recording-" + idNum.toString() + "-" + i.toString() + "'><label>Reading " + (i + 1).toString() + ": </label><input type='text' name='recording-input-" + idNum.toString() + "-" + i.toString() + "' onkeypress='return isNumber(event)'></h5>")
+		recordingsArray.push("<h5 class='bar-recording' id='recording-" + idNum.toString() + "-" + i.toString() + "'><label>Reading " + (i + 1).toString() + ": </label><input type='text' name='recording-input-" + idNum.toString() + "-" + i.toString() + "'></h5>")
 	}
 	recordingsArray.push("</div>");
 
@@ -156,7 +156,7 @@ function addPieField() {
 	var pieField = [
 			"<div class='slice' id='slice-" + idNum.toString() + "'>",
 				"<h5 class='reading-pie' id='reading-name-" + idNum.toString() + "'><label>Segment name: </label><input type='text' name='reading-name'></h5>",
-				"<h5 class='reading-pie' id='reading-value-" + idNum.toString() + "'><label>Value: </label><input type='text' name='reading-value' onkeypress='return isNumber(event)'></h5>",
+				"<h5 class='reading-pie' id='reading-value-" + idNum.toString() + "'><label>Value: </label><input type='text' name='reading-value'></h5>",
 				"<h5 class='reading-pie' id='reading-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour'>",
 					getColourOptions(),
 				"	</select>",
@@ -247,19 +247,6 @@ function getColourOptions() {
 	].join("\n");
 
 	return options;
-}
-
-function isNumber(evt) {
-	// Get the value of the key pressed
-	evt = (evt) ? evt : window.event;
-	var charCode = (evt.which) ? evt.which : evt.keycode;
-
-	// If the key pressed is not a number return false
-	if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-		return false;
-	}
-
-	return true;
 }
 
 function howManyOfClass(className) {
