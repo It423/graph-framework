@@ -131,11 +131,23 @@ function validLineGraph(data) {
 		if (data.readings.length > 0) {
 			for (var i = 0; i < data.readings.length; i++) {
 				// If the set of readings has more than one result
-				if (data.readings[i].length > 0 && data.readings[i][0].hasOwnProperty("name") && data.readings[i][0].hasOwnProperty("colour")) {
+				if (data.readings[i][0].hasOwnProperty("name") && data.readings[i][0].hasOwnProperty("colour")) {
 					for (var j = 1; j < data.readings[i].length; j++) {
 						// If the co-ordinate for the data does not have both elements, return false
 						if (data.readings[i][j].length < 2) {
 							return false;
+						}
+
+						// If the graph is cummulative and the reading's x is not equal to the rest of the files's x value for this recording
+						if (data.lineType.toLowerCase() == "cummulative") {
+							for (var k = i + 1; k < data.readings.length; k++) {
+								if (data.readings[i][j][0] != data.readings[k][j][0]) {
+									alert(i);
+									alert(k);
+									alert(j);
+									return false;
+								}
+							}
 						}
 					}
 				} else {
@@ -183,10 +195,10 @@ function validScatterGraph(data) {
 function getPointCount(highestVal) {
 	// Get a number that if the highestVal was devided by, it would return an answer between 0 and 50
 	var x = Math.ceil(log10(highestVal));
-	var pow10x = Math.pow(0.5, x);
+	var powPoint5x = Math.pow(0.5, x);
 
 	// Get the result
-	var result = Math.floor(highestVal / pow10x) * pow10x;
+	var result = Math.floor(highestVal / powPoint5x) * powPoint5x;
 
 	// Keep deviding the result by 2 until it is less than 15
 	while (result > 15) {
