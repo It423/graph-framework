@@ -332,6 +332,10 @@ function drawLineCummulativeData(canvas, scaleInfo, graphData) {
 			cxt.lineTo(chord[0], chord[1]);
 		}
 
+		// Drop off the line to the end
+		var lastChord = getChordOfData([ graphData.readings[i][graphData.readings[i].length - 1][0], scaleInfo.yAxisPoints[0] ], scaleInfo, canvas);
+		cxt.lineTo(lastChord[0], lastChord[1]);
+
 		// Draw the data
 		cxt.stroke();
 		cxt.fill();
