@@ -159,7 +159,7 @@ function addPieField() {
 				"<h5 class='reading-pie' id='reading-value-" + idNum.toString() + "'><label>Value: </label><input type='text' name='reading-value'></h5>",
 				"<h5 class='reading-pie' id='reading-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour'>",
 					getColourOptions(),
-				"	</select>",
+					"</select>",
 				"</h5>",
 				"<br/>",
 				"<br/>",
@@ -184,6 +184,107 @@ function removePieField() {
 function loadLineGraphForm() {
 	// Clear the page 
 	clearPage();
+
+	// Set the title and graph type
+	setTitle("Line");
+
+	// Set the radio buttons
+	setTextInElement("line-graph-type", [ "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' name='typeOfLine' value='seperate' checked='checked'>", "<br/>", "<label>Cummulative </label><input type='radio' name='typeOfLine' value='cummulative'>" ].join("\n"));
+
+	// Set the axis labels
+	setTextInElement("x-label", "<label>X axis label: </label><input type='text' name='xAxisInput' style='width: 50%'>");
+	setTextInElement("y-label", "<label>Y axis label: </label><input type='text' name='yAxisInput' style='width: 50%'>");
+
+	// Add a reading set 
+	addLineReadingSet();
+
+	// Add the buttons to remove/add reading sets
+	var button = document.getElementById("add-new-data-piece");
+	button.innerHTML = "Add new reading set";
+	button.onclick = function() { addLineReadingSet() };
+	button.style.visibility = "visible";
+
+	button = document.getElementById("remove-data-piece");
+	button.innerHTML = "Remove reading set";
+	button.onclick = function() { removeLineReadingSet() };
+	button.style.visibility = "visible";
+}
+
+function addLineReadingSet() {
+	// Get the id number of the reading set
+	var idNum = howManyOfClass("line-reading-set");
+
+	// What to put in the data element
+	var string = [
+		"<div class='line-reading-set' id='reading-set-" + idNum.toString() + "'>",
+			"<h3 class='line-reading-label'>Reading set " + (idNum + 1).toString() + ":</h3>",
+			"<h5 class='line-reading-name'><label>Name: </label><input type='text' name='readingName'></h5>",
+			"<h5 class='line-reading-colour'><label>Colour: </label><select name='readingColour'>",
+				getColourOptions(),
+				"</select>",
+			"</h5>",
+			"<br/>",
+			"<div class='recordings-container' id='recording-container-" + idNum.toString() + "'></div>",
+			"<br/>",
+			"<div class='center-wrapper'>",
+				"<button type='button' id='add-recording-to-reading-" + idNum.toString() + "' onclick='addRecording(" + idNum.toString() + ")'>Add Recording</button>",
+				"<button type='button' id='remove-recording-from-reading-" + idNum.toString() + "' onclick='removeRecording(" + idNum.toString() + ")'>Remove Recording</button>",
+			"</div>",
+			"<br/>"].join("\n");
+
+	// Add the string to the data element
+	setTextInElement("data", string, true);
+
+	// Add a recording into the reading
+	addRecording(idNum);
+}
+
+function removeLineReadingSet() {
+	if (howManyOfClass("line-reading-set") <= 1) {
+		return false;
+	} else {
+		// Get the id number of the last reading set
+		var idNum = howManyOfClass("line-reading-set") - 1;
+
+		// Remove the last reading set
+		document.getElementById("reading-set-" + idNum.toString()).remove();
+	}
+}
+
+function addRecording(readingIDNum) {
+	// Get the element number
+	var recordingNum = countRecordingsInReadingSet(readingIDNum);
+
+	// The input to be added
+	var string = [
+		"<div class='line-recording' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "'>",
+			"<label class='line-x-value'>X value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingXInput'>",
+			"<label class='line-y-value'>Y value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingYInput'>",
+		"</h5>"].join("\n");
+
+	// Add the recording to the recording set
+	setTextInElement("recording-container-" + readingIDNum.toString(), string, true);
+}
+
+function removeRecording(readingIDNum) {
+	// If there is one or less elements that can be removed, don't remove them
+	if (countRecordingsInReadingSet(readingIDNum) <= 1) {
+		return false;
+	} else {
+		// Get the recoding to remove
+		var recordingNum = countRecordingsInReadingSet(readingIDNum) - 1;
+
+		// Remove the recording
+		document.getElementById("recording-" + readingIDNum.toString() + "-" + recordingNum.toString()).remove();
+	}
+}
+
+function countRecordingsInReadingSet(readingIDNum) {
+	// Get the recording container set
+	var readingSet = document.getElementById("recording-container-" + readingIDNum.toString())
+
+	// Return how many div (recordings) are in the container
+	return readingSet.getElementsByTagName("div").length;
 }
 
 function clearPage() {
@@ -194,6 +295,7 @@ function clearPage() {
 	setTextInElement("error", "");
 	setTextInElement("title", "");
 	setTextInElement("graph-type", "");
+	setTextInElement("line-graph-type", "");
 	setTextInElement("x-label", "");
 	setTextInElement("y-label", "");
 	setTextInElement("readings-info", "");
