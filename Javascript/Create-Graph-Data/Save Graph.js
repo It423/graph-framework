@@ -163,8 +163,12 @@ function saveFile(jsonData) {
 		type: "POST",
 		data: { "myData": JSON.stringify(jsonData) },
 		url: "Javascript\\Create-Graph-Data\\Save.php",
-		success: function(data) {
-			alert("File Saved!");
+		success: function(fileName) {
+			// Tell the user the file was saved
+			alert("File Saved as " + fileName + "!");
+
+			// Redirect the user back to the home page
+			window.location = "index.html";
 		},
 		error: function(e) {
 			console.log(e.message);

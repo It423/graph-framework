@@ -35,6 +35,9 @@ fwrite($fh, $_POST["myData"]);
 // Close the file
 fclose($fh);
 
+// Send the name of the file back to the javascript
+echo json_encode($fileName);
+
 function getFileName() {
 	$name;
 
@@ -56,8 +59,8 @@ function getEnding($graphType, $lineType) {
 	} else if ($graphType == "line") {
 		if ($lineType == "seperate") {
 			return "line graph";
-		} else if ($lineType == "cummulative") {
-			return "cummulative line graph";
+		} else if ($lineType == "cumulative") {
+			return "cumulative line graph";
 		}
 	} else if ($graphType == "scatter") {
 		return "scatter graph";
