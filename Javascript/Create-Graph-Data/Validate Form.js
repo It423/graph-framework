@@ -19,6 +19,8 @@ function validateForm() {
 			validPieForm(formData);
 		} else if (graphType == "bar") {
 			validBarForm(formData);
+		} else if (graphType == "line" || graphType == "scatter") {
+			validLineFrom(formData);
 		}
 	}
 }
@@ -231,4 +233,101 @@ function getPieElementID(endingNum, elementID) {
 		case 2: return "reading-colour-" + endingNum.toString();
 		default: return false;
 	}
+}
+
+function validLineFrom(data) {
+	// Get the index of the axis labels
+	var axisIndex = 2;
+	if (data[2].name == "typeOfLine") {
+		axisIndex++;
+	}
+
+	// Validate the axis label
+	if (!validAxisLabels(data, axisIndex)) {
+		return false;
+	}
+
+	// Get the first index of data
+	var indexInData = axisIndex + 2;
+	
+	// Validate all the readings
+	for (var i = 0; indexInData < data.length; indexInData += 2 + (countRecordingsInReadingSet(i) * 2), i++) {
+		// If the reading was invalid, return false
+		if (!validReading(data, i, indexInData)) {
+			return false;
+		}
+	}
+
+	alert("YAY");
+}
+
+function validReading(data, readingIDNum, indexInData) {
+	// If the validation has failed
+	var failed = false; 
+
+	// Check the name of the reading has been filled in
+	if (data[indexInData].value.replace(/ /g, "") == "") {
+		document.getElementById("error").innerHTML = "Please fill in the name and colour for reading set " + (readingIDNum + 1).toString() + "! Please ensure that the recordings are numbers!";
+		document.getElementById("line-reading-name-" + readingIDNum.toString()).style.color = "rgb(255, 0, 0)";
+		failed = true;
+	}
+
+	// Check that the colour has been filled in
+	if (data[indexInData + 1].value.replace(/ /g, "") == "") {
+		document.getElementById("error").innerHTML = "Please fill in the name and colour for reading set " + (readingIDNum + 1).toString() + "! Please ensure that the recordings are numbers!";
+		document.getElementById("line-reading-colour-" + readingIDNum.toString()).style.color = "rgb(255, 0, 0)";
+		failed = true;
+	}
+
+	// Check if the validation has failed and return false if it did
+	if (!checkFailed(failed, readingIDNum)) {
+		return false;
+	}
+
+	// Go to check the readings are all valid 
+	for (var i = 0; i < countRecordingsInReadingSet(readingIDNum); i++) {
+		// Check the recording is valid and if it isn't return false
+		if (!checkFailed(validRecording(data, readingIDNum, i, indexInData + 2 + (i * 2)), readingIDNum)) {
+			return false;
+		}
+	}
+
+	// Return true if the reading is valid
+	return true;
+}
+
+function checkFailed(failed, readingIDNum) {
+	// Return false and set the label to red if bool is true
+	if (failed) {
+		document.getElementById("line-reading-label-" + readingIDNum.toString()).style.color = "rgb(255, 0, 0)";
+		window.scrollTo(0, 0);
+		return false;
+	}
+
+	// Return true if it has not failed
+	return true;
+}
+
+function validRecording(data, readingIDNum, recordingIDNum, indexInData) {
+	// If the validation of failed
+	var failed = false;
+
+	console.log(indexInData);
+
+	// Check the x recording is filled in
+	if (data[indexInData].value.replace(/ /g, "") == "" || isNaN(data[indexInData].value)) {
+		document.getElementById("error").innerHTML = "Please fill in the X and Y value for recording " + (recordingIDNum + 1).toString() + " in reading set " + (readingIDNum + 1).toString() + "! Please ensure that you inputted ";
+		document.getElementById("recording-" + readingIDNum.toString() + "-" + recordingIDNum.toString() + "-x-label").style.color = "rgb(255, 0, 0)";
+		failed = true;		
+	}
+
+	// Check the y recording is filled in
+	if (data[indexInData + 1].value.replace(/ /g, "") == "" || isNaN(data[indexInData + 1].value)) {
+		document.getElementById("error").innerHTML = "Please fill in the X and Y value for recording " + (recordingIDNum + 1).toString() + " in reading set " + (readingIDNum + 1).toString() + "!";
+		document.getElementById("recording-" + readingIDNum.toString() + "-" + recordingIDNum.toString() + "-y-label").style.color = "rgb(255, 0, 0)";
+		failed = true;	
+	}
+
+	// Return if it failed or not
+	return failed;
 }
