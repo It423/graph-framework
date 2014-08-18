@@ -189,7 +189,7 @@ function loadLineGraphForm() {
 	setTitle("Line");
 
 	// Set the radio buttons
-	setTextInElement("line-graph-type", [ "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' id='standerd-line-graph' name='typeOfLine' value='seperate' checked='checked'>", "<br/>", "<label>Cummulative </label><input type='radio' id='cummulative-line-graph' name='typeOfLine' value='cummulative' onclick='convertToCummulative()'>" ].join("\n"));
+	setTextInElement("line-graph-type", [ "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' id='standerd-line-graph' name='typeOfLine' value='seperate' checked>", "<br/>", "<label>Cummulative </label><input type='radio' id='cummulative-line-graph' name='typeOfLine' value='cummulative' onclick='convertToCummulative()'>" ].join("\n"));
 
 	// Set the axis labels
 	setTextInElement("x-label", "<label>X axis label: </label><input type='text' name='xAxisInput' style='width: 50%'>");
@@ -242,23 +242,31 @@ function addLineReadingSet() {
 	// What to put in the data element
 	var string = [
 		"<div class='line-reading-set' id='reading-set-" + idNum.toString() + "'>",
+			"<img id='collapse-reading-set-" + idNum.toString() + "' src='Images\\Collapsed-Elements.png'></img>",
 			"<h3 class='line-reading-label'>Reading set " + (idNum + 1).toString() + ":</h3>",
-			"<h5 class='line-reading-name'><label>Name: </label><input type='text' name='readingName'></h5>",
-			"<h5 class='line-reading-colour'><label>Colour: </label><select name='readingColour'>",
-				getColourOptions(),
-				"</select>",
-			"</h5>",
-			"<br/>",
-			"<div class='recordings-container' id='recording-container-" + idNum.toString() + "'></div>",
-			"<br/>",
-			"<div class='center-wrapper'>",
-				"<button type='button' id='add-recording-to-reading-" + idNum.toString() + "' onclick='addRecording(" + idNum.toString() + ")'>Add Recording</button>",
-				"<button type='button' id='remove-recording-from-reading-" + idNum.toString() + "' onclick='removeRecording(" + idNum.toString() + ")'>Remove Recording</button>",
+			"<div class='line-reading-container' id='reading-container-" + idNum.toString() + "'>",
+				"<img id='collapse-recording-set-" + idNum.toString() + "' src='Images\\Collapsed-Elements.png'></img>",
+				"<h5 class='line-reading-name'><label>Name: </label><input type='text' name='readingName'></h5>",
+				"<h5 class='line-reading-colour'><label>Colour: </label><select name='readingColour'>",
+					getColourOptions(),
+					"</select>",
+				"</h5>",
+				"<br/>",
+				"<div class='recordings-container' id='recording-container-" + idNum.toString() + "'></div>",
+				"<br/>",
+				"<div class='center-wrapper'>",
+					"<button type='button' id='add-recording-to-reading-" + idNum.toString() + "' onclick='addRecording(" + idNum.toString() + ")'>Add Recording</button>",
+					"<button type='button' id='remove-recording-from-reading-" + idNum.toString() + "' onclick='removeRecording(" + idNum.toString() + ")'>Remove Recording</button>",
+				"</div>",
 			"</div>",
 			"<br/>"].join("\n");
 
 	// Add the string to the data element
 	setTextInElement("data", string, true);
+
+	// Set the button's on click function to collapse the reading
+	document.getElementById("collapse-reading-set-" + idNum.toString()).onclick = function() { collapseDiv("reading-container-" + idNum.toString(), "collapse-reading-set-" + idNum.toString()) };
+	document.getElementById("collapse-recording-set-" + idNum.toString()).onclick = function() { collapseDiv("recording-container-" + idNum.toString(), "collapse-recording-set-" + idNum.toString()) };
 
 	// Add a recording into the reading
 	addRecording(idNum);
@@ -379,6 +387,20 @@ function copyXRecordingIfCummulative(readingIDNum, recordingIDNum) {
 	}
 } 
 
+function loadScatterGraphForm() {
+	// Load the line graph from as they are the same
+	loadLineGraphForm();
+
+	// Reset the title to scatter graph
+	setTitle("Scatter");
+
+	// Disable the cummulative radio button
+	setTextInElement("line-graph-type", [ "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' id='standerd-line-graph' name='typeOfLine' value='seperate' checked>", "<br/>", "<label>Cummulative </label><input type='radio' id='cummulative-line-graph' name='typeOfLine' value='cummulative' onclick='convertToCummulative()' disabled>" ].join("\n"));
+
+	// Hide the disfunctional radio buttons
+	document.getElementById("line-graph-type").style.display = "none";
+}
+
 function clearPage() {
 	// Reset all the colours
 	resetColours();
@@ -406,7 +428,7 @@ function setTitle(graphType) {
 	setTextInElement("title", "<label>Title: </label><input type='text' name='titleInput' style='width: 50%'>");
 
 	// Set the graph type
-	setTextInElement("graph-type", "<label>Graph type: </label><input type='text' name='graphType' value='" + graphType + "' style='width: 75px' readonly>");
+	setTextInElement("graph-type", "<label>Graph type: </label><input type='text' name='graphType' value='" + graphType + "' style='width: 75px' readonly disable>");
 
 	// Make the validate button visable
 	button = document.getElementById("validate-form");
