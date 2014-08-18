@@ -189,7 +189,7 @@ function loadLineGraphForm() {
 	setTitle("Line");
 
 	// Set the radio buttons
-	setTextInElement("line-graph-type", [ "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' name='typeOfLine' value='seperate' checked='checked'>", "<br/>", "<label>Cummulative </label><input type='radio' name='typeOfLine' value='cummulative'>" ].join("\n"));
+	setTextInElement("line-graph-type", [ "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' id='standerd-line-graph' name='typeOfLine' value='seperate' checked='checked'>", "<br/>", "<label>Cummulative </label><input type='radio' id='cummulative-line-graph' name='typeOfLine' value='cummulative' onclick='convertToCummulative()'>" ].join("\n"));
 
 	// Set the axis labels
 	setTextInElement("x-label", "<label>X axis label: </label><input type='text' name='xAxisInput' style='width: 50%'>");
@@ -208,6 +208,31 @@ function loadLineGraphForm() {
 	button.innerHTML = "Remove reading set";
 	button.onclick = function() { removeLineReadingSet() };
 	button.style.visibility = "visible";
+}
+
+function convertToCummulative() {
+	// Make all the readings have the same amount of recording
+	var recordingCount = countRecordingsInReadingSet(0);
+	var readingCount = howManyOfClass("line-reading-set");
+
+	// Work through every reading set
+	for (var i = 1; i < readingCount; i++) {
+		// Add or remove a recording until there is an equal amount in the first reading set
+		do {
+			if (countRecordingsInReadingSet(i) < recordingCount) {
+				addRecording(i);
+			} else if (countRecordingsInReadingSet(i) > recordingCount) {
+				removeRecording(i);
+			}
+		} while (countRecordingsInReadingSet(i) != recordingCount);
+	}
+
+	// Make all the x recordings the same 
+	for (var i = 0; i < recordingCount; i++) {
+		for (var j = 1; j < readingCount; j++) {
+			document.getElementById("recording-" + j.toString() + "-" + i.toString() + "-x").value = document.getElementById("recording-0-" + i.toString() + "-x").value;
+		}
+	}
 }
 
 function addLineReadingSet() {
@@ -237,6 +262,14 @@ function addLineReadingSet() {
 
 	// Add a recording into the reading
 	addRecording(idNum);
+
+	// Check it is cummulative data
+	if (document.getElementById("cummulative-line-graph").checked) {
+		// Keep adding recordings until the new reading has an equal amount of recordings to the rest of the sets of data
+		while (countRecordingsInReadingSet(idNum) != countRecordingsInReadingSet(0)) {
+			addRecording(idNum);
+		}
+	}
 }
 
 function removeLineReadingSet() {
@@ -251,19 +284,49 @@ function removeLineReadingSet() {
 	}
 }
 
-function addRecording(readingIDNum) {
+function addRecording(readingIDNum, dontAddToOtherReadings) {
 	// Get the element number
 	var recordingNum = countRecordingsInReadingSet(readingIDNum);
 
 	// The input to be added
 	var string = [
 		"<div class='line-recording' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "'>",
-			"<label class='line-x-value'>X value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingXInput'>",
-			"<label class='line-y-value'>Y value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingYInput'>",
+			"<label class='line-x-value'>X value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingXInput' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-x' onchange='copyXRecordingIfCummulative(" + readingIDNum.toString() + ", " + recordingNum.toString() + ")'>",
+			"<label class='line-y-value'>Y value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingYInput' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-y'>",
 		"</h5>"].join("\n");
 
 	// Add the recording to the recording set
 	setTextInElement("recording-container-" + readingIDNum.toString(), string, true);
+
+	// If it is cummulative data, add a recording to every other reading set
+	if (document.getElementById("cummulative-line-graph").checked && dontAddToOtherReadings != true) {
+		// Get how many elements are in the other readings
+		var readingToCheck = 0;
+		if (readingToCheck == readingIDNum) {
+			if (howManyOfClass("line-reading-set") == 1) {
+				return false;
+			} else {
+				readingToCheck++;
+			}
+		}
+
+		// If there are more readings in the reading that just had an element added to, add one to the rest
+		if (countRecordingsInReadingSet(readingIDNum) > countRecordingsInReadingSet(readingToCheck)) {
+			// Itereate through each reading set
+			for (var i = 0; i < howManyOfClass("line-reading-set"); i++) {
+				// If this reading set is selected, skip it
+				if (i == readingIDNum) {
+					continue;
+				} else {
+					// Otherwise add a recording
+					addRecording(i, true);
+				}
+			}
+		} else {
+			// Otherwise just make the recording equal to the reading to check's one
+			document.getElementById("recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-x").value = document.getElementById("recording-" + readingToCheck.toString() + "-" + recordingNum.toString() + "-x").value;
+		}
+	}
 }
 
 function removeRecording(readingIDNum) {
@@ -276,6 +339,19 @@ function removeRecording(readingIDNum) {
 
 		// Remove the recording
 		document.getElementById("recording-" + readingIDNum.toString() + "-" + recordingNum.toString()).remove();
+
+		// If it is cummulative data, remove a recording from all the other reading sets
+		if (document.getElementById("cummulative-line-graph").checked) {
+			for (var i = 0; i < howManyOfClass("line-reading-set"); i++) {
+				// Skip if it is the current element
+				if (i == readingIDNum) {
+					continue;
+				} else {
+					// Remove the element for the selected reading set
+					document.getElementById("recording-" + i.toString() + "-" + recordingNum.toString()).remove();
+				}
+			}
+		}
 	}
 }
 
@@ -286,6 +362,22 @@ function countRecordingsInReadingSet(readingIDNum) {
 	// Return how many div (recordings) are in the container
 	return readingSet.getElementsByTagName("div").length;
 }
+
+function copyXRecordingIfCummulative(readingIDNum, recordingIDNum) {
+	// Check it is cummulative data
+	if (document.getElementById("cummulative-line-graph").checked) {
+		// Work through each reading
+		for (var i = 0; i < howManyOfClass("line-reading-set"); i++) {
+			// If the reading is equal to the current on continue
+			if (i == readingIDNum) {
+				continue;
+			} else {
+				// Otherwise set the input to equal the one of the one just inputted
+				document.getElementById("recording-" + i.toString() + "-" + recordingIDNum.toString() + "-x").value = document.getElementById("recording-" + readingIDNum.toString() + "-" + recordingIDNum.toString() + "-x").value;
+			}
+		}
+	}
+} 
 
 function clearPage() {
 	// Reset all the colours
