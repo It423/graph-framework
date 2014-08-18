@@ -10,8 +10,15 @@ function lineGraph(canvas, graphData) {
 }
 
 function orderReadings(graphData) {
-	// Sort readings by highest average in each
-	var sortedReadings = sortByHighestAverage(graphData);
+	// The sorted readings 
+	var sortedReadings;
+
+	// Sort readings by highest average in each if it is a cummulative line graph
+	if (graphData.hasOwnProperty("lineType") && graphData.lineType == "cummulative") {
+		sortedReadings = sortByHighestAverage(graphData);
+	} else {
+		sortedReadings = graphData.readings;
+	}
 
 	// Sort the recordings within the reading
 	for (var i = 0; i < sortedReadings.length; i++) {
