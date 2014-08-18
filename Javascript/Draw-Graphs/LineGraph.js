@@ -13,8 +13,8 @@ function orderReadings(graphData) {
 	// The sorted readings 
 	var sortedReadings;
 
-	// Sort readings by highest average in each if it is a cummulative line graph
-	if (graphData.hasOwnProperty("lineType") && graphData.lineType == "cummulative") {
+	// Sort readings by highest average in each if it is a cumulative line graph
+	if (graphData.hasOwnProperty("lineType") && graphData.lineType == "cumulative") {
 		sortedReadings = sortByHighestAverage(graphData);
 	} else {
 		sortedReadings = graphData.readings;
@@ -115,9 +115,9 @@ function calculateLineScale(canvas, graphData) {
 		"pixelsBetweenXScalePoints": 0
 	};
 
-	// See wether to use the max total (cummulative) or max readings (seperate) 
+	// See wether to use the max total (cumulative) or max readings (seperate) 
 	var highest;
-	if (graphData.lineType == "cummulative") {
+	if (graphData.lineType == "cumulative") {
 		highest = getMaxTotalLineReading(graphData);
 	} else {
 		highest = getHighestLineReading(graphData);
@@ -260,8 +260,8 @@ function drawLineData(canvas, scaleInfo, graphData) {
 	// Select how the graph will be draw according to the data
 	if (graphData.lineType == "seperate") {
 		drawLineSeparateData(canvas, scaleInfo, graphData);
-	} else if (graphData.lineType == "cummulative") {
-		drawLineCummulativeData(canvas, scaleInfo, graphData);
+	} else if (graphData.lineType == "cumulative") {
+		drawLineCumulativeData(canvas, scaleInfo, graphData);
 	}
 }
 
@@ -309,7 +309,7 @@ function drawLineSeparateData(canvas, scaleInfo, graphData) {
 	drawPoints(cxt, circles, graphData);
 }
 
-function drawLineCummulativeData(canvas, scaleInfo, graphData) {
+function drawLineCumulativeData(canvas, scaleInfo, graphData) {
 	// Get the context and the colour
 	var cxt = canvas.getContext("2d");
 	cxt.fillStyle = "black";

@@ -189,7 +189,7 @@ function loadLineGraphForm() {
 	setTitle("Line");
 
 	// Set the radio buttons
-	setTextInElement("line-graph-type", [ "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' id='standerd-line-graph' name='typeOfLine' value='seperate' checked>", "<br/>", "<label>Cummulative </label><input type='radio' id='cummulative-line-graph' name='typeOfLine' value='cummulative' onclick='convertToCummulative()'>" ].join("\n"));
+	setTextInElement("line-graph-type", [ "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' id='standerd-line-graph' name='typeOfLine' value='seperate' checked>", "<br/>", "<label>Cumulative </label><input type='radio' id='cumulative-line-graph' name='typeOfLine' value='cumulative' onclick='convertToCumulative()'>" ].join("\n"));
 
 	// Set the axis labels
 	setTextInElement("x-label", "<label>X axis label: </label><input type='text' name='xAxisInput' style='width: 50%'>");
@@ -210,7 +210,7 @@ function loadLineGraphForm() {
 	button.style.visibility = "visible";
 }
 
-function convertToCummulative() {
+function convertToCumulative() {
 	// Make all the readings have the same amount of recording
 	var recordingCount = countRecordingsInReadingSet(0);
 	var readingCount = howManyOfClass("line-reading-set");
@@ -273,8 +273,8 @@ function addLineReadingSet() {
 	// Add a recording into the reading
 	addRecording(idNum);
 
-	// Check it is cummulative data
-	if (document.getElementById("cummulative-line-graph").checked) {
+	// Check it is cumulative data
+	if (document.getElementById("cumulative-line-graph").checked) {
 		// Keep adding recordings until the new reading has an equal amount of recordings to the rest of the sets of data
 		while (countRecordingsInReadingSet(idNum) != countRecordingsInReadingSet(0)) {
 			addRecording(idNum);
@@ -301,15 +301,15 @@ function addRecording(readingIDNum, dontAddToOtherReadings) {
 	// The input to be added
 	var string = [
 		"<div class='line-recording' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "'>",
-			"<h5 class='line-x-value' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-x-label'><label>X value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingXInput' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-x' onchange='copyXRecordingIfCummulative(" + readingIDNum.toString() + ", " + recordingNum.toString() + ")'></h5>",
+			"<h5 class='line-x-value' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-x-label'><label>X value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingXInput' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-x' onchange='copyXRecordingIfCumulative(" + readingIDNum.toString() + ", " + recordingNum.toString() + ")'></h5>",
 			"<h5 class='line-y-value' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-y-label'><label>Y value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingYInput' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-y'></h5>",
 		"</h5>"].join("\n");
 
 	// Add the recording to the recording set
 	setTextInElement("recording-container-" + readingIDNum.toString(), string, true);
 
-	// If it is cummulative data, add a recording to every other reading set
-	if (document.getElementById("cummulative-line-graph").checked && dontAddToOtherReadings != true) {
+	// If it is cumulative data, add a recording to every other reading set
+	if (document.getElementById("cumulative-line-graph").checked && dontAddToOtherReadings != true) {
 		// Get how many elements are in the other readings
 		var readingToCheck = 0;
 		if (readingToCheck == readingIDNum) {
@@ -350,8 +350,8 @@ function removeRecording(readingIDNum) {
 		// Remove the recording
 		document.getElementById("recording-" + readingIDNum.toString() + "-" + recordingNum.toString()).remove();
 
-		// If it is cummulative data, remove a recording from all the other reading sets
-		if (document.getElementById("cummulative-line-graph").checked) {
+		// If it is cumulative data, remove a recording from all the other reading sets
+		if (document.getElementById("cumulative-line-graph").checked) {
 			for (var i = 0; i < howManyOfClass("line-reading-set"); i++) {
 				// Skip if it is the current element
 				if (i == readingIDNum) {
@@ -373,9 +373,9 @@ function countRecordingsInReadingSet(readingIDNum) {
 	return readingSet.getElementsByTagName("div").length;
 }
 
-function copyXRecordingIfCummulative(readingIDNum, recordingIDNum) {
-	// Check it is cummulative data
-	if (document.getElementById("cummulative-line-graph").checked) {
+function copyXRecordingIfCumulative(readingIDNum, recordingIDNum) {
+	// Check it is cumulative data
+	if (document.getElementById("cumulative-line-graph").checked) {
 		// Work through each reading
 		for (var i = 0; i < howManyOfClass("line-reading-set"); i++) {
 			// If the reading is equal to the current on continue
@@ -396,8 +396,8 @@ function loadScatterGraphForm() {
 	// Reset the title to scatter graph
 	setTitle("Scatter");
 
-	// Disable the cummulative radio button
-	setTextInElement("line-graph-type", [ "<div id='type-of-line-graph'>", "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' id='standerd-line-graph' name='typeOfLine' value='seperate' checked>", "<br/>", "<label>Cummulative </label><input type='radio' id='cummulative-line-graph' name='typeOfLine' value='cummulative' onclick='convertToCummulative()' disabled>", "</div>" ].join("\n"));
+	// Disable the cumulative radio button
+	setTextInElement("line-graph-type", [ "<div id='type-of-line-graph'>", "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' id='standerd-line-graph' name='typeOfLine' value='seperate' checked>", "<br/>", "<label>Cumulative </label><input type='radio' id='cumulative-line-graph' name='typeOfLine' value='cumulative' onclick='convertToCumulative()' disabled>", "</div>" ].join("\n"));
 
 	// Hide the disfunctional radio buttons
 	document.getElementById("type-of-line-graph").style.display = "none";

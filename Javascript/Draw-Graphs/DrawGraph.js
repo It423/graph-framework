@@ -123,7 +123,7 @@ function validLineGraph(data) {
 		return false;
 	} else {
 		// Check it is a valid type of line graph
-		if (data.lineType.toLowerCase() != "seperate" && data.lineType.toLowerCase() != "cummulative") {
+		if (data.lineType.toLowerCase() != "seperate" && data.lineType.toLowerCase() != "cumulative") {
 			return false;
 		}
 
@@ -138,8 +138,8 @@ function validLineGraph(data) {
 							return false;
 						}
 
-						// If the graph is cummulative and the reading's x is not equal to the rest of the files's x value for this recording
-						if (data.lineType.toLowerCase() == "cummulative") {
+						// If the graph is cumulative and the reading's x is not equal to the rest of the files's x value for this recording
+						if (data.lineType.toLowerCase() == "cumulative") {
 							for (var k = i + 1; k < data.readings.length; k++) {
 								if (data.readings[i][j][0] != data.readings[k][j][0]) {
 									alert(i);

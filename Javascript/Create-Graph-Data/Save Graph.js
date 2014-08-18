@@ -118,8 +118,8 @@ function saveScatterGraph(data) {
 
 	// Add the title, axis labels and lineType
 	fileJSON.title = data[0].value;
-	fileJSON.xLabel = data[2].value;
-	fileJSON.yLabel = data[3].value;
+	fileJSON.xLabel = data[3].value;
+	fileJSON.yLabel = data[4].value;
 
 	// Add all the readings
 	var readingIDNum = 0;

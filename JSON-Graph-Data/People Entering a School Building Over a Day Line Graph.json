@@ -1,7 +1,7 @@
 { 
 	"title": "How many people entered a building over 24 hours on 13/09/13",
 	"graphType": "line",
-	"lineType": "cummulative",
+	"lineType": "cumulative",
 	"xLabel": "Hours gone by",
 	"yLabel": "Number of people",
 	"readings": [
