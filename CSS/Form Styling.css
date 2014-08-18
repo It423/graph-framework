@@ -118,10 +118,12 @@ body {
 }
 
 .line-x-value {
+	display: inline;
 	margin-top: 10px;
 	margin-left: 60px;
 }
 
 .line-y-value {
+	display: inline;
 	padding-left: 20px;
 }

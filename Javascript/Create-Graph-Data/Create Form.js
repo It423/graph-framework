@@ -243,13 +243,13 @@ function addLineReadingSet() {
 	var string = [
 		"<div class='line-reading-set' id='reading-set-" + idNum.toString() + "'>",
 			"<img id='collapse-reading-set-" + idNum.toString() + "' src='Images\\Collapsed-Elements.png'></img>",
-			"<h3 class='line-reading-label'>Reading set " + (idNum + 1).toString() + ":</h3>",
+			"<h3 class='line-reading-label' id='line-reading-label-" + idNum.toString() + "'>Reading set " + (idNum + 1).toString() + ":</h3>",
 			"<br/>",
 			"<br/>",
 			"<div class='line-reading-container' id='reading-container-" + idNum.toString() + "'>",
 				"<img id='collapse-recording-set-" + idNum.toString() + "' src='Images\\Collapsed-Elements.png'></img>",
-				"<h5 class='line-reading-name'><label>Name: </label><input type='text' name='readingName'></h5>",
-				"<h5 class='line-reading-colour'><label>Colour: </label><select name='readingColour'>",
+				"<h5 class='line-reading-name' id='line-reading-name-" + idNum.toString() + "'><label>Name: </label><input type='text' name='readingName'></h5>",
+				"<h5 class='line-reading-colour' id='line-reading-colour-" + idNum.toString() + "'><label>Colour: </label><select name='readingColour'>",
 					getColourOptions(),
 					"</select>",
 				"</h5>",
@@ -301,8 +301,8 @@ function addRecording(readingIDNum, dontAddToOtherReadings) {
 	// The input to be added
 	var string = [
 		"<div class='line-recording' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "'>",
-			"<label class='line-x-value'>X value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingXInput' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-x' onchange='copyXRecordingIfCummulative(" + readingIDNum.toString() + ", " + recordingNum.toString() + ")'>",
-			"<label class='line-y-value'>Y value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingYInput' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-y'>",
+			"<h5 class='line-x-value' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-x-label'><label>X value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingXInput' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-x' onchange='copyXRecordingIfCummulative(" + readingIDNum.toString() + ", " + recordingNum.toString() + ")'></h5>",
+			"<h5 class='line-y-value' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-y-label'><label>Y value " + (recordingNum + 1).toString() + ": </label><input type='text' name='recordingYInput' id='recording-" + readingIDNum.toString() + "-" + recordingNum.toString() + "-y'></h5>",
 		"</h5>"].join("\n");
 
 	// Add the recording to the recording set
@@ -397,10 +397,10 @@ function loadScatterGraphForm() {
 	setTitle("Scatter");
 
 	// Disable the cummulative radio button
-	setTextInElement("line-graph-type", [ "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' id='standerd-line-graph' name='typeOfLine' value='seperate' checked>", "<br/>", "<label>Cummulative </label><input type='radio' id='cummulative-line-graph' name='typeOfLine' value='cummulative' onclick='convertToCummulative()' disabled>" ].join("\n"));
+	setTextInElement("line-graph-type", [ "<div id='type-of-line-graph'>", "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' id='standerd-line-graph' name='typeOfLine' value='seperate' checked>", "<br/>", "<label>Cummulative </label><input type='radio' id='cummulative-line-graph' name='typeOfLine' value='cummulative' onclick='convertToCummulative()' disabled>", "</div>" ].join("\n"));
 
 	// Hide the disfunctional radio buttons
-	document.getElementById("line-graph-type").style.display = "none";
+	document.getElementById("type-of-line-graph").style.display = "none";
 }
 
 function clearPage() {
