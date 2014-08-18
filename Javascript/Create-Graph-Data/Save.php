@@ -42,19 +42,28 @@ function getFileName() {
 	$name = explode('"', $_POST["myData"])[3];
 
 	// Get the ending to it
-	$name .= " " . getEnding(explode('"', $_POST["myData"])[7]);
+	$name .= " " . getEnding(explode('"', $_POST["myData"])[7], explode('"', $_POST["myData"])[11]);
 
 	return $name;
 }
 
 
-function getEnding($graphType) {
+function getEnding($graphType, $lineType) {
 	if ($graphType == "pie") {
 		return "pie chart";
 	} else if ($graphType == "bar") {
 		return "bar graph";
-	} else {
-		return "";
-	}
+	} else if ($graphType == "line") {
+		if ($lineType == "seperate") {
+			return "line graph";
+		} else if ($lineType == "cummulative") {
+			return "cummulative line graph";
+		}
+	} else if ($graphType == "scatter") {
+		return "scatter graph";
+	} 
+
+	// Return a blank string if it hasn't found a correct graph match
+	return "";
 }
 ?>
