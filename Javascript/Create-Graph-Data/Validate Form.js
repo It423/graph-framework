@@ -249,7 +249,7 @@ function validLineFrom(data) {
 
 	// Get the first index of data
 	var indexInData = axisIndex + 2;
-	
+
 	// Validate all the readings
 	for (var i = 0; indexInData < data.length; indexInData += 2 + (countRecordingsInReadingSet(i) * 2), i++) {
 		// If the reading was invalid, return false
@@ -258,7 +258,12 @@ function validLineFrom(data) {
 		}
 	}
 
-	alert("YAY");
+	// Save the graph if the form was validated succesfully
+	if (data[1].value.toLowerCase() == "line") {
+		saveLineGraph(data);
+	} else {
+		saveScatterGraph(data);
+	}
 }
 
 function validReading(data, readingIDNum, indexInData) {
@@ -311,8 +316,6 @@ function checkFailed(failed, readingIDNum) {
 function validRecording(data, readingIDNum, recordingIDNum, indexInData) {
 	// If the validation of failed
 	var failed = false;
-
-	console.log(indexInData);
 
 	// Check the x recording is filled in
 	if (data[indexInData].value.replace(/ /g, "") == "" || isNaN(data[indexInData].value)) {
