@@ -71,3 +71,57 @@ body {
 }
 
 /* Line/scatter graph form styling */
+.line-reading-set img {
+	display: inline; 
+	vertical-align: bottom;
+	padding-right: 7px;
+	width: 20px;
+	height: 20px;
+}
+
+.line-reading-label {
+	font-size: 12pt;
+	display: inline;
+	vertical-align: bottom;
+	padding-bottom: 10px;
+}
+
+.line-reading-container {
+	margin-left: 30px;
+}
+
+.line-reading-container img {
+	display: inline; 
+	vertical-align: bottom;
+	padding-right: 7px;
+	padding-bottom: 5px;
+	width: 20px;
+	height: 20px;	
+}
+
+.line-reading-name {
+	display: inline;
+	vertical-align: bottom;
+}
+
+.line-reading-colour {
+	display: inline;
+	vertical-align: bottom;
+}
+
+.recordings-container {
+	margin-top: 10px;
+}
+
+.line-recording {
+	margin-top: 15px;
+}
+
+.line-x-value {
+	margin-top: 10px;
+	margin-left: 60px;
+}
+
+.line-y-value {
+	padding-left: 20px;
+}

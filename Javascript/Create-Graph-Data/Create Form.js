@@ -244,6 +244,8 @@ function addLineReadingSet() {
 		"<div class='line-reading-set' id='reading-set-" + idNum.toString() + "'>",
 			"<img id='collapse-reading-set-" + idNum.toString() + "' src='Images\\Collapsed-Elements.png'></img>",
 			"<h3 class='line-reading-label'>Reading set " + (idNum + 1).toString() + ":</h3>",
+			"<br/>",
+			"<br/>",
 			"<div class='line-reading-container' id='reading-container-" + idNum.toString() + "'>",
 				"<img id='collapse-recording-set-" + idNum.toString() + "' src='Images\\Collapsed-Elements.png'></img>",
 				"<h5 class='line-reading-name'><label>Name: </label><input type='text' name='readingName'></h5>",
