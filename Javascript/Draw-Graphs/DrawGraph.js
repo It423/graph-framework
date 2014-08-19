@@ -1,4 +1,5 @@
 function drawGraph(fileName) {
+	window.history.pushState("object of string", "Title", "?" + fileName);
 	// Get the canvas
 	var canvas = document.getElementById("canvas");
 
