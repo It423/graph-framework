@@ -36,7 +36,7 @@ fwrite($fh, $_POST["myData"]);
 fclose($fh);
 
 // Send the name of the file back to the javascript
-echo json_encode($fileName);
+echo $fileName;
 
 function getFileName() {
 	$name;

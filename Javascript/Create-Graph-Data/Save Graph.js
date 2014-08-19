@@ -165,9 +165,9 @@ function saveFile(jsonData) {
 		url: "Javascript\\Create-Graph-Data\\Save.php",
 		success: function(fileName) {
 			// Tell the user the file was saved
-			alert("File Saved as " + fileName + "!");
+			alert('File Saved as "' + fileName + '"!');
 
-			// Redirect the user back to the home page
+			// Redirect the user back to the home page			
 			window.location = "index.html";
 		},
 		error: function(e) {
