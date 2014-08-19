@@ -3,7 +3,7 @@
 	<head>
 		<title>Graphs</title>
 	</head>
-	<body>
+	<body onload="loadGraphFromURLParams()">
 		<div id="graph-display">
 			<h1 id="title">No graph currently selected!</h1>
 			<div id="canvas-container">
@@ -28,5 +28,22 @@
 		<script type="text/javascript" src="Javascript\Draw-Graphs\LineGraph.js"></script>
 		<script type="text/javascript" src="Javascript\Draw-Graphs\ScatterGraph.js"></script>
 	    <script type="text/javascript" src="Javascript\Draw-Graphs\DrawGraph.js"></script>
+	    <script type="text/javascript"> 
+	    	function loadGraphFromURLParams() {
+	    		// Get the graph name in the URL
+	    		var graphName = window.location.search.substring(1);
+
+	    		// Do nothing if there is no graph selected
+	    		if (graphName == "") {
+	    			return false;
+	    		}
+
+	    		// Put the graph name in the select graph box
+	    		document.getElementById("select-graph").value = graphName;
+
+	    		// Draw the graph
+	    		drawGraph(graphName);
+	    	}
+	    </script>
 	</body>
 </html>
