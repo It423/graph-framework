@@ -167,8 +167,8 @@ function saveFile(jsonData) {
 			// Tell the user the file was saved
 			alert('File Saved as "' + fileName + '"!');
 
-			// Redirect the user back to the home page			
-			window.location = "index.html";
+			// Redirect the user back to the home page with the created graph opened			
+			window.location = "index.html?" + fileName;
 		},
 		error: function(e) {
 			console.log(e.message);
