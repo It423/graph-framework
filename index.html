@@ -12,8 +12,10 @@
 		</div>
 
 		<div id="selector">
-			<label>Enter Graph name: </label><input type="text" id="select-graph"></input>
-			<button id="draw-selected-graph" onclick="drawGraph(document.getElementById('select-graph').value)">Draw Graph!</button>
+			<form id="selector-form">
+				<label>Enter Graph name: </label><input type="text" id="select-graph"></input>
+				<button type="button" id="draw-selected-graph" onclick="drawGraph(document.getElementById('select-graph').value)">Draw Graph!</button>
+			</form>
 			<br/>
 			<br/>
 			<a href="Create Graph Form.html"><button id="load-graph-creation-page-">Create a graph!</button></a>
