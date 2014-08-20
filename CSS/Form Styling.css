@@ -3,6 +3,11 @@ body {
 	font-family: Georgia, serif;
 }
 
+#content-container {
+	width: 100%;
+	min-width: 750px;
+}
+
 #error {
 	display: inline-block;
 	margin-bottom: 10px;
@@ -64,13 +69,45 @@ body {
 }
 
 /* Pie chart form styling */
-.reading-pie {
+.pie-reading-name {
 	display: inline;
 	padding-left: 50px;
 	font-size: 12pt;
 }
 
+.pie-reading-value {
+	display: inline;
+	padding-left: 20px;
+	font-size: 12pt;
+}
+
+.pie-reading-value-input {
+	width: 90px;
+}
+
+.pie-reading-colour {
+	display: inline;
+	padding-left: 20px;
+	font-size: 12pt;
+}
+
 /* Line/scatter graph form styling */
+#line-graph-type h3 {
+	margin-bottom: 13px;
+}
+
+#standerd-line-label {
+	margin-bottom: 0px;
+	margin-top: 0px;
+	padding-left: 73px;
+}
+
+#cumulative-line-label {
+	margin-top: 10px;
+	padding-left: 40px;
+	margin-bottom: 30px;
+}
+
 .line-reading-set img {
 	display: inline; 
 	vertical-align: bottom;

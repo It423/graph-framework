@@ -2,6 +2,11 @@ body {
 	font-family: Georgia, serif;
 }
 
+#content-container {
+	width: 100%;
+	min-width: 800px;
+}
+
 #graph-display {
 	text-align: center;
 	width: 100%;
@@ -17,6 +22,7 @@ body {
 #canvas-container {
 	width: 100%;
 	text-align: center;
+	padding-bottom: 20px;
 }
 
 #canvas {
@@ -33,7 +39,7 @@ body {
 
 #selector input {
 	height: 100%;
-	width: 50%;
+	width: 45%;
 }
 
 #selector button {

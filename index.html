@@ -4,21 +4,23 @@
 		<title>Graphs</title>
 	</head>
 	<body onload="loadGraphFromURLParams()">
-		<div id="graph-display">
-			<h1 id="title">No graph currently selected!</h1>
-			<div id="canvas-container">
-				<canvas id="canvas" width="0" height="0"><p>Your browser does not support the canvas!</p></canvas>
+		<div id="content-container">
+			<div id="graph-display">
+				<h1 id="title">No graph currently selected!</h1>
+				<div id="canvas-container">
+					<canvas id="canvas" width="0" height="0"><p>Your browser does not support the canvas!</p></canvas>
+				</div>
 			</div>
-		</div>
 
-		<div id="selector">
-			<form id="selector-form">
-				<label>Enter Graph name: </label><input type="text" id="select-graph"></input>
-				<button type="button" id="draw-selected-graph" onclick="drawGraph(document.getElementById('select-graph').value)">Draw Graph!</button>
-			</form>
-			<br/>
-			<br/>
-			<a href="Create Graph Form.html"><button id="load-graph-creation-page-">Create a graph!</button></a>
+			<div id="selector">
+				<form id="selector-form">
+					<label>Enter Graph name: </label><input type="text" id="select-graph"></input>
+					<button type="button" id="draw-selected-graph" onclick="drawGraph(document.getElementById('select-graph').value)">Draw Graph!</button>
+				</form>
+				<br/>
+				<br/>
+				<a href="Create Graph Form.html"><button id="load-graph-creation-page-">Create a graph!</button></a>
+			</div>
 		</div>
 
 		<link rel="stylesheet" type="text/css" href="CSS\Graph Styling.css">
