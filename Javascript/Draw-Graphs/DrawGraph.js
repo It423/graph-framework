@@ -1,5 +1,8 @@
 function drawGraph(fileName) {
+	// Scroll to the top of the page and add the graph name to the end of the url
 	window.history.pushState("object of string", "Title", "?" + fileName);
+	window.scroll(0, 0);
+
 	// Get the canvas
 	var canvas = document.getElementById("canvas");
 
