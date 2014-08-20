@@ -38,8 +38,8 @@
 	    			return false;
 	    		}
 
-	    		// Put the graph name in the select graph box
-	    		document.getElementById("select-graph").value = graphName;
+	    		// Put the graph name in the select graph box (replacing "%20" as a space)
+	    		document.getElementById("select-graph").value = graphName.replace(/%20/g, " ");
 
 	    		// Draw the graph
 	    		drawGraph(graphName);
