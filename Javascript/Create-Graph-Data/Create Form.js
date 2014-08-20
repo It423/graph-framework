@@ -10,7 +10,7 @@ function loadBarGraphForm() {
 	setTextInElement("y-label", "<label>Y axis label: </label><input type='text' name='yAxisInput' style='width: 50%'>");
 
 	// Add the reading info
-	setTextInElement("readings-info", "<h3 id='readings-label'>Readings:</h3>");
+	setTextInElement("readings-info", "<br/>\n<h3 id='readings-label'>Readings:</h3>");
 	addBarDataSet();
 
 	// Add the field info
@@ -134,7 +134,7 @@ function loadPieChartForm() {
 	document.getElementById("unit").style.display = "inline";
 
 	// Add the data fields
-	setTextInElement("data", "<h3 id='readings-label'>Readings:</h3>\n", true);
+	setTextInElement("data", "<br/>\n<h3 id='readings-label'>Readings:</h3>\n", true);
 	addPieField();
 
 	// Set the button to add and remove data
@@ -155,9 +155,9 @@ function addPieField() {
 	// The input data
 	var pieField = [
 			"<div class='slice' id='slice-" + idNum.toString() + "'>",
-				"<h5 class='reading-pie' id='reading-name-" + idNum.toString() + "'><label>Segment name: </label><input type='text' name='reading-name'></h5>",
-				"<h5 class='reading-pie' id='reading-value-" + idNum.toString() + "'><label>Value: </label><input type='text' name='reading-value'></h5>",
-				"<h5 class='reading-pie' id='reading-colour-" + idNum.toString() + "'><label>Colour: </label><select name='reading-colour'>",
+				"<h5 class='pie-reading-name' id='reading-name-" + idNum.toString() + "'><label>Segment name: </label><input class='pie-reading-name-input' type='text' name='reading-name'></h5>",
+				"<h5 class='pie-reading-value' id='reading-value-" + idNum.toString() + "'><label>Value: </label><input class='pie-reading-value-input' type='text' name='reading-value'></h5>",
+				"<h5 class='pie-reading-colour' id='reading-colour-" + idNum.toString() + "'><label>Colour: </label><select class='pie-reading-colour-input' name='reading-colour'>",
 					getColourOptions(),
 					"</select>",
 				"</h5>",
@@ -189,7 +189,7 @@ function loadLineGraphForm() {
 	setTitle("Line");
 
 	// Set the radio buttons
-	setTextInElement("line-graph-type", [ "Type of line graph:", "<br/>", "<br/>", "<label>Normal </label><input type='radio' id='standerd-line-graph' name='typeOfLine' value='seperate' checked>", "<br/>", "<label>Cumulative </label><input type='radio' id='cumulative-line-graph' name='typeOfLine' value='cumulative' onclick='convertToCumulative()'>" ].join("\n"));
+	setTextInElement("line-graph-type", [ "<h3>Type of line graph:</h3>", "<h5 id='standerd-line-label'>", "<label>Normal </label><input type='radio' id='standerd-line-graph' name='typeOfLine' value='seperate' checked>", "</h5>", "<h5 id='cumulative-line-label'>", "<label>Cumulative </label><input type='radio' id='cumulative-line-graph' name='typeOfLine' value='cumulative' onclick='convertToCumulative()'>", "</h5>" ].join("\n"));
 
 	// Set the axis labels
 	setTextInElement("x-label", "<label>X axis label: </label><input type='text' name='xAxisInput' style='width: 50%'>");
