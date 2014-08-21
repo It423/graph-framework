@@ -2,21 +2,49 @@ function getGraphsFromParams(filter) {
 	// Clear the displayed graphs
 	document.getElementById("graphs-available").innerHTML = "";
 
-	// The list of graphs
-	var graphs = [];
-
-	// Add the selected graphs
-	graphs = addGraphs(graphs, barFileNames);
-	graphs = addGraphs(graphs, pieFileNames);
-	graphs = addGraphs(graphs, lineFileNames);
-	graphs = addGraphs(graphs, cumulativeFileNames);
-	graphs = addGraphs(graphs, scatterFileNames);
+	// Create a list of graphs containing ones that have been selected
+	graphs = selectedGraphs();
 
 	// Filter the graphs by the string inputted as search term
-	graphs = filterGraphsWithString(graphs, filter);
+	filters = filter.split(" ");
+	for (var i = 0; i < filters.length; i++) {
+		graphs = filterGraphsWithString(graphs, filters[i]);
+	}
 
 	// Display the selected graphs
 	displayGraphsFromList(graphs);
+}
+
+function selectedGraphs() {
+	// The list of graphs
+	var graphs = [];
+
+	// Check to see if bar graphs are selected
+	if (document.getElementById("bar-graphs").checked) {
+		graphs = addGraphs(graphs, barFileNames);
+	}
+
+	// Check to see if pie charts are slected
+	if (document.getElementById("pie-charts").checked) {
+		graphs = addGraphs(graphs, pieFileNames);
+	}
+
+	// Check to see if normal line graphs are slected
+	if (document.getElementById("norm-line-graphs").checked) {
+		graphs = addGraphs(graphs, lineFileNames);
+	}
+
+	// Check to see if cumulative line graphs are slected
+	if (document.getElementById("cumulative-line-graphs").checked) {
+		graphs = addGraphs(graphs, cumulativeFileNames);
+	}
+
+	// Check to see if scatter graphs are slected
+	if (document.getElementById("scatter-graphs").checked) {
+		graphs = addGraphs(graphs, scatterFileNames);
+	}
+
+	return graphs;
 }
 
 function addGraphs(graphsList, graphsToAdd) {

@@ -6,6 +6,13 @@
 	<body onload="findAllJSONGraphs()">
 		<form id="graph-file-params">
 			<label>Name: </label><input type='text' id='filter' name='filter'>
+			<label>All Graphs </label><input type="checkbox" id="all-graphs" onclick="tickAllBoxes()">
+			<label>Bar Graphs </label><input type="checkbox" id="bar-graphs" onclick="checkBoxesTicked()" checked>
+			<label>Pie Charts </label><input type="checkbox" id="pie-charts" onclick="checkBoxesTicked()" checked>
+			<label>Line Graphs </label><input type="checkbox" id="line-graphs" onclick="tickLineBoxes()">
+			<label>Standard Line Graphs </label><input type="checkbox" id="norm-line-graphs" onclick="checkBoxesTicked()" checked>
+			<label>Cumulative Line Graphs </label><input type="checkbox" id="cumulative-line-graphs" onclick="checkBoxesTicked()" checked>
+			<label>Scatter Graphs </label><input type="checkbox" id="scatter-graphs" onclick="checkBoxesTicked()" checked>
 			<button type="button" onclick="getGraphsFromParams(document.getElementById('filter').value)">Search!</button>
 		</form>
 
@@ -16,5 +23,6 @@
 		<script type="text/javascript" src="Javascript\jquery-2.1.1.min.js"></script>
 		<script type="text/javascript" src="Javascript\Search-Graphs\Find Graphs.js"></script>
 		<script type="text/javascript" src="Javascript\Search-Graphs\Show Available Graphs.js"></script>
+		<script type="text/javascript" src="Javascript\Search-Graphs\Form Helper.js"></script>
 	</body>
 </html>
