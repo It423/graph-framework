@@ -5,21 +5,25 @@
 	</head>
 	<body onload="findAllJSONGraphs()">
 		<form id="graph-file-params">
-			<label>Name: </label><input type='text' id='filter' name='filter'>
-			<label>All Graphs </label><input type="checkbox" id="all-graphs" onclick="tickAllBoxes()" checked>
-			<label>Bar Graphs </label><input type="checkbox" id="bar-graphs" onclick="checkBoxesTicked()" checked>
-			<label>Pie Charts </label><input type="checkbox" id="pie-charts" onclick="checkBoxesTicked()" checked>
-			<label>Line Graphs </label><input type="checkbox" id="line-graphs" onclick="tickLineBoxes()" checked>
-			<label>Standard Line Graphs </label><input type="checkbox" id="norm-line-graphs" onclick="checkBoxesTicked()" checked>
-			<label>Cumulative Line Graphs </label><input type="checkbox" id="cumulative-line-graphs" onclick="checkBoxesTicked()" checked>
-			<label>Scatter Graphs </label><input type="checkbox" id="scatter-graphs" onclick="checkBoxesTicked()" checked>
+			<p id="filter-label"><label>Name: </label><input type='text' id='filter' name='filter'></p>
+			<p id="all-graphs-label"><label>All Graphs </label><input type="checkbox" id="all-graphs" onclick="tickAllBoxes()" checked></p>
+			<p id="bar-graphs-label"><label>Bar Graphs </label><input type="checkbox" id="bar-graphs" onclick="checkBoxesTicked()" checked></p>
+			<p id="pie-charts-label"><label>Pie Charts </label><input type="checkbox" id="pie-charts" onclick="checkBoxesTicked()" checked></p>
+			<p id="line-graph-label"><label>Line Graphs </label><input type="checkbox" id="line-graphs" onclick="tickLineBoxes()" checked></p>
+			<p id="norm-line-graphs-label"><label>Standard Line Graphs </label><input type="checkbox" id="norm-line-graphs" onclick="checkBoxesTicked()" checked></p>
+			<p id="cumulative-line-label"><label>Cumulative Line Graphs </label><input type="checkbox" id="cumulative-line-graphs" onclick="checkBoxesTicked()" checked></p>
+			<p id="scatter-label"><label>Scatter Graphs </label><input type="checkbox" id="scatter-graphs" onclick="checkBoxesTicked()" checked></p>
 			<button type="button" onclick="getGraphsFromParams(document.getElementById('filter').value)">Search!</button>
 		</form>
+
+		<br/>
+		<br/>
 
 		<div id="graphs-available">
 
 		</div>
 
+		<link rel="stylesheet" type="text/css" href="CSS\Finding Graphs Styling.css">
 		<script type="text/javascript" src="Javascript\jquery-2.1.1.min.js"></script>
 		<script type="text/javascript" src="Javascript\Search-Graphs\Find Graphs.js"></script>
 		<script type="text/javascript" src="Javascript\Search-Graphs\Show Available Graphs.js"></script>
