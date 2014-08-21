@@ -3,6 +3,11 @@ body {
 	font-family: Georgia, serif;
 }
 
+#buttons button {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
 #content-container {
 	width: 100%;
 	min-width: 750px;

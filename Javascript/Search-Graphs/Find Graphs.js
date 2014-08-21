@@ -1,7 +1,4 @@
-// Global variable of the graph file names
-var fileNames = [];
-
-// Global variables if the graph types and their corrosponding files' names
+// Global variables of the graph types and their corrosponding files' names
 var barFileNames = [];
 var pieFileNames = [];
 var lineFileNames = [];
@@ -14,7 +11,7 @@ function findAllJSONGraphs() {
 		url: "Javascript\\Search-Graphs\\Check Directory.php",
 		success: function(foundFileNames) {
 			// Split the file names into an array of them
-			fileNames = foundFileNames.split(", ");
+			var fileNames = foundFileNames.split(", ");
 
 			// Remove the blank element 
 			fileNames.splice(fileNames.length - 1, 1);
@@ -23,11 +20,6 @@ function findAllJSONGraphs() {
 			for (var i = 0; i < fileNames.length; i++) {
 				// Remove the ".json" from each filename
 				fileNames[i] = fileNames[i].replace(".json", "");
-
-				// Remove the brackets from the string if they are present
-				if (fileNames[i].charAt(fileNames[i].length - 1) == ')') {
-					fileNames[i] = fileNames[i].slice(0, fileNames[i].lastIndexOf('('));
-				}
 
 				// Sort the graph into its corrosponding graph type
 				if (fileNames[i].toLowerCase().lastIndexOf("bar graph") == fileNames[i].length - 9) {
