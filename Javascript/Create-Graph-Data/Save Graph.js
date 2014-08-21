@@ -38,7 +38,7 @@ function saveBarGraph(data) {
 
 		// Add the readings
 		for (var j = i + 1; j < i + 1 + readingCount; j++) {
-			currentData.readings.push(parseInt(data[j].value));
+			currentData.readings.push(parseFloat(data[j].value));
 		}
 
 		// Add the current data to the data
@@ -70,7 +70,7 @@ function savePieChart(data) {
 		}
 
 		jsonReading.field = data[i].value;
-		jsonReading.count = parseInt(data[i + 1].value);
+		jsonReading.count = parseFloat(data[i + 1].value);
 		jsonReading.colour = colourToInt(data[i + 2].value);
 
 		fileJSON.data.push(jsonReading);
@@ -147,8 +147,8 @@ function jsonOfLineReading(data, indexOfName, amountOfRecordings) {
 		var addToReturnObj = [];
 
 		// Add the x and y value
-		addToReturnObj.push(parseInt(data[indexOfName + 2 + i].value));
-		addToReturnObj.push(parseInt(data[indexOfName + 3 + i].value));
+		addToReturnObj.push(parseFloat(data[indexOfName + 2 + i].value));
+		addToReturnObj.push(parseFloat(data[indexOfName + 3 + i].value));
 
 		// Add the stored x and y values to the reading set
 		returnObj.push(addToReturnObj);
@@ -179,7 +179,7 @@ function saveFile(jsonData) {
 function colourToInt(col) {
 	// If it is already a number return the number
 	if (!isNaN(col)) {
-		return parseInt(col);
+		return parseFloat(col);
 	} else {
 		// Make the string lowercase
 		var lCol = col.toLowerCase();
