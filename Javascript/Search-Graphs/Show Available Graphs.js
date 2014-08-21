@@ -1,4 +1,4 @@
-function getGraphsFromParams() {
+function getGraphsFromParams(filter) {
 	// Clear the displayed graphs
 	document.getElementById("graphs-available").innerHTML = "";
 
@@ -11,6 +11,9 @@ function getGraphsFromParams() {
 	graphs = addGraphs(graphs, lineFileNames);
 	graphs = addGraphs(graphs, cumulativeFileNames);
 	graphs = addGraphs(graphs, scatterFileNames);
+
+	// Filter the graphs by the string inputted as search term
+	graphs = filterGraphsWithString(graphs, filter);
 
 	// Display the selected graphs
 	displayGraphsFromList(graphs);
@@ -35,9 +38,12 @@ function filterGraphsWithString(graphsList, string) {
 	// Iterate over all the graphs
 	for (var i = 0; i < graphs.length; i++) {
 		// Check the graph name has the string being checked for
-		if (graphsList[i].indexOf(string) == -1) {
+		if (graphs[i].toLowerCase().indexOf(string) == -1) {
 			// If it doesn't have it, remove the graph
-			graphsList.splice(i, 1);
+			graphs.splice(i, 1);
+
+			// Minus one from i so that it checks the next element
+			i--;
 		}
 	}
 

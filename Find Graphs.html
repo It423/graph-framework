@@ -5,7 +5,8 @@
 	</head>
 	<body onload="findAllJSONGraphs()">
 		<form id="graph-file-params">
-			<button type="button" onclick="getGraphsFromParams()">Search!</button>
+			<label>Name: </label><input type='text' id='filter' name='filter'>
+			<button type="button" onclick="getGraphsFromParams(document.getElementById('filter').value)">Search!</button>
 		</form>
 
 		<div id="graphs-available">
