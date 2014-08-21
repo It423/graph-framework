@@ -11,6 +11,9 @@ function getGraphsFromParams(filter) {
 		graphs = filterGraphsWithString(graphs, filters[i]);
 	}
 
+	// Sort the graphs alphabetically
+	graphs.sort();
+
 	// Display the selected graphs
 	displayGraphsFromList(graphs);
 }
@@ -24,22 +27,22 @@ function selectedGraphs() {
 		graphs = addGraphs(graphs, barFileNames);
 	}
 
-	// Check to see if pie charts are slected
+	// Check to see if pie charts are selected
 	if (document.getElementById("pie-charts").checked) {
 		graphs = addGraphs(graphs, pieFileNames);
 	}
 
-	// Check to see if normal line graphs are slected
+	// Check to see if normal line graphs are selected
 	if (document.getElementById("norm-line-graphs").checked) {
 		graphs = addGraphs(graphs, lineFileNames);
 	}
 
-	// Check to see if cumulative line graphs are slected
+	// Check to see if cumulative line graphs are selected
 	if (document.getElementById("cumulative-line-graphs").checked) {
 		graphs = addGraphs(graphs, cumulativeFileNames);
 	}
 
-	// Check to see if scatter graphs are slected
+	// Check to see if scatter graphs are selected
 	if (document.getElementById("scatter-graphs").checked) {
 		graphs = addGraphs(graphs, scatterFileNames);
 	}
