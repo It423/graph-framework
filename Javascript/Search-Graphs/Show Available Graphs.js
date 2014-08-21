@@ -69,7 +69,7 @@ function filterGraphsWithString(graphsList, string) {
 	// Iterate over all the graphs
 	for (var i = 0; i < graphs.length; i++) {
 		// Check the graph name has the string being checked for
-		if (graphs[i].toLowerCase().indexOf(string) == -1) {
+		if (graphs[i].toLowerCase().indexOf(string.toLowerCase()) == -1) {
 			// If it doesn't have it, remove the graph
 			graphs.splice(i, 1);
 
