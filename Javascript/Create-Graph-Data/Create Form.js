@@ -257,8 +257,8 @@ function addLineReadingSet() {
 				"<div class='recordings-container' id='recording-container-" + idNum.toString() + "'></div>",
 				"<br/>",
 				"<div class='center-wrapper'>",
-					"<button type='button' id='add-recording-to-reading-" + idNum.toString() + "' onclick='addRecording(" + idNum.toString() + ")'>Add Recording</button>",
-					"<button type='button' id='remove-recording-from-reading-" + idNum.toString() + "' onclick='removeRecording(" + idNum.toString() + ")'>Remove Recording</button>",
+					"<button type='button' class='recording-add' id='add-recording-to-reading-" + idNum.toString() + "' onclick='addRecording(" + idNum.toString() + ")'>Add Recording</button>",
+					"<button type='button' class='recording-remove' id='remove-recording-from-reading-" + idNum.toString() + "' onclick='removeRecording(" + idNum.toString() + ")'>Remove Recording</button>",
 				"</div>",
 			"</div>",
 			"<br/>"].join("\n");
