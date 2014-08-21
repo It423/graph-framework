@@ -4,6 +4,7 @@
 		<title>Find Graphs</title>
 	</head>
 	<body onload="findAllJSONGraphs()">
+		<a href="index.html"><button id="back">Back</button></a>
 		<form id="graph-file-params">
 			<p id="filter-label"><label>Name: </label><input type='text' id='filter' name='filter'></p>
 			<p id="all-graphs-label"><label>All Graphs </label><input type="checkbox" id="all-graphs" onclick="tickAllBoxes()" checked></p>
@@ -13,7 +14,7 @@
 			<p id="norm-line-graphs-label"><label>Standard Line Graphs </label><input type="checkbox" id="norm-line-graphs" onclick="checkBoxesTicked()" checked></p>
 			<p id="cumulative-line-label"><label>Cumulative Line Graphs </label><input type="checkbox" id="cumulative-line-graphs" onclick="checkBoxesTicked()" checked></p>
 			<p id="scatter-label"><label>Scatter Graphs </label><input type="checkbox" id="scatter-graphs" onclick="checkBoxesTicked()" checked></p>
-			<button type="button" onclick="getGraphsFromParams(document.getElementById('filter').value)">Search!</button>
+			<button type="button" id="search" onclick="getGraphsFromParams(document.getElementById('filter').value)">Search!</button>
 		</form>
 
 		<br/>
