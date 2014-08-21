@@ -4,24 +4,26 @@
 		<title>Find Graphs</title>
 	</head>
 	<body onload="findAllJSONGraphs()">
-		<a href="index.html"><button id="back">Back</button></a>
+		<div class="center-wrapper" id="content-container">
+			<a href="index.html"><button id="back">Back</button></a>
 
-		<form id="graph-file-params">
-			<p id="filter-label"><label>Name: </label><input type='text' id='filter' name='filter'></p>
-			<p id="all-graphs-label"><label>All Graphs </label><input type="checkbox" id="all-graphs" onclick="tickAllBoxes()" checked></p>
-			<p id="bar-graphs-label"><label>Bar Graphs </label><input type="checkbox" id="bar-graphs" onclick="checkBoxesTicked()" checked></p>
-			<p id="pie-charts-label"><label>Pie Charts </label><input type="checkbox" id="pie-charts" onclick="checkBoxesTicked()" checked></p>
-			<p id="line-graph-label"><label>Line Graphs </label><input type="checkbox" id="line-graphs" onclick="tickLineBoxes()" checked></p>
-			<p id="norm-line-graphs-label"><label>Standard Line Graphs </label><input type="checkbox" id="norm-line-graphs" onclick="checkBoxesTicked()" checked></p>
-			<p id="cumulative-line-label"><label>Cumulative Line Graphs </label><input type="checkbox" id="cumulative-line-graphs" onclick="checkBoxesTicked()" checked></p>
-			<p id="scatter-label"><label>Scatter Graphs </label><input type="checkbox" id="scatter-graphs" onclick="checkBoxesTicked()" checked></p>
-			<button type="button" id="search" onclick="getGraphsFromParams(document.getElementById('filter').value)">Search!</button>
-		</form>
+			<form id="graph-file-params">
+				<p id="filter-label"><label>Name: </label><input type='text' id='filter' name='filter'></p>
+				<p id="all-graphs-label"><label>All Graphs </label><input type="checkbox" id="all-graphs" onclick="tickAllBoxes()" checked></p>
+				<p id="bar-graphs-label"><label>Bar Graphs </label><input type="checkbox" id="bar-graphs" onclick="checkBoxesTicked()" checked></p>
+				<p id="pie-charts-label"><label>Pie Charts </label><input type="checkbox" id="pie-charts" onclick="checkBoxesTicked()" checked></p>
+				<p id="line-graph-label"><label>Line Graphs </label><input type="checkbox" id="line-graphs" onclick="tickLineBoxes()" checked></p>
+				<p id="norm-line-graphs-label"><label>Standard Line Graphs </label><input type="checkbox" id="norm-line-graphs" onclick="checkBoxesTicked()" checked></p>
+				<button type="button" id="search" onclick="getGraphsFromParams(document.getElementById('filter').value)">Search!</button>
+				<p id="cumulative-line-label"><label>Cumulative Line Graphs </label><input type="checkbox" id="cumulative-line-graphs" onclick="checkBoxesTicked()" checked></p>
+				<p id="scatter-label"><label>Scatter Graphs </label><input type="checkbox" id="scatter-graphs" onclick="checkBoxesTicked()" checked></p>
+			</form>
 
-		<br/>
-		<br/>
+			<br/>
+			<br/>
 
-		<div id="graphs-available"></div>
+			<div id="graphs-available"></div>
+		</div>
 
 		<link rel="stylesheet" type="text/css" href="CSS\Finding Graph Styling.css">
 		<script type="text/javascript" src="Javascript\jquery-2.1.1.min.js"></script>
