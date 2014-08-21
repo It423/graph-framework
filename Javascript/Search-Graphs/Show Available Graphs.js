@@ -93,6 +93,7 @@ function displayGraphName(fileName) {
 	// Set up the string of HTML to display the graphs
 	var string = [
 		"<span>" + fileName + "</span>",
+		"<button id='" + fileName + "'onclick='loadGraph(" + '"' + fileName + '"' + ")'>Draw Graph!</button>",
 		"<br/>"].join("\n");
 
 	// Add the html string to the div where the graphs are listed

@@ -6,10 +6,10 @@
 	<body onload="findAllJSONGraphs()">
 		<form id="graph-file-params">
 			<label>Name: </label><input type='text' id='filter' name='filter'>
-			<label>All Graphs </label><input type="checkbox" id="all-graphs" onclick="tickAllBoxes()">
+			<label>All Graphs </label><input type="checkbox" id="all-graphs" onclick="tickAllBoxes()" checked>
 			<label>Bar Graphs </label><input type="checkbox" id="bar-graphs" onclick="checkBoxesTicked()" checked>
 			<label>Pie Charts </label><input type="checkbox" id="pie-charts" onclick="checkBoxesTicked()" checked>
-			<label>Line Graphs </label><input type="checkbox" id="line-graphs" onclick="tickLineBoxes()">
+			<label>Line Graphs </label><input type="checkbox" id="line-graphs" onclick="tickLineBoxes()" checked>
 			<label>Standard Line Graphs </label><input type="checkbox" id="norm-line-graphs" onclick="checkBoxesTicked()" checked>
 			<label>Cumulative Line Graphs </label><input type="checkbox" id="cumulative-line-graphs" onclick="checkBoxesTicked()" checked>
 			<label>Scatter Graphs </label><input type="checkbox" id="scatter-graphs" onclick="checkBoxesTicked()" checked>
