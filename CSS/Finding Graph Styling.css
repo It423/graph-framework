@@ -76,8 +76,24 @@
 	margin-right: 50px;
 }
 
+/* Results styling */
 #graphs-available {
+	width: 700px;
 	display: table;
-	margin: 0 auto;
+	margin: 0px auto;
 	text-align: left;
+}
+
+.filename {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 50px;
+	display: inline-block;
+	vertical-align: middle;
+	width: 500px;
+	text-indent: -25px;
+}
+
+.redirection-button {
+	width: 100px;
 }

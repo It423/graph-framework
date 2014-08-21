@@ -95,9 +95,11 @@ function displayGraphName(fileName) {
 
 	// Set up the string of HTML to display the graphs
 	var string = [
-		"<span>" + fileName + "</span>",
-		"<button id='" + fileName + "'onclick='loadGraph(" + '"' + fileName + '"' + ")'>Draw Graph!</button>",
-		"<br/>"].join("\n");
+		"<div class='search-result'>",
+			"<h4 class='filename'>" + fileName + "</h4>",
+			"<button class='redirection-button' id='" + fileName + "'onclick='loadGraph(" + '"' + fileName + '"' + ")'>Draw Graph!</button>",
+		"</div>",
+		"<hr/>"].join("\n");
 
 	// Add the html string to the div where the graphs are listed
 	$("#graphs-available").append(string);
