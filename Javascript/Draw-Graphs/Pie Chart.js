@@ -75,6 +75,9 @@ function drawSector(cxt, centerPoint, radius, percentage, sliceInfo, startingAng
 }
 
 function drawLabel(cxt, centerPoint, radius, angle, sliceInfo, percentage, unit, canvasWidth) {
+	// Work out the text to be written
+	var string = " " + sliceInfo.field + ": " + sliceInfo.count + " " + unit + " [" + ((Math.round(percentage) * 10000) / 10000).toString() + "%]";
+
 	// Get the starting and ending point of the label"s line
 	var vectorToAdd = [ ((radius / 3) * 2) * Math.cos(convertToRad(angle)), ((radius / 3) * 2) * Math.sin(convertToRad(angle)) ];
 	var startXY = [ centerPoint[0] + vectorToAdd[0], centerPoint[1] + vectorToAdd[1] ];
@@ -105,7 +108,7 @@ function drawLabel(cxt, centerPoint, radius, angle, sliceInfo, percentage, unit,
 
 	// Draw the text
 	cxt.textBaseLine = "center";
-	cxt.fillText(" " + sliceInfo.field + ": " + sliceInfo.count + " " + unit + " [" + ((Math.round(percentage) * 10000) / 10000).toString() + "%] ", endXY[0] + addToEndXY, endXY[1] + 3, maxWidthOfText);
+	cxt.fillText(string, endXY[0] + addToEndXY, endXY[1] + 3, maxWidthOfText);
 }
 
 function getAngleFromPercentage(percentage) {
