@@ -139,7 +139,7 @@ function validBarFields(data, readingCount, fieldCount) {
 	document.getElementById("fields-label").style.color = "rgb(0, 0, 0)";
 
 	// Iterate over every field set
-	for (var i = 4 + (readingCount * 2); i <= 4 + (readingCount * 2) + (fieldCount * (readingCount + 1)); i += 1 + readingCount) {
+	for (var i = 4 + (readingCount * 2); i < 4 + (readingCount * 2) + (fieldCount * (readingCount + 1)); i += 1 + readingCount) {
 		// If it failed this loop
 		var failed = false;
 
