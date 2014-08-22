@@ -28,6 +28,9 @@ function drawScatterData(canvas, scaleInfo, graphData) {
 		// The points for the current reading
 		var currentPoints = [];
 
+		// Add the colour to the colour list
+		colours.push(getColour(graphData.readings[i][0].colour));
+
 		// Get the points for the current reading
 		for (var j = 1; j < graphData.readings[i].length; j++) {
 			currentPoints.push(getChordOfData(graphData.readings[i][j], scaleInfo, canvas));

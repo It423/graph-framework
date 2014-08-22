@@ -137,10 +137,16 @@ function drawBarData(canvas, graphData, scaleInfo, gapToYAxis) {
 	for (var i = 0; i < graphData.data.length; i++, xValue += scaleInfo.pixelsBetweenBars) {
 		// Go through each reading in the current field
 		for (var j = 0; j < graphData.data[i].readings.length; j++, xValue += scaleInfo.widthOfBars / graphData.readingColour.length) {
+			// Add the colour to the colours list if it hasn't already been done
+			if (i == 0) {
+				colours.push(getColour(graphData.readingColour[j]));
+			}
+
+			// Begin the path
 			cxt.beginPath();
 
 			// Get the colour
-			cxt.fillStyle = getColour(graphData.readingColour[j]);
+			cxt.fillStyle = colours[j];
 
 			// Draw and outline the bar
 			cxt.fillRect(xValue, canvas.height - 80, scaleInfo.widthOfBars / graphData.readingColour.length, -(scaleInfo.pixelsPerYUnit * (graphData.data[i].readings[j] - scaleInfo.yAxisPoints[0])));
@@ -173,11 +179,20 @@ function drawBarKey(canvas, graphData) {
 	// Draw the key
 	for (var i = 0; i < graphData.readingName.length; i++, yValue += 15) {
 		// Set the correct colour
-		cxt.fillStyle = getColour(graphData.readingColour[i]);
+		cxt.fillStyle = colours[i];
+
+		// Set up the string with the reading name
+		var string = "- " + graphData.readingName[i];
+
+		// Make the colour black if it is white, and tell the user it is meant to be white
+		if (graphData.readingColour[i] == 15) {
+			string += " (White)";
+			cxt.fillStyle = getColour(14);
+		}
 
 		// Draw the label for that colour
 		cxt.textAlign = "left";
 		cxt.textBaseLine = "top";
-		cxt.fillText("- " + graphData.readingName[i], canvas.width - 150, yValue, 150);
+		cxt.fillText(string, canvas.width - 150, yValue, 150);
 	}
 }

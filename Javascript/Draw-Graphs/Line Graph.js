@@ -279,10 +279,13 @@ function drawLineSeparateData(canvas, scaleInfo, graphData) {
 		var currentCirlces = [];
 		currentCirlces.push(getChordOfData(graphData.readings[i][1], scaleInfo, canvas));
 
+		// Add the current colour to the colours list
+		colours.push(getColour(graphData.readings[i][0].colour));
+
 		// Set the colours and line width
 		cxt.lineWidth = 3;
-		cxt.strokeStyle = getColour(graphData.readings[i][0].colour);
-		cxt.fillStyle = getColour(graphData.readings[i][0].colour);
+		cxt.strokeStyle = colours[i];
+		cxt.fillStyle = colours[i];
 
 		// Draw the line for the current reading
 		for (var j = 2; j < graphData.readings[i].length; j++) {
@@ -295,6 +298,20 @@ function drawLineSeparateData(canvas, scaleInfo, graphData) {
 			var chord = getChordOfData(graphData.readings[i][j], scaleInfo, canvas);
 			cxt.lineTo(chord[0], chord[1]);
 			currentCirlces.push(chord);
+
+			// Draw a black outline if the colour is white
+			if (graphData.readings[i][0].colour == 15) {
+				// Set line width thicker and stroke style to black
+				cxt.lineWidth = 5;
+				cxt.strokeStyle = getColour(14);
+
+				// Draw the thicker black line
+				cxt.stroke();
+
+				// Set the colour and line width back to normal
+				cxt.strokeStyle = colours[i];
+				cxt.lineWidth = 3;
+			}
 
 			// Draw the point
 			cxt.stroke();
@@ -310,9 +327,8 @@ function drawLineSeparateData(canvas, scaleInfo, graphData) {
 }
 
 function drawLineCumulativeData(canvas, scaleInfo, graphData) {
-	// Get the context and the colour
+	// Get the context
 	var cxt = canvas.getContext("2d");
-	cxt.fillStyle = "black";
 
 	// Points to place circles
 	var circles = [];
@@ -321,10 +337,13 @@ function drawLineCumulativeData(canvas, scaleInfo, graphData) {
 		// Points for this set of data
 		var currentCirlces = [];
 
+		// Add the current colour to the colours list
+		colours.push(getColour(graphData.readings[i][0].colour));
+
 		// Set the colours and line width
 		cxt.lineWidth = 1;
-		cxt.strokeStyle = getColour(graphData.readings[i][0].colour);
-		cxt.fillStyle = getColour(graphData.readings[i][0].colour);
+		cxt.strokeStyle = colours[i];
+		cxt.fillStyle = colours[i];
 		cxt.beginPath();
 
 		// Draw the line for the current reading
@@ -342,6 +361,20 @@ function drawLineCumulativeData(canvas, scaleInfo, graphData) {
 		// Drop off the line to the end
 		var lastChord = getChordOfData([ graphData.readings[i][graphData.readings[i].length - 1][0], scaleInfo.yAxisPoints[0] ], scaleInfo, canvas);
 		cxt.lineTo(lastChord[0], lastChord[1]);
+
+		// Make a black outline if the colour is white
+		if (graphData.readings[i][0].colour == 15) {
+			// Make it a thicker line that is black
+			cxt.lineWidth = 3;
+			cxt.strokeStyle = getColour(14);
+
+			// Draw the outline
+			cxt.stroke();
+
+			// Set it back to normal thickness and colour
+			cxt.lineWidth = 1;
+			cxt.strokeStyle = colours[i];
+		}
 
 		// Draw the data
 		cxt.stroke();
@@ -398,12 +431,21 @@ function drawLineKey(canvas, graphData) {
 
 	// Draw the key
 	for (var i = 0; i < graphData.readings.length; i++, yValue += 15) {
+		// Set up the string of text
+		var string = "- " + graphData.readings[i][0].name;
+
 		// Set the correct colour
-		cxt.fillStyle = getColour(graphData.readings[i][0].colour);
+		cxt.fillStyle = colours[i];
+
+		// Make the colour black and tell the user the label is for white, if the colour is white
+		if (graphData.readings[i][0].colour == 15) {
+			string += " (White)";
+			cxt.fillStyle = getColour(14);
+		}
 
 		// Draw the label for that colour
 		cxt.textAlign = "left";
 		cxt.textBaseLine = "top";
-		cxt.fillText("- " + graphData.readings[i][0].name, canvas.width - 150, yValue, 150);
+		cxt.fillText(string, canvas.width - 150, yValue, 150);
 	}
 }
