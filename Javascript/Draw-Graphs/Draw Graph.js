@@ -2,8 +2,12 @@
 var colours = [];
 
 function drawGraph(fileName) {
-	// Scroll to the top of the page and add the graph name to the end of the url
-	window.history.pushState("object of string", "Title", "?" + fileName);
+	// Add the graph name to the end of the url if it isn't already there
+	if (window.location.search.substring(1) == "") {
+		window.history.pushState("object of string", "Title", "?" + fileName);
+	}
+
+	// Scroll to the top of the page
 	window.scroll(0, 0);
 
 	// Reset the colours list 
