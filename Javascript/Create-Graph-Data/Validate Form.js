@@ -47,7 +47,7 @@ function checkColourInUse(colour) {
 	// Iterate over all the colours in use
 	for (var i = 0; i < coloursInUse.length; i++) {
 		// If the parameter's colour is the same as the colour in use, return false
-		if (colour == coloursInUse[i]) {
+		if (colour == coloursInUse[i] && colour.toLowerCase() != "random") {
 			return false;
 		}
 	}
