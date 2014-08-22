@@ -1,6 +1,12 @@
+// The global list of colours used
+var coloursInUse = [];
+
 function validateForm() {
 	// Reset all the font colours on the page
 	resetColours();
+
+	// Reset the listed colours in use
+	coloursInUse = [];
 
 	// Turn the data from the form into a JSON object
 	var formData = $("form").serializeArray();
@@ -34,6 +40,20 @@ function validTitle(data) {
 		return false;
 	}
 
+	return true;
+}
+
+function checkColourInUse(colour) {
+	// Iterate over all the colours in use
+	for (var i = 0; i < coloursInUse.length; i++) {
+		// If the parameter's colour is the same as the colour in use, return false
+		if (colour == coloursInUse[i]) {
+			return false;
+		}
+	}
+
+	// If it is a new colour, add it to the colours in use and return true
+	coloursInUse.push(colour);
 	return true;
 }
 
@@ -97,8 +117,8 @@ function validBarReadings(data, readingCount, fieldCount) {
 		}
 
 		// Check the colour is filled in
-		if (data[i + 1].value.replace(/ /g, "") == "") {
-			document.getElementById("error").innerHTML = "Please fill in reading set " + (((i - 4) / 2) + 1).toString() + "!";
+		if (data[i + 1].value.replace(/ /g, "") == "" || !checkColourInUse(data[i + 1].value.replace(/ /g, ""))) {
+			document.getElementById("error").innerHTML = "Please fill in reading set " + (((i - 4) / 2) + 1).toString() + "! Make sure it has a new colour listed (Random may be repeated though)!";
 			document.getElementById("reading-info-colour-" + ((i - 4) / 2).toString()).style.color = "rgb(255, 0, 0)";
 			failed = true;
 		}
@@ -115,11 +135,11 @@ function validBarReadings(data, readingCount, fieldCount) {
 }
 
 function validBarFields(data, readingCount, fieldCount) {
-	// Set the fields label to black incase it was already red
+	// Set the fields label to black encase it was already red
 	document.getElementById("fields-label").style.color = "rgb(0, 0, 0)";
 
-	// Itterate over every field set
-	for (var i = 4 + (readingCount * 2); i <= 4 + (fieldCount * (readingCount + 1)); i += 1 + readingCount) {
+	// Iterate over every field set
+	for (var i = 4 + (readingCount * 2); i <= 4 + (readingCount * 2) + (fieldCount * (readingCount + 1)); i += 1 + readingCount) {
 		// If it failed this loop
 		var failed = false;
 
@@ -195,24 +215,28 @@ function validPieUnit(data) {
 function validPieData(data) {
 	// Check that every section of data has been filled in
 	for (var i = 3; i < data.length; i += 3) {
-		// Check wether the current data set failed
+		// Check whether the current data set failed
 		var failed = false;
 
-		// Check over the current data set
-		for (var j = 0; j < 3; j++) {
-			// Check its filled in and make it red if it isn't
-			if (data[i + j].value.replace(/ /g, "") == "") {
-				document.getElementById("error").innerHTML = "Please fill in data set " + (i / 3).toString() + "! Please ensure that the value is a number!";
-				document.getElementById(getPieElementID(i / 3 - 1, j)).style.color = "rgb(255, 0, 0)";
-				failed = true;
-			}
+		// Check the name of the sector is filled in and make it red if it isn't
+		if (data[i].value.replace(/ /g, "") == "") {
+			document.getElementById("error").innerHTML = "Please fill in data set " + (i / 3).toString() + "!";
+			document.getElementById(getPieElementID(i / 3 - 1, j)).style.color = "rgb(255, 0, 0)";
+			failed = true;
+		}
 
-			// Make sure (if the value is being checked) that is it a number
-			if (j == 1 && isNaN(data[i + j].value)) {
-				document.getElementById("error").innerHTML = "Please fill in data set " + (i / 3).toString() + "! Please ensure that the value is a number!";
-				document.getElementById(getPieElementID(i / 3 - 1, j)).style.color = "rgb(255, 0, 0)";
-				failed = true;
-			}
+		// Make sure the value is filled in and is a number that is it a number
+		if (data[i + 1].value.replace(/ /g, "") == "" || isNaN(data[i + 1].value)) {
+			document.getElementById("error").innerHTML = "Please fill in data set " + (i / 3).toString() + "! Please ensure that the value is a number! ";
+			document.getElementById(getPieElementID(i / 3 - 1, j)).style.color = "rgb(255, 0, 0)";
+			failed = true;
+		}
+
+		// Check the colour is filled in and is a new colour
+		if (data[i + 2].value.replace(/ /g, "") == "" || !checkColourInUse(data[i + 2].value)) {
+			document.getElementById("error").innerHTML += "Make sure data set " +  (i / 3).toString() + " has a new colour listed (Random may be repeated though)!";
+			document.getElementById(getPieElementID(i / 3 - 1, j)).style.color = "rgb(255, 0, 0)";
+			failed = true;
 		}
 
 		// Exit if it failed
@@ -272,14 +296,14 @@ function validReading(data, readingIDNum, indexInData) {
 
 	// Check the name of the reading has been filled in
 	if (data[indexInData].value.replace(/ /g, "") == "") {
-		document.getElementById("error").innerHTML = "Please fill in the name and colour for reading set " + (readingIDNum + 1).toString() + "! Please ensure that the recordings are numbers!";
+		document.getElementById("error").innerHTML = "Please fill in the name and colour for reading set " + (readingIDNum + 1).toString() + "!";
 		document.getElementById("line-reading-name-" + readingIDNum.toString()).style.color = "rgb(255, 0, 0)";
 		failed = true;
 	}
 
 	// Check that the colour has been filled in
-	if (data[indexInData + 1].value.replace(/ /g, "") == "") {
-		document.getElementById("error").innerHTML = "Please fill in the name and colour for reading set " + (readingIDNum + 1).toString() + "! Please ensure that the recordings are numbers!";
+	if (data[indexInData + 1].value.replace(/ /g, "") == "" || !checkColourInUse(data[indexInData + 1].value.replace(/ /g, ""))) {
+		document.getElementById("error").innerHTML = "Please fill in the name and colour for reading set " + (readingIDNum + 1).toString() + "! Make sure it has a new colour listed (Random may be repeated though)!";
 		document.getElementById("line-reading-colour-" + readingIDNum.toString()).style.color = "rgb(255, 0, 0)";
 		failed = true;
 	}
@@ -319,14 +343,14 @@ function validRecording(data, readingIDNum, recordingIDNum, indexInData) {
 
 	// Check the x recording is filled in
 	if (data[indexInData].value.replace(/ /g, "") == "" || isNaN(data[indexInData].value)) {
-		document.getElementById("error").innerHTML = "Please fill in the X and Y value for recording " + (recordingIDNum + 1).toString() + " in reading set " + (readingIDNum + 1).toString() + "! Please ensure that you inputted ";
+		document.getElementById("error").innerHTML = "Please fill in the X and Y value for recording " + (recordingIDNum + 1).toString() + " in reading set " + (readingIDNum + 1).toString() + "! Please ensure that you inputted a number!";
 		document.getElementById("recording-" + readingIDNum.toString() + "-" + recordingIDNum.toString() + "-x-label").style.color = "rgb(255, 0, 0)";
 		failed = true;		
 	}
 
 	// Check the y recording is filled in
 	if (data[indexInData + 1].value.replace(/ /g, "") == "" || isNaN(data[indexInData + 1].value)) {
-		document.getElementById("error").innerHTML = "Please fill in the X and Y value for recording " + (recordingIDNum + 1).toString() + " in reading set " + (readingIDNum + 1).toString() + "!";
+		document.getElementById("error").innerHTML = "Please fill in the X and Y value for recording " + (recordingIDNum + 1).toString() + " in reading set " + (readingIDNum + 1).toString() + "! Please ensure that you inputted a number!";
 		document.getElementById("recording-" + readingIDNum.toString() + "-" + recordingIDNum.toString() + "-y-label").style.color = "rgb(255, 0, 0)";
 		failed = true;	
 	}
