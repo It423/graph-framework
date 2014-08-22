@@ -1,6 +1,3 @@
-// A list of rbg colour so if the colour is random, the key will use the same colour
-var colours = [];
-
 function pieChart(canvas, chartData) {
 	var sectors = workOutSectors(chartData);
 

@@ -1,7 +1,13 @@
+// A list of rbg colour so if the colour is random, the key will use the same colour
+var colours = [];
+
 function drawGraph(fileName) {
 	// Scroll to the top of the page and add the graph name to the end of the url
 	window.history.pushState("object of string", "Title", "?" + fileName);
 	window.scroll(0, 0);
+
+	// Reset the colours list 
+	colours = [];
 
 	// Get the canvas
 	var canvas = document.getElementById("canvas");
@@ -430,7 +436,7 @@ function drawPoints(cxt, points, graphData) {
 
 	for (var i = 0; i < graphData.readings.length; i++) {
 		// Set colour
-		cxt.fillStyle = getColour(graphData.readings[i][0].colour);
+		cxt.fillStyle = colours[i];
 
 		// Draw set of points
 		for (var j = 0; j < points[i].length; j++) {
