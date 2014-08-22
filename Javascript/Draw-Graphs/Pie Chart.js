@@ -1,7 +1,10 @@
+// A list of rbg colour so if the colour is random, the key will use the same colour
+var colours = [];
+
 function pieChart(canvas, chartData) {
 	var sectors = workOutSectors(chartData);
 
-	drawPi(canvas, chartData, sectors);
+	drawPie(canvas, chartData, sectors);
 }
 
 function workOutSectors(chartData) {
@@ -28,7 +31,7 @@ function getTotal(chartData) {
 	return total;
 }
 
-function drawPi(canvas, chartData, sectors) {
+function drawPie(canvas, chartData, sectors) {
 	// Set up variables to help draw the pi chart
 	var centerPoint = getCenterPoint(canvas);
 	var pieRadius = canvas.height / 3;
@@ -46,6 +49,9 @@ function drawPi(canvas, chartData, sectors) {
 		startAngle += getAngleFromPercentage(sectors[i]);
 		startAngle %= 360;
 	}
+
+	// Draw the key at the side of the pie chart
+	drawPieKey(canvas, chartData, sectors);
 }
 
 function getCenterPoint(canvas) {
@@ -58,8 +64,11 @@ function getCenterPoint(canvas) {
 }
 
 function drawSector(cxt, centerPoint, radius, percentage, sliceInfo, startingAngle, unit, canvasWidth) {
+	// Add the colour tot the colour list
+	colours.push(getColour(sliceInfo.colour));
+
 	// Set the colour
-	cxt.fillStyle = getColour(sliceInfo.colour);
+	cxt.fillStyle = colours[colours.length - 1];
 
 	// Draw the sector
 	cxt.beginPath();
@@ -69,48 +78,47 @@ function drawSector(cxt, centerPoint, radius, percentage, sliceInfo, startingAng
 	cxt.closePath();
 	cxt.stroke();
 	cxt.fill();
-
-	// Draw the label for the slice
-	drawLabel(cxt, centerPoint, radius, (startingAngle + getAngleFromPercentage(percentage) / 2), sliceInfo, percentage, unit, canvasWidth);
-}
-
-function drawLabel(cxt, centerPoint, radius, angle, sliceInfo, percentage, unit, canvasWidth) {
-	// Work out the text to be written
-	var string = " " + sliceInfo.field + ": " + sliceInfo.count + " " + unit + " [" + ((Math.round(percentage) * 10000) / 10000).toString() + "%]";
-
-	// Get the starting and ending point of the label"s line
-	var vectorToAdd = [ ((radius / 3) * 2) * Math.cos(convertToRad(angle)), ((radius / 3) * 2) * Math.sin(convertToRad(angle)) ];
-	var startXY = [ centerPoint[0] + vectorToAdd[0], centerPoint[1] + vectorToAdd[1] ];
-	var endXY = [ startXY[0] + vectorToAdd[0], startXY[1] + vectorToAdd[1] ];
-
-	// Draw the labels line
-	cxt.moveTo(startXY[0], startXY[1]);
-	cxt.lineTo(endXY[0], endXY[1]);
-	cxt.stroke();
-
-	// Draw a line coming off (making it easier to read) and set the alignment of the text
-	var addToEndXY = 0;
-	var maxWidthOfText = canvasWidth;
-
-	if (endXY[0] < centerPoint[0]) {
-		addToEndXY = -20;
-		cxt.textAlign = "right";
-		maxWidthOfText = endXY[0] + addToEndXY;
-	} else {
-		addToEndXY = 20;
-		cxt.textAlign = "left";
-		maxWidthOfText = (canvasWidth / 2) - (endXY[0] + addToEndXY - centerPoint[0]);
-	}
-
-	cxt.moveTo(endXY[0], endXY[1]);
-	cxt.lineTo(endXY[0] + addToEndXY, endXY[1]);
-	cxt.stroke();
-
-	// Draw the text
-	cxt.textBaseLine = "center";
-	cxt.fillText(string, endXY[0] + addToEndXY, endXY[1] + 3, maxWidthOfText);
 }
 
 function getAngleFromPercentage(percentage) {
 	return (360 / 100) * percentage;
+}
+
+function drawPieKey(canvas, chartData, sectors) {
+	// Get the context and the colours and fonts
+	var cxt = canvas.getContext("2d");
+	cxt.font = "8pt verdana";
+	cxt.textAlign = "left";
+	cxt.lineWidth = 1;
+
+	// The y position to place the text
+	xPos = 10;
+	yPos = 75;
+
+	// Work out a third of the canvas width
+	var maxLength = (canvas.width / 3) - 70;
+
+	// Iterate over all the readings
+	for (var i = 0; i < chartData.data.length; i++, yPos += 15) {
+		// Put the x position to the other side of the screen if the y position has gone off the screen
+		if (yPos > canvas.height) {
+			xPos = ((maxLength + 70) * 2) + 70;
+			yPos = 50;
+		}
+
+		// Set up the text string for the data reading with the percentage to 2 decimal places
+		string = chartData.data[i].field + ": " + chartData.data[i].count + " " + chartData.unit + " [" + (Math.round(sectors[i] * 100) / 100).toString() + "%]";
+
+		// Get the colour of the reading
+		cxt.fillStyle = colours[i];
+
+		// If the text is white, make it black and add a piece on the end saying it is actually white
+		if (chartData.data[i].colour == 15) {
+			string += " (White)";
+			cxt.fillStyle = getColour(14);
+		}
+
+		// Write the string
+		cxt.fillText(string, xPos, yPos, maxLength);
+	}
 }
