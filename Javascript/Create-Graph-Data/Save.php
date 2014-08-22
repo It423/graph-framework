@@ -24,6 +24,7 @@ if (file_exists($myFile)) {
 
 	// Set the file name to the new one
 	$myFile = $newFileName;
+	$fileName .= $endingToFile;
 }
 
 // Open the file
