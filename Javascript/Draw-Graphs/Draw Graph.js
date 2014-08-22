@@ -261,6 +261,11 @@ function getPointInfo(canvas, lowestReading, heighestReading, points, xAxis, lin
 		returnObj.scalePoints = [ lowestReading - 1, lowestReading, lowestReading + 1 ];
 	}
 
+	// If the last scale point is less than the heighest reading, add the first reading to the last point and add that as a new point
+	if (returnObj.scalePoints[returnObj.scalePoints.length - 1] < heighestReading) {
+		returnObj.scalePoints.push(returnObj.scalePoints[returnObj.scalePoints.length - 1] + firstReading);
+	}
+
 	// Work out the length the axis will be 
 	var scaleLength = -100;
 	if (xAxis) {
