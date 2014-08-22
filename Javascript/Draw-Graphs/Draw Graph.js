@@ -207,16 +207,21 @@ function validScatterGraph(data) {
 }
 
 function getPointCount(highestVal) {
-	// Get a number that if the highestVal was devided by, it would return an answer between 0 and 50
+	// Get a number that if the highestVal was devided by, it would return an answer between 0 and 10
 	var x = Math.ceil(log10(highestVal));
-	var powPoint5x = Math.pow(0.5, x);
+	var devideor = Math.pow(0.50, x);
 
 	// Get the result
-	var result = Math.floor(highestVal / powPoint5x) * powPoint5x;
+	var result = Math.ceil(highestVal / devideor) * devideor;
 
 	// Keep deviding the result by 2 until it is less than 15
 	while (result > 15) {
 		result = Math.floor(result / 2);
+	}
+
+	// Make sure the result is at least 4
+	if (result < 4) {
+		result = 4;
 	}
 
 	return result;
@@ -290,6 +295,11 @@ function getFirstScaleReading(range, yReadings) {
 	// Divide the unround result by pow10x, round and times it back up to get a rounded first reading
 	var roundedFirstReading = getRoundedValue(unroundedFirstReading, pow10x);
 	roundedFirstReading *= pow10x;
+
+	// Round the reading if the range is greater than one
+	if (range > 1) {
+		roundedFirstReading = Math.round(roundedFirstReading);
+	}
 
 	return roundedFirstReading;
 }

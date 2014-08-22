@@ -124,7 +124,7 @@ function calculateLineScale(canvas, graphData) {
 	}
 
 	// Get the scaleing data
-	var yScaleing = getPointInfo(canvas, getLowestLineReading(graphData), highest, 10);
+	var yScaleing = getPointInfo(canvas, getLowestLineReading(graphData), highest, getPointCount(getHighestLineReading(graphData)));
 	var xScaleing = getPointInfo(canvas, getLowestLineReading(graphData, true), getHighestLineReading(graphData, true), getPointCount(getHighestLineReading(graphData, true)), true, true);
 
 	// Apply the data

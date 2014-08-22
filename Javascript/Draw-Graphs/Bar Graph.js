@@ -20,7 +20,7 @@ function calculateBarScale(graphData, canvas) {
 	scale.pixelsBetweenBars = barInfo.gap;
 
 	// Work out the points
-	var pointInfo = getPointInfo(canvas, getLowestBarReading(graphData), getHighestBarReading(graphData), 10);
+	var pointInfo = getPointInfo(canvas, getLowestBarReading(graphData), getHighestBarReading(graphData), getPointCount(getHighestBarReading(graphData)));
 
 	scale.yAxisPoints = pointInfo.scalePoints;
 	scale.pixelsBetweenYScalePoints = pointInfo.pixelsBetweenScalePoints;
