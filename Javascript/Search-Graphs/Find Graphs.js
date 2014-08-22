@@ -22,17 +22,17 @@ function findAllJSONGraphs() {
 				fileNames[i] = fileNames[i].replace(".json", "");
 
 				// Sort the graph into its corrosponding graph type
-				if (fileNames[i].toLowerCase().lastIndexOf("bar graph") == fileNames[i].length - 9) {
+				if (removeNumberInBrackets(fileNames[i]).toLowerCase().lastIndexOf("bar graph") == removeNumberInBrackets(fileNames[i]).length - 9) {
 					barFileNames.push(fileNames[i]);
-				} else if (fileNames[i].toLowerCase().lastIndexOf("pie chart") == fileNames[i].length - 9) {
+				} else if (removeNumberInBrackets(fileNames[i]).toLowerCase().lastIndexOf("pie chart") == removeNumberInBrackets(fileNames[i]).length - 9) {
 					pieFileNames.push(fileNames[i]);
-				} else if (fileNames[i].toLowerCase().lastIndexOf("line graph") == fileNames[i].length - 10) {
-					if (fileNames[i].toLowerCase().lastIndexOf("cumulative line graph") == fileNames[i].length - 21) {
+				} else if (removeNumberInBrackets(fileNames[i]).toLowerCase().lastIndexOf("line graph") == removeNumberInBrackets(fileNames[i]).length - 10) {
+					if (removeNumberInBrackets(fileNames[i]).toLowerCase().lastIndexOf("cumulative line graph") == removeNumberInBrackets(fileNames[i]).length - 21) {
 						cumulativeFileNames.push(fileNames[i]);
 					} else {
 						lineFileNames.push(fileNames[i]);
 					}
-				} else if (fileNames[i].toLowerCase().lastIndexOf("scatter graph") == fileNames[i].length - 13) {
+				} else if (removeNumberInBrackets(fileNames[i]).toLowerCase().lastIndexOf("scatter graph") == removeNumberInBrackets(fileNames[i]).length - 13) {
 					scatterFileNames.push(fileNames[i]);
 				}
 			}
