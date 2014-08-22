@@ -58,7 +58,7 @@ function addBarDataSet() {
 	setTextInElement("readings-info", string, true);
 
 	for (var i = 0; i < howManyOfClass("bar-field-set"); i++) {
-		setTextInElement("field-set-" + i.toString() + "-recordings", "<h5 class='bar-recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input type='text' name='recording-input-" + i.toString() + "-" + idNum.toString() + "' onkeypress='return isNumber(event)'></h5>", true);
+		setTextInElement("field-set-" + i.toString() + "-recordings", "<h5 class='bar-recording' id='recording-" + i.toString() + "-" + idNum.toString() + "'><label>Recording " + (idNum + 1).toString() + ": </label><input type='text' name='recording-input-" + i.toString() + "-" + idNum.toString() + "'></h5>", true);
 	}
 }
 
