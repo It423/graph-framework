@@ -30,23 +30,23 @@
 		<script type="text/javascript" src="Javascript\Draw-Graphs\Pie Chart.js"></script>
 		<script type="text/javascript" src="Javascript\Draw-Graphs\Line Graph.js"></script>
 		<script type="text/javascript" src="Javascript\Draw-Graphs\Scatter Graph.js"></script>
-	    <script type="text/javascript" src="Javascript\Draw-Graphs\Draw Graph.js"></script>
-	    <script type="text/javascript"> 
-	    	function loadGraphFromURLParams() {
-	    		// Get the graph name in the URL
-	    		var graphName = window.location.search.substring(1);
+		<script type="text/javascript" src="Javascript\Draw-Graphs\Draw Graph.js"></script>
+		<script type="text/javascript"> 
+			function loadGraphFromURLParams() {
+				// Get the graph name in the URL
+				var graphName = window.location.search.substring(1);
 
-	    		// Do nothing if there is no graph selected
-	    		if (graphName == "") {
-	    			return false;
-	    		}
+				// Do nothing if there is no graph selected
+				if (graphName == "") {
+					return false;
+				}
 
-	    		// Put the graph name in the select graph box (replacing "%20" as a space)
-	    		document.getElementById("select-graph").value = graphName.replace(/%20/g, " ");
+				// Put the graph name in the select graph box (replacing "%20" as a space)
+				document.getElementById("select-graph").value = graphName.replace(/%20/g, " ");
 
-	    		// Draw the graph
-	    		drawGraph(graphName);
-	    	}
-	    </script>
+				// Draw the graph
+				drawGraph(graphName);
+			}
+		</script>
 	</body>
 </html>
