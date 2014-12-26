@@ -1,0 +1,1 @@
+{"title":"Halley Leg Loads","graphType":"bar","xLabel":"Modules","yLabel":"Load (kN)","readingName":["Leg 1","Leg 2","Leg 3","Leg 4"],"readingColour":[0,1,2,3],"data":[{"field":"B2","readings":[250,260,155,255]},{"field":"A1","readings":[243,216,244,237]},{"field":"C3","readings":[220,213,224,230]}]}
