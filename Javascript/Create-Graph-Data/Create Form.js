@@ -71,11 +71,13 @@ function removeBarDataSet() {
 		var idNum = howManyOfClass("bar-reading-set") - 1;
 
 		// Remove the elements for name and colour input
-		document.getElementById("reading-set-" + idNum.toString()).remove();
+		var element = document.getElementById("reading-set-" + idNum.toString());
+		element.parentNode.removeChild(element);
 
 		// Remove the recording
 		for (var i = 0; i < howManyOfClass("bar-field-set"); i++) {
-			document.getElementById("recording-" + i.toString() + "-" + idNum.toString()).remove();
+			var element = document.getElementById("recording-" + i.toString() + "-" + idNum.toString());
+			element.parentNode.removeChild(element);
 		}
 	}
 }
@@ -118,7 +120,8 @@ function removeBarField() {
 		var idNum = howManyOfClass("bar-field-set") - 1;
 
 		// Remove the element
-		document.getElementById("field-set-" + idNum.toString()).remove();
+		var element = document.getElementById("field-set-" + idNum.toString());
+		element.parentNode.removeChild(element);
 	}
 }
 
@@ -177,7 +180,8 @@ function removePieField() {
 		var idNum = howManyOfClass("slice") - 1;
 
 		// Remove the elements and the break
-		document.getElementById("slice-" + idNum.toString()).remove();
+		var element = document.getElementById("slice-" + idNum.toString());
+		element.parentNode.removeChild(element);
 	}
 }
 
@@ -290,7 +294,8 @@ function removeLineReadingSet() {
 		var idNum = howManyOfClass("line-reading-set") - 1;
 
 		// Remove the last reading set
-		document.getElementById("reading-set-" + idNum.toString()).remove();
+		var element = document.getElementById("reading-set-" + idNum.toString());
+		element.parentNode.removeChild(element);
 	}
 }
 
@@ -348,7 +353,8 @@ function removeRecording(readingIDNum) {
 		var recordingNum = countRecordingsInReadingSet(readingIDNum) - 1;
 
 		// Remove the recording
-		document.getElementById("recording-" + readingIDNum.toString() + "-" + recordingNum.toString()).remove();
+		var element = document.getElementById("recording-" + readingIDNum.toString() + "-" + recordingNum.toString());
+		element.parentNode.removeChild(element);
 
 		// If it is cumulative data, remove a recording from all the other reading sets
 		if (document.getElementById("cumulative-line-graph").checked) {
@@ -358,7 +364,8 @@ function removeRecording(readingIDNum) {
 					continue;
 				} else {
 					// Remove the element for the selected reading set
-					document.getElementById("recording-" + i.toString() + "-" + recordingNum.toString()).remove();
+					var element = document.getElementById("recording-" + i.toString() + "-" + recordingNum.toString());
+					element.parentNode.removeChild(element);
 				}
 			}
 		}
